@@ -67,17 +67,10 @@ export declare interface IonModal extends IonModalCmp {}
 export class IonModal {
   @ContentChild(TemplateRef, { static: false }) template: TemplateRef<any>;
 
-  ionModalDidPresent!: EventEmitter<CustomEvent>;
-  ionModalWillPresent!: EventEmitter<CustomEvent>;
-  ionModalWillDismiss!: EventEmitter<CustomEvent>;
-  ionModalDidDismiss!: EventEmitter<CustomEvent>;
-  didPresent!: EventEmitter<CustomEvent>;
-  willPresent!: EventEmitter<CustomEvent>;
-  willDismiss!: EventEmitter<CustomEvent>;
-  didDismiss!: EventEmitter<CustomEvent>;
   isCmpOpen: boolean = false;
 
   protected el: HTMLElement;
+
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
     this.el = r.nativeElement;

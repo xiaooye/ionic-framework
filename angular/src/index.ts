@@ -53,7 +53,6 @@ export {
   createGesture,
   iosTransitionAnimation,
   mdTransitionAnimation,
-  setupConfig,
   IonicSwiper,
   getPlatforms,
   isPlatform,

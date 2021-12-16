@@ -10,7 +10,7 @@ import {
 import { getIonMode } from '../../global/ionic-global';
 import { Color, DatetimeChangeEventDetail, DatetimeParts, Mode, StyleEventDetail } from '../../interface';
 import { startFocusVisible } from '../../utils/focus-visible';
-import { getElementRoot, renderHiddenInput } from '../../utils/helpers';
+import { getElementRoot, raf, renderHiddenInput } from '../../utils/helpers';
 import { createColorClasses } from '../../utils/theme';
 import { PickerColumnItem } from '../picker-column-internal/picker-column-internal-interfaces';
 
@@ -92,6 +92,12 @@ export class Datetime implements ComponentInterface {
 
   private minParts?: any;
   private maxParts?: any;
+
+  /**
+   * Duplicate reference to `activeParts` that does not trigger a re-render of the component.
+   * Allows caching an instance of the `activeParts` in between render cycles.
+   */
+  private activePartsClone!: DatetimeParts;
 
   @State() showMonthAndYear = false;
 
@@ -291,6 +297,25 @@ export class Datetime implements ComponentInterface {
    */
   @Watch('value')
   protected valueChanged() {
+    if (this.hasValue()) {
+      /**
+       * Clones the value of the `activeParts` to the private clone, to update
+       * the date display on the current render cycle without causing another render.
+       *
+       * This allows us to update the current value's date/time display without
+       * refocusing or shifting the user's display (leaves the user in place).
+       */
+      const { month, day, year, hour, minute } = parseDate(this.value);
+      this.activePartsClone = {
+        ...this.activeParts,
+        month,
+        day,
+        year,
+        hour,
+        minute
+      }
+    }
+
     this.emitStyle();
     this.ionChange.emit({
       value: this.value
@@ -845,7 +870,14 @@ export class Datetime implements ComponentInterface {
       });
     }
     visibleIO = new IntersectionObserver(visibleCallback, { threshold: 0.01 });
-    visibleIO.observe(this.el);
+
+    /**
+     * Use raf to avoid a race condition between the component loading and
+     * its display animation starting (such as when shown in a modal). This
+     * could cause the datetime to start at a visibility of 0, erroneously
+     * triggering the `hiddenIO` observer below.
+     */
+    raf(() => visibleIO?.observe(this.el));
 
     /**
      * We need to clean up listeners when the datetime is hidden
@@ -866,7 +898,7 @@ export class Datetime implements ComponentInterface {
       });
     }
     hiddenIO = new IntersectionObserver(hiddenCallback, { threshold: 0 });
-    hiddenIO.observe(this.el);
+    raf(() => hiddenIO?.observe(this.el));
 
     /**
      * Datetime uses Ionic components that emit
@@ -911,7 +943,8 @@ export class Datetime implements ComponentInterface {
       tzOffset,
       ampm: hour >= 12 ? 'pm' : 'am'
     }
-    this.activeParts = {
+
+    this.activePartsClone = this.activeParts = {
       month,
       day,
       year,
@@ -949,6 +982,10 @@ export class Datetime implements ComponentInterface {
 
   private onBlur = () => {
     this.ionBlur.emit();
+  }
+
+  private hasValue = () => {
+    return this.value != null && this.value !== '';
   }
 
   private nextMonth = () => {
@@ -1135,7 +1172,7 @@ export class Datetime implements ComponentInterface {
           {getDaysOfMonth(month, year, this.firstDayOfWeek % 7).map((dateObject, index) => {
             const { day, dayOfWeek } = dateObject;
             const referenceParts = { month, day, year };
-            const { isActive, isToday, ariaLabel, ariaSelected, disabled } = getCalendarDayState(this.locale, referenceParts, this.activeParts, this.todayParts, this.minParts, this.maxParts, this.parsedDayValues);
+            const { isActive, isToday, ariaLabel, ariaSelected, disabled } = getCalendarDayState(this.locale, referenceParts, this.activePartsClone, this.todayParts, this.minParts, this.maxParts, this.parsedDayValues);
 
             return (
               <button
@@ -1213,21 +1250,22 @@ export class Datetime implements ComponentInterface {
     ampmItems: PickerColumnItem[],
     use24Hour: boolean
    ) {
-    const { color, workingParts } = this;
+    const { color, activePartsClone, workingParts } = this;
+
     return (
       <ion-picker-internal>
         <ion-picker-column-internal
           color={color}
-          value={workingParts.hour}
+          value={activePartsClone.hour}
           items={hoursItems}
           numericInput
           onIonChange={(ev: CustomEvent) => {
             this.setWorkingParts({
-              ...this.workingParts,
+              ...workingParts,
               hour: ev.detail.value
             });
             this.setActiveParts({
-              ...this.activeParts,
+              ...activePartsClone,
               hour: ev.detail.value
             });
 
@@ -1236,16 +1274,16 @@ export class Datetime implements ComponentInterface {
         ></ion-picker-column-internal>
         <ion-picker-column-internal
           color={color}
-          value={workingParts.minute}
+          value={activePartsClone.minute}
           items={minutesItems}
           numericInput
           onIonChange={(ev: CustomEvent) => {
             this.setWorkingParts({
-              ...this.workingParts,
+              ...workingParts,
               minute: ev.detail.value
             });
             this.setActiveParts({
-              ...this.activeParts,
+              ...activePartsClone,
               minute: ev.detail.value
             });
 
@@ -1254,19 +1292,19 @@ export class Datetime implements ComponentInterface {
         ></ion-picker-column-internal>
         { !use24Hour && <ion-picker-column-internal
           color={color}
-          value={workingParts.ampm}
+          value={activePartsClone.ampm}
           items={ampmItems}
           onIonChange={(ev: CustomEvent) => {
-            const hour = calculateHourFromAMPM(this.workingParts, ev.detail.value);
+            const hour = calculateHourFromAMPM(workingParts, ev.detail.value);
 
             this.setWorkingParts({
-              ...this.workingParts,
+              ...workingParts,
               ampm: ev.detail.value,
               hour
             });
 
             this.setActiveParts({
-              ...this.workingParts,
+              ...activePartsClone,
               ampm: ev.detail.value,
               hour
             });
@@ -1309,7 +1347,7 @@ export class Datetime implements ComponentInterface {
           }
         }}
       >
-        {getFormattedTime(this.workingParts, use24Hour)}
+        {getFormattedTime(this.activePartsClone, use24Hour)}
       </button>,
       <ion-popover
         alignment="center"
@@ -1319,6 +1357,9 @@ export class Datetime implements ComponentInterface {
         style={{
           '--offset-y': '-10px'
         }}
+        // Allow native browser keyboard events to support up/down/home/end key
+        // navigation within the time picker.
+        keyboardEvents
         ref={el => this.popoverRef = el}
       >
         {this.renderTimePicker(hoursItems, minutesItems, ampmItems, use24Hour)}

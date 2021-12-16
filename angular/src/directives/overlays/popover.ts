@@ -67,17 +67,10 @@ export declare interface IonPopover extends IonPopoverCmp {}
 export class IonPopover {
   @ContentChild(TemplateRef, { static: false }) template: TemplateRef<any>;
 
-  ionPopoverDidPresent!: EventEmitter<CustomEvent>;
-  ionPopoverWillPresent!: EventEmitter<CustomEvent>;
-  ionPopoverWillDismiss!: EventEmitter<CustomEvent>;
-  ionPopoverDidDismiss!: EventEmitter<CustomEvent>;
-  didPresent!: EventEmitter<CustomEvent>;
-  willPresent!: EventEmitter<CustomEvent>;
-  willDismiss!: EventEmitter<CustomEvent>;
-  didDismiss!: EventEmitter<CustomEvent>;
   isCmpOpen: boolean = false;
 
   protected el: HTMLElement;
+
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
     this.el = r.nativeElement;
@@ -90,7 +83,6 @@ export class IonPopover {
       this.isCmpOpen = false;
       c.detectChanges();
     });
-
     proxyOutputs(this, this.el, [
       'ionPopoverDidPresent',
       'ionPopoverWillPresent',
