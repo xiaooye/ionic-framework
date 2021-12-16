@@ -6,17 +6,15 @@ import {
   Component,
   ContentChild,
   ElementRef,
-  EventEmitter,
   NgZone,
   TemplateRef,
 } from '@angular/core';
 import { ProxyCmp, proxyOutputs } from '../angular-component-lib/utils';
-import { IonPopover as IonPopoverCmp } from '@ionic/core/components/ion-popover.js';
+import { defineCustomElement as defineIonPopoverCmp, IonPopover as IonPopoverCmp } from '@ionic/core/components/ion-popover.js';
 
 export declare interface IonPopover extends IonPopoverCmp {}
 @ProxyCmp({
-  tagName: 'ion-popover',
-  customElement: IonPopoverCmp,
+  defineCustomElementFn: defineIonPopoverCmp,
   inputs: [
     'alignment',
     'animated',

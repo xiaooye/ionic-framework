@@ -6,17 +6,15 @@ import {
   Component,
   ContentChild,
   ElementRef,
-  EventEmitter,
   NgZone,
   TemplateRef,
 } from '@angular/core';
 import { ProxyCmp, proxyOutputs } from '../angular-component-lib/utils';
-import { IonModal as IonModalCmp } from '@ionic/core/components/ion-modal.js';
+import { defineCustomElement as defineIonModalCmp, IonModal as IonModalCmp } from '@ionic/core/components/ion-modal.js';
 
 export declare interface IonModal extends IonModalCmp {}
 @ProxyCmp({
-  tagName: 'ion-modal',
-  customElement: IonModalCmp,
+  defineCustomElementFn: defineIonModalCmp,
   inputs: [
     'animated',
     'backdropBreakpoint',

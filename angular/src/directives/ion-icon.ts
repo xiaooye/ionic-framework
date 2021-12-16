@@ -9,8 +9,7 @@ import { ProxyCmp } from './angular-component-lib/utils';
 
 export declare interface IonIcon extends Components.IonIcon {}
 @ProxyCmp({
-  tagName: 'ion-icon',
-  customElement: undefined,
+  defineCustomElementFn: () => {},
   inputs: ['color', 'flipRtl', 'icon', 'ios', 'lazy', 'md', 'mode', 'name', 'sanitize', 'size', 'src']
 })
 @Component({

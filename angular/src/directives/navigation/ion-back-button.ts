@@ -5,12 +5,11 @@ import { Config } from '../../providers/config';
 import { NavController } from '../../providers/nav-controller';
 
 import { IonRouterOutlet } from './ion-router-outlet';
-import { IonBackButton as IonBackButtonCmp } from "@ionic/core/components/ion-back-button";
+import { defineCustomElement as defineIonBackButtonCmp } from "@ionic/core/components/ion-back-button";
 import { ProxyCmp } from '../angular-component-lib/utils';
 
 @ProxyCmp({
-  tagName: 'ion-back-button',
-  customElement: IonBackButtonCmp
+  defineCustomElementFn: defineIonBackButtonCmp
 })
 @Directive({
   selector: 'ion-back-button',

@@ -27,12 +27,11 @@ import { NavController } from '../../providers/nav-controller';
 import { StackController } from './stack-controller';
 import { RouteView, getUrl } from './stack-utils';
 
-import { IonRouterOutlet as IonRouterOutletCmp } from "@ionic/core/components/ion-router-outlet.js";
+import { defineCustomElement as defineIonRouterOutletCmp } from "@ionic/core/components/ion-router-outlet.js";
 import { ProxyCmp } from '../angular-component-lib/utils';
 console.log('router-outlet-source');
 @ProxyCmp({
-  tagName: 'ion-router-outlet',
-  customElement: IonRouterOutletCmp
+  defineCustomElementFn: defineIonRouterOutletCmp
 })
 @Directive({
   selector: 'ion-router-outlet',

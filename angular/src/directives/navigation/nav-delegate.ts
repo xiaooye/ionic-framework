@@ -2,10 +2,9 @@ import { ComponentFactoryResolver, ElementRef, Injector, ViewContainerRef, Direc
 
 import { AngularDelegate } from '../../providers/angular-delegate';
 import { ProxyCmp, proxyOutputs } from '../angular-component-lib/utils';
-import { IonNav as IonNavCmp } from "@ionic/core/components/ion-nav";
+import { defineCustomElement as defineIonNavCmp } from "@ionic/core/components/ion-nav";
 @ProxyCmp({
-  tagName: 'ion-nav',
-  customElement: IonNavCmp,
+  defineCustomElementFn: defineIonNavCmp,
   inputs: ['animated', 'animation', 'root', 'rootParams', 'swipeGesture'],
   methods: [
     'push',
