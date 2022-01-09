@@ -3,7 +3,6 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   ElementRef,
-  Injector,
   NgZone,
   OnDestroy,
   OnInit,
@@ -14,11 +13,12 @@ import {
   Optional,
   Output,
   SkipSelf,
+  ChangeDetectorRef,
 } from '@angular/core';
-import { OutletContext, Router, ActivatedRoute, ChildrenOutletContexts, PRIMARY_OUTLET } from '@angular/router';
+import { OutletContext, Router, ActivatedRoute, ChildrenOutletContexts, RouterOutlet } from '@angular/router';
 import { componentOnReady } from '@ionic/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, switchMap, take } from 'rxjs/operators';
 
 import { AnimationBuilder } from '../../ionic-core';
 import { Config } from '../../providers/config';
@@ -34,30 +34,20 @@ import { RouteView, getUrl } from './stack-utils';
   inputs: ['animated', 'animation', 'swipeGesture'],
 })
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export class IonRouterOutlet implements OnDestroy, OnInit {
-  nativeEl: HTMLIonRouterOutletElement;
+export class IonRouterOutlet extends RouterOutlet implements OnInit, OnDestroy {
 
-  private activated: ComponentRef<any> | null = null;
+  nativeEl: HTMLIonRouterOutletElement;
+  tabsPrefix: string | undefined;
   activatedView: RouteView | null = null;
 
-  private _activatedRoute: ActivatedRoute | null = null;
+  @Output() stackEvents = new EventEmitter<any>();
+
   private _swipeGesture?: boolean;
-  private name: string;
   private stackCtrl: StackController;
-
-  // Maintain map of activated route proxies for each component instance
-  private proxyMap = new WeakMap<any, ActivatedRoute>();
-
   // Keep the latest activated route in a subject for the proxy routes to switch map to
   private currentActivatedRoute$ = new BehaviorSubject<{ component: any; activatedRoute: ActivatedRoute } | null>(null);
-
-  tabsPrefix: string | undefined;
-
-  @Output() stackEvents = new EventEmitter<any>();
-  // eslint-disable-next-line @angular-eslint/no-output-rename
-  @Output('activate') activateEvents = new EventEmitter<any>();
-  // eslint-disable-next-line @angular-eslint/no-output-rename
-  @Output('deactivate') deactivateEvents = new EventEmitter<any>();
+  // Maintain map of activated route proxies for each component instance
+  private proxyMap = new WeakMap<any, ActivatedRoute>();
 
   set animation(animation: AnimationBuilder) {
     this.nativeEl.animation = animation;
@@ -72,17 +62,18 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
 
     this.nativeEl.swipeHandler = swipe
       ? {
-          canStart: () => this.stackCtrl.canGoBack(1) && !this.stackCtrl.hasRunningTask(),
-          onStart: () => this.stackCtrl.startBackTransition(),
-          onEnd: (shouldContinue) => this.stackCtrl.endBackTransition(shouldContinue),
-        }
+        canStart: () => this.stackCtrl.canGoBack(1) && !this.stackCtrl.hasRunningTask(),
+        onStart: () => this.stackCtrl.startBackTransition(),
+        onEnd: (shouldContinue) => this.stackCtrl.endBackTransition(shouldContinue),
+      }
       : undefined;
   }
 
   constructor(
-    private parentContexts: ChildrenOutletContexts,
-    private location: ViewContainerRef,
-    private resolver: ComponentFactoryResolver,
+    parentContexts: ChildrenOutletContexts,
+    location: ViewContainerRef,
+    resolver: ComponentFactoryResolver,
+    changeDetectorRef: ChangeDetectorRef,
     @Attribute('name') name: string,
     @Optional() @Attribute('tabs') tabs: string,
     private config: Config,
@@ -92,33 +83,15 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
     router: Router,
     zone: NgZone,
     activatedRoute: ActivatedRoute,
-    @SkipSelf() @Optional() readonly parentOutlet?: IonRouterOutlet
-  ) {
+    @SkipSelf() @Optional() readonly parentOutlet?: IonRouterOutlet) {
+    super(parentContexts, location, resolver, name, changeDetectorRef);
     this.nativeEl = elementRef.nativeElement;
-    this.name = name || PRIMARY_OUTLET;
     this.tabsPrefix = tabs === 'true' ? getUrl(router, activatedRoute) : undefined;
     this.stackCtrl = new StackController(this.tabsPrefix, this.nativeEl, router, navCtrl, zone, commonLocation);
-    parentContexts.onChildOutletCreated(this.name, this as any);
-  }
-
-  ngOnDestroy(): void {
-    this.stackCtrl.destroy();
-  }
-
-  getContext(): OutletContext | null {
-    return this.parentContexts.getContext(this.name);
   }
 
   ngOnInit(): void {
-    if (!this.activated) {
-      // If the outlet was not instantiated at the time the route got activated we need to populate
-      // the outlet when it is initialized (ie inside a NgIf)
-      const context = this.getContext();
-      if (context?.route) {
-        this.activateWith(context.route, context.resolver || null);
-      }
-    }
-
+    super.ngOnInit();
     new Promise((resolve) => componentOnReady(this.nativeEl, resolve)).then(() => {
       if (this._swipeGesture === undefined) {
         this.swipeGesture = this.config.getBoolean('swipeBackEnabled', (this.nativeEl as any).mode === 'ios');
@@ -126,29 +99,9 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
     });
   }
 
-  get isActivated(): boolean {
-    return !!this.activated;
-  }
-
-  get component(): Record<string, unknown> {
-    if (!this.activated) {
-      throw new Error('Outlet is not activated');
-    }
-    return this.activated.instance;
-  }
-
-  get activatedRoute(): ActivatedRoute {
-    if (!this.activated) {
-      throw new Error('Outlet is not activated');
-    }
-    return this._activatedRoute as ActivatedRoute;
-  }
-
-  get activatedRouteData(): any {
-    if (this._activatedRoute) {
-      return this._activatedRoute.snapshot.data;
-    }
-    return {};
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.stackCtrl.destroy();
   }
 
   /**
@@ -167,7 +120,7 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
   }
 
   deactivate(): void {
-    if (this.activated) {
+    if (this.isActivated) {
       if (this.activatedView) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const context = this.getContext()!;
@@ -198,11 +151,7 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
           (this.activatedView.savedExtras.fragment as string | null) = contextSnapshot.fragment;
         }
       }
-      const c = this.component;
-      this.activatedView = null;
-      this.activated = null;
-      this._activatedRoute = null;
-      this.deactivateEvents.emit(c);
+      super.deactivate();
     }
   }
 
@@ -210,12 +159,15 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
     if (this.isActivated) {
       throw new Error('Cannot activate an already activated outlet');
     }
-    this._activatedRoute = activatedRoute;
+
+    Reflect.set(this, '_activatedRoute', activatedRoute);
 
     let cmpRef: any;
-    let enteringView = this.stackCtrl.getExistingView(activatedRoute);
+    const enteringView = this.stackCtrl.getExistingView(activatedRoute) ?? null;
     if (enteringView) {
-      cmpRef = this.activated = enteringView.ref;
+      cmpRef = enteringView.ref;
+      Reflect.set(this, 'activated', cmpRef);
+
       const saved = enteringView.savedData;
       if (saved) {
         // self-restore
@@ -225,41 +177,49 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
       }
       // Updated activated route proxy for this component
       this.updateActivatedRouteProxy(cmpRef.instance, activatedRoute);
+      this.activatedView = enteringView;
+      this.setActiveStackView(enteringView, cmpRef.instance);
     } else {
-      const snapshot = (activatedRoute as any)._futureSnapshot;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const component = snapshot.routeConfig!.component as any;
-      resolver = resolver || this.resolver;
+      this.activateEvents.pipe(
+        take(1)
+      ).subscribe(cmpInstance => {
+        // We create an activated route proxy object that will maintain future updates for this component
+        // over its lifecycle in the stack.
+        const component$ = new BehaviorSubject<any>(null);
+        const activatedRouteProxy = this.createActivatedRouteProxy(component$, activatedRoute);
 
-      const factory = resolver.resolveComponentFactory(component);
-      const childContexts = this.parentContexts.getOrCreateContext(this.name).children;
+        // Once the component is created we can push it to our local subject supplied to the proxy
+        component$.next(cmpInstance);
 
-      // We create an activated route proxy object that will maintain future updates for this component
-      // over its lifecycle in the stack.
-      const component$ = new BehaviorSubject<any>(null);
-      const activatedRouteProxy = this.createActivatedRouteProxy(component$, activatedRoute);
+        const activated = Reflect.get(this, 'activated') as ComponentRef<any>;
 
-      const injector = new OutletInjector(activatedRouteProxy, childContexts, this.location.injector);
-      cmpRef = this.activated = this.location.createComponent(factory, this.location.length, injector);
+        const enteringView = this.stackCtrl.createView(activated, activatedRoute);
 
-      // Once the component is created we can push it to our local subject supplied to the proxy
-      component$.next(cmpRef.instance);
+        this.activatedView = enteringView;
+        this.setActiveStackView(enteringView, cmpInstance);
 
-      // Calling `markForCheck` to make sure we will run the change detection when the
-      // `RouterOutlet` is inside a `ChangeDetectionStrategy.OnPush` component.
-      enteringView = this.stackCtrl.createView(this.activated, activatedRoute);
+        // Store references to the proxy by component
+        this.proxyMap.set(cmpInstance, activatedRouteProxy);
+        this.currentActivatedRoute$.next({ component: cmpInstance, activatedRoute });
+      });
 
-      // Store references to the proxy by component
-      this.proxyMap.set(cmpRef.instance, activatedRouteProxy);
-      this.currentActivatedRoute$.next({ component: cmpRef.instance, activatedRoute });
+      super.activateWith(activatedRoute, resolver);
     }
 
-    this.activatedView = enteringView;
+  }
+
+  private setActiveStackView(enteringView: RouteView, cmpInstance: any) {
     this.stackCtrl.setActive(enteringView).then((data) => {
       this.navCtrl.setTopOutlet(this);
-      this.activateEvents.emit(cmpRef.instance);
+      this.activateEvents.emit(cmpInstance);
       this.stackEvents.emit(data);
     });
+  }
+
+  getContext(): OutletContext | null {
+    const parentContexts = Reflect.get(this, 'parentContexts') as ChildrenOutletContexts;
+    const name = Reflect.get(this, 'name') as string;
+    return parentContexts.getContext(name);
   }
 
   /**
@@ -270,7 +230,7 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
   }
 
   /**
-   * Resolves to `true` if it the outlet was able to sucessfully pop the last N pages.
+   * Resolves to `true` if it the outlet was able to successfully pop the last N pages.
    */
   pop(deep = 1, stackId?: string): Promise<boolean> {
     return this.stackCtrl.pop(deep, stackId);
@@ -365,21 +325,5 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
     proxy.component = activatedRoute.component;
 
     this.currentActivatedRoute$.next({ component, activatedRoute });
-  }
-}
-
-class OutletInjector implements Injector {
-  constructor(private route: ActivatedRoute, private childContexts: ChildrenOutletContexts, private parent: Injector) {}
-
-  get(token: any, notFoundValue?: any): any {
-    if (token === ActivatedRoute) {
-      return this.route;
-    }
-
-    if (token === ChildrenOutletContexts) {
-      return this.childContexts;
-    }
-
-    return this.parent.get(token, notFoundValue);
   }
 }
