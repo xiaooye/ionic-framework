@@ -332,6 +332,16 @@ Type: `Promise<HTMLTextAreaElement>`
 
 
 
+### `patchValue(newValue: string | null | undefined, options?: FormControlPatchValueOptions | undefined) => Promise<void>`
+
+Update the native input value.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `setFocus() => Promise<void>`
 
 Sets focus on the native `textarea` in `ion-textarea`. Use this method instead of the global

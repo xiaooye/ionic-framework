@@ -252,6 +252,19 @@ export default defineComponent({
 | `ionChange` | Emitted when the value has changed. | `CustomEvent<RadioGroupChangeEventDetail<any>>` |
 
 
+## Methods
+
+### `patchValue(newValue: string | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>`
+
+Update the native input value.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Used by

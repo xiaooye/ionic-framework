@@ -2,6 +2,7 @@ import { Component, ComponentInterface, Element, Event, EventEmitter, Host, Meth
 
 import { getIonMode } from '../../global/ionic-global';
 import { ActionSheetButton, ActionSheetOptions, AlertInput, AlertOptions, CssClassMap, OverlaySelect, PopoverOptions, SelectChangeEventDetail, SelectInterface, SelectPopoverOption, StyleEventDetail } from '../../interface';
+import { FormControl, FormControlPatchValueOptions } from '../../utils/form/form-control';
 import { findItemLabel, focusElement, getAriaLabel, renderHiddenInput } from '../../utils/helpers';
 import { actionSheetController, alertController, popoverController } from '../../utils/overlays';
 import { hostContext } from '../../utils/theme';
@@ -24,13 +25,13 @@ import { SelectCompareFn } from './select-interface';
   },
   shadow: true
 })
-export class Select implements ComponentInterface {
+export class Select implements ComponentInterface, FormControl<any | null> {
 
   private inputId = `ion-sel-${selectIds++}`;
   private overlay?: OverlaySelect;
-  private didInit = false;
   private focusEl?: HTMLButtonElement;
   private mutationO?: MutationObserver;
+  private controlValue: any | null;
 
   @Element() el!: HTMLIonSelectElement;
 
@@ -131,12 +132,9 @@ export class Select implements ComponentInterface {
   }
 
   @Watch('value')
-  valueChanged() {
-    this.emitStyle();
-    if (this.didInit) {
-      this.ionChange.emit({
-        value: this.value,
-      });
+  valueChanged(newValue: null | any) {
+    if (this.controlValue !== newValue) {
+      this.patchValue(newValue, { emitEvent: true, emitStyle: true });
     }
   }
 
@@ -154,10 +152,6 @@ export class Select implements ComponentInterface {
       this.mutationO.disconnect();
       this.mutationO = undefined;
     }
-  }
-
-  componentDidLoad() {
-    this.didInit = true;
   }
 
   /**
@@ -192,6 +186,19 @@ export class Select implements ComponentInterface {
     }
 
     return overlay;
+  }
+
+  @Method()
+  async patchValue(newValue: any | null, options?: FormControlPatchValueOptions) {
+    this.value = this.controlValue = newValue;
+    if (options?.emitStyle) {
+      this.emitStyle();
+    }
+    if (options?.emitEvent) {
+      this.ionChange.emit({
+        value: this.controlValue,
+      });
+    }
   }
 
   private createOverlay(ev?: UIEvent): Promise<OverlaySelect> {
@@ -416,7 +423,7 @@ export class Select implements ComponentInterface {
         }
       ],
       cssClass: ['select-alert', interfaceOptions.cssClass,
-                 (this.multiple ? 'multiple-select-alert' : 'single-select-alert')]
+        (this.multiple ? 'multiple-select-alert' : 'single-select-alert')]
     };
     return alertController.create(alertOpts);
   }

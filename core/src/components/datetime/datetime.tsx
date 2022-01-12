@@ -6,10 +6,12 @@ import {
   chevronDown,
   chevronForward
 } from 'ionicons/icons';
+import { FormControl } from '../../utils/form/form-control';
 
 import { getIonMode } from '../../global/ionic-global';
 import { Color, DatetimeChangeEventDetail, DatetimeParts, Mode, StyleEventDetail } from '../../interface';
 import { startFocusVisible } from '../../utils/focus-visible';
+import { FormControlPatchValueOptions } from '../../utils/form/form-control';
 import { getElementRoot, raf, renderHiddenInput } from '../../utils/helpers';
 import { isRTL } from '../../utils/rtl';
 import { createColorClasses } from '../../utils/theme';
@@ -74,7 +76,7 @@ import {
   },
   shadow: true
 })
-export class Datetime implements ComponentInterface {
+export class Datetime implements ComponentInterface, FormControl<string | null> {
 
   private inputId = `ion-dt-${datetimeIds++}`;
   private calendarBodyRef?: HTMLElement;
@@ -99,6 +101,8 @@ export class Datetime implements ComponentInterface {
    * Allows caching an instance of the `activeParts` in between render cycles.
    */
   private activePartsClone!: DatetimeParts;
+
+  private controlValue: any | null;
 
   @State() showMonthAndYear = false;
 
@@ -302,30 +306,13 @@ export class Datetime implements ComponentInterface {
    * Update the datetime value when the value changes
    */
   @Watch('value')
-  protected valueChanged() {
-    if (this.hasValue()) {
-      /**
-       * Clones the value of the `activeParts` to the private clone, to update
-       * the date display on the current render cycle without causing another render.
-       *
-       * This allows us to update the current value's date/time display without
-       * refocusing or shifting the user's display (leaves the user in place).
-       */
-      const { month, day, year, hour, minute } = parseDate(this.value);
-      this.activePartsClone = {
-        ...this.activeParts,
-        month,
-        day,
-        year,
-        hour,
-        minute
-      }
+  protected valueChanged(newValue: string | null) {
+    if (newValue !== this.controlValue) {
+      this.patchValue(newValue, {
+        emitStyle: true,
+        emitEvent: true
+      });
     }
-
-    this.emitStyle();
-    this.ionChange.emit({
-      value: this.value
-    });
   }
 
   /**
@@ -452,6 +439,39 @@ export class Datetime implements ComponentInterface {
 
     if (closeOverlay) {
       this.closeParentOverlay();
+    }
+  }
+
+  @Method()
+  async patchValue(newValue: string | null, options?: FormControlPatchValueOptions) {
+    this.value = this.controlValue = newValue;
+    if (this.hasValue()) {
+      /**
+       * Clones the value of the `activeParts` to the private clone, to update
+       * the date display on the current render cycle without causing another render.
+       *
+       * This allows us to update the current value's date/time display without
+       * refocusing or shifting the user's display (leaves the user in place).
+       */
+      const { month, day, year, hour, minute } = parseDate(this.value);
+      this.activePartsClone = {
+        ...this.activeParts,
+        month,
+        day,
+        year,
+        hour,
+        minute
+      }
+    }
+
+    if (options?.emitStyle) {
+      this.emitStyle();
+    }
+
+    if (options?.emitEvent) {
+      this.ionChange.emit({
+        value: this.value
+      });
     }
   }
 

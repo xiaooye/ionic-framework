@@ -1,4 +1,5 @@
 import { Component, ComponentInterface, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, forceUpdate, h } from '@stencil/core';
+import { FormControl, FormControlPatchValueOptions } from '../../utils/form/form-control';
 
 import { config } from '../../global/config';
 import { getIonMode } from '../../global/ionic-global';
@@ -17,11 +18,12 @@ import { createColorClasses } from '../../utils/theme';
   },
   scoped: true
 })
-export class Searchbar implements ComponentInterface {
+export class Searchbar implements ComponentInterface, FormControl<string | null> {
 
   private nativeInput?: HTMLInputElement;
   private isCancelVisible = false;
   private shouldAlignLeft = true;
+  private controlValue: string | null = '';
 
   @Element() el!: HTMLIonSearchbarElement;
 
@@ -183,13 +185,12 @@ export class Searchbar implements ComponentInterface {
   @Event() ionStyle!: EventEmitter<StyleEventDetail>;
 
   @Watch('value')
-  protected valueChanged() {
-    const inputEl = this.nativeInput;
-    const value = this.getValue();
-    if (inputEl && inputEl.value !== value) {
-      inputEl.value = value;
+  protected valueChanged(newValue: string | null) {
+    if (newValue !== this.controlValue) {
+      this.patchValue(newValue, {
+        emitEvent: true
+      })
     }
-    this.ionChange.emit({ value });
   }
 
   @Watch('showCancelButton')
@@ -236,6 +237,19 @@ export class Searchbar implements ComponentInterface {
   @Method()
   getInputElement(): Promise<HTMLInputElement> {
     return Promise.resolve(this.nativeInput!);
+  }
+
+  @Method()
+  async patchValue(newValue: string | null, options?: FormControlPatchValueOptions) {
+    this.value = this.controlValue = newValue;
+    const inputEl = this.nativeInput;
+    const value = this.getValue();
+    if (inputEl && inputEl.value !== value) {
+      inputEl.value = value;
+    }
+    if (options?.emitEvent) {
+      this.ionChange.emit({ value });
+    }
   }
 
   /**
@@ -474,7 +488,7 @@ export class Searchbar implements ComponentInterface {
         class="searchbar-cancel-button"
       >
         <div aria-hidden="true">
-          { mode === 'md'
+          {mode === 'md'
             ? <ion-icon aria-hidden="true" mode={mode} icon={this.cancelButtonIcon} lazy={false}></ion-icon>
             : cancelButtonText
           }

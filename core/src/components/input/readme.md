@@ -372,6 +372,16 @@ Type: `Promise<HTMLInputElement>`
 
 
 
+### `patchValue(newValue: string | number | null | undefined, options?: FormControlPatchValueOptions | undefined) => Promise<void>`
+
+Update the native input value.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `setFocus() => Promise<void>`
 
 Sets focus on the native `input` in `ion-input`. Use this method instead of the global

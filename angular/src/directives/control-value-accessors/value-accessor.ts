@@ -1,5 +1,6 @@
-import { AfterViewInit, ElementRef, Injector, OnDestroy, Directive, HostListener } from '@angular/core';
+import { AfterViewInit, ElementRef, Injector, OnDestroy, Directive, HostListener, Input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { FormControl } from '@ionic/core';
 import { Subscription } from 'rxjs';
 
 import { raf } from '../../util/util';
@@ -14,19 +15,32 @@ export class ValueAccessor implements ControlValueAccessor, AfterViewInit, OnDes
   };
   protected lastValue: any;
   private statusChanges?: Subscription;
+  private initialized = false;
 
-  constructor(protected injector: Injector, protected el: ElementRef) {}
+  @Input() ngModel: any;
+
+  constructor(protected injector: Injector, protected el: ElementRef) { }
+
+  get formControlEl(): HTMLElement & FormControl<any> {
+    return this.el.nativeElement;
+  }
 
   writeValue(value: any): void {
-    /**
-     * TODO for Ionic 6:
-     * Change `value == null ? '' : value;`
-     * to `value`. This was a fix for IE9, but IE9
-     * is no longer supported; however, this change
-     * is potentially a breaking change
-     */
-    this.el.nativeElement.value = this.lastValue = value == null ? '' : value;
-    setIonicClasses(this.el);
+    if (typeof this.ngModel !== 'undefined' || this.initialized) {
+      this.updateValue(value);
+    }
+
+    if (!this.initialized && typeof this.ngModel === 'undefined') {
+      const chain = [];
+      if (typeof window.customElements !== 'undefined') {
+        chain.push(window.customElements.whenDefined(this.el.nativeElement.tagName.toLowerCase()));
+      }
+      if (typeof this.el.nativeElement.componentOnReady !== 'undefined') {
+        chain.push(this.el.nativeElement.componentOnReady());
+      }
+      Promise.all(chain).then(() => this.updateValue(value));
+      this.initialized = true;
+    }
   }
 
   handleChangeEvent(el: HTMLElement, value: any): void {
@@ -106,6 +120,18 @@ export class ValueAccessor implements ControlValueAccessor, AfterViewInit, OnDes
       });
     }
   }
+
+  private updateValue(value: any) {
+    if (typeof this.el.nativeElement.patchValue !== 'undefined') {
+      this.formControlEl.patchValue(this.lastValue = value == null ? '' : value, {
+        emitStyle: true
+      });
+      setIonicClasses(this.el);
+    } else {
+      console.log(`<${this.el.nativeElement.tagName.toLowerCase()}> must implement a patchValue function`);
+    }
+  }
+
 }
 
 export const setIonicClasses = (element: ElementRef): void => {

@@ -1406,6 +1406,16 @@ Type: `Promise<any>`
 
 
 
+### `patchValue(newValue: any | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>`
+
+Update the native input value.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Shadow Parts
 

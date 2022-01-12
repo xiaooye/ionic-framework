@@ -1,7 +1,9 @@
-import { Component, ComponentInterface, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core';
+import { Component, ComponentInterface, Element, Event, EventEmitter, Host, Prop, State, Watch, h, Method } from '@stencil/core';
+import { FormControl } from '../../utils/form/form-control';
 
 import { getIonMode } from '../../global/ionic-global';
 import { Color, Gesture, GestureDetail, KnobName, RangeChangeEventDetail, RangeValue, StyleEventDetail } from '../../interface';
+import { FormControlPatchValueOptions } from '../../utils/form/form-control';
 import { clamp, debounceEvent, getAriaLabel, inheritAttributes, renderHiddenInput } from '../../utils/helpers';
 import { createColorClasses, hostContext } from '../../utils/theme';
 
@@ -28,7 +30,7 @@ import { PinFormatter } from './range-interface';
   },
   shadow: true
 })
-export class Range implements ComponentInterface {
+export class Range implements ComponentInterface, FormControl<RangeValue> {
 
   private rangeId?: string;
   private didLoad = false;
@@ -38,6 +40,7 @@ export class Range implements ComponentInterface {
   private rangeSlider?: HTMLElement;
   private gesture?: Gesture;
   private inheritedAttributes: { [k: string]: any } = {};
+  private controlValue: RangeValue = 0;
 
   @Element() el!: HTMLIonRangeElement;
 
@@ -148,10 +151,12 @@ export class Range implements ComponentInterface {
     if (!this.noUpdate) {
       this.updateRatio();
     }
-
-    value = this.ensureValueInBounds(value);
-
-    this.ionChange.emit({ value });
+    if (value !== this.controlValue) {
+      this.patchValue(value, {
+        emitStyle: true,
+        emitEvent: true
+      });
+    }
   }
 
   private clampBounds = (value: any): number => {
@@ -244,6 +249,14 @@ export class Range implements ComponentInterface {
     }
   }
 
+  @Method()
+  async patchValue(newValue: RangeValue, options?: FormControlPatchValueOptions) {
+    this.value = this.controlValue = this.ensureValueInBounds(newValue);
+    if (options?.emitEvent) {
+      this.ionChange.emit({ value: this.value });
+    }
+  }
+
   private handleKeyboard = (knob: KnobName, isIncrease: boolean) => {
     let step = this.step;
     step = step > 0 ? step : 1;
@@ -296,7 +309,7 @@ export class Range implements ComponentInterface {
 
     this.pressedKnob =
       !this.dualKnobs ||
-      Math.abs(this.ratioA - ratio) < Math.abs(this.ratioB - ratio)
+        Math.abs(this.ratioA - ratio) < Math.abs(this.ratioB - ratio)
         ? 'A'
         : 'B';
 
@@ -384,9 +397,9 @@ export class Range implements ComponentInterface {
     this.value = !this.dualKnobs
       ? valA
       : {
-          lower: Math.min(valA, valB),
-          upper: Math.max(valA, valB)
-        };
+        lower: Math.min(valA, valB),
+        upper: Math.max(valA, valB)
+      };
 
     this.noUpdate = false;
   }
@@ -502,7 +515,7 @@ export class Range implements ComponentInterface {
             part="bar-active"
           />
 
-          { renderKnob(isRTL, {
+          {renderKnob(isRTL, {
             knob: 'A',
             pressed: pressedKnob === 'A',
             value: this.valA,
@@ -516,7 +529,7 @@ export class Range implements ComponentInterface {
             labelText
           })}
 
-          { this.dualKnobs && renderKnob(isRTL, {
+          {this.dualKnobs && renderKnob(isRTL, {
             knob: 'B',
             pressed: pressedKnob === 'B',
             value: this.valB,

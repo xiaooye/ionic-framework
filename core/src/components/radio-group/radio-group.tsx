@@ -1,16 +1,19 @@
-import { Component, ComponentInterface, Element, Event, EventEmitter, Host, Listen, Prop, Watch, h } from '@stencil/core';
+import { Component, ComponentInterface, Element, Event, EventEmitter, Host, Listen, Prop, Watch, h, Method } from '@stencil/core';
+import { FormControl } from '../../utils/form/form-control';
 
 import { getIonMode } from '../../global/ionic-global';
 import { RadioGroupChangeEventDetail } from '../../interface';
+import { FormControlPatchValueOptions } from '../../utils/form/form-control';
 
 @Component({
   tag: 'ion-radio-group'
 })
-export class RadioGroup implements ComponentInterface {
+export class RadioGroup implements ComponentInterface, FormControl<string | null> {
 
   private inputId = `ion-rg-${radioGroupIds++}`;
   private labelId = `${this.inputId}-lbl`;
   private label?: HTMLIonLabelElement | null;
+  private controlValue: string | null = '';
 
   @Element() el!: HTMLElement;
 
@@ -30,10 +33,12 @@ export class RadioGroup implements ComponentInterface {
   @Prop({ mutable: true }) value?: any | null;
 
   @Watch('value')
-  valueChanged(value: any | undefined) {
-    this.setRadioTabindex(value);
-
-    this.ionChange.emit({ value });
+  valueChanged(newValue: any | undefined) {
+    if (newValue !== this.controlValue) {
+      this.patchValue(newValue, {
+        emitEvent: true
+      });
+    }
   }
 
   /**
@@ -43,6 +48,15 @@ export class RadioGroup implements ComponentInterface {
 
   componentDidLoad() {
     this.setRadioTabindex(this.value);
+  }
+
+  @Method()
+  async patchValue(newValue: string | null, options?: FormControlPatchValueOptions) {
+    this.value = this.controlValue = newValue;
+    this.setRadioTabindex(this.value);
+    if (options?.emitEvent) {
+      this.ionChange.emit({ value: this.value });
+    }
   }
 
   private setRadioTabindex = (value: any | undefined) => {

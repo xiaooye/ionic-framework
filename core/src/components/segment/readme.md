@@ -619,6 +619,19 @@ export default defineComponent({
 | `ionChange` | Emitted when the value property has changed and any dragging pointer has been released from `ion-segment`. | `CustomEvent<SegmentChangeEventDetail>` |
 
 
+## Methods
+
+### `patchValue(newValue: string | null | undefined, options?: FormControlPatchValueOptions | undefined) => Promise<void>`
+
+Update the native input value.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## CSS Custom Properties
 
 | Name           | Description                      |

@@ -4,6 +4,7 @@ export { createAnimation } from './utils/animation/animation';
 export { iosTransitionAnimation } from './utils/transition/ios.transition';
 export { mdTransitionAnimation } from './utils/transition/md.transition';
 export { getTimeGivenProgression } from './utils/animation/cubic-bezier';
+export { FormControl } from './utils/form/form-control';
 export { createGesture } from './utils/gesture';
 export { initialize } from './global/ionic-global';
 export { componentOnReady } from './utils/helpers';

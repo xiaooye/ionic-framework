@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: 'inputs', component: InputsComponent },
   { path: 'form', component: FormComponent },
   { path: 'modals', component: ModalComponent },
+  { path: 'modal-form', loadChildren: () => import('./modal-form').then(m => m.ModalFormModule) },
   { path: 'modal-inline', loadChildren: () => import('./modal-inline').then(m => m.ModalInlineModule) },
   { path: 'view-child', component: ViewChildComponent },
   { path: 'popover-inline', loadChildren: () => import('./popover-inline').then(m => m.PopoverInlineModule) },

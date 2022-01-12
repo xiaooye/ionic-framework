@@ -2,6 +2,7 @@ import { Build, Component, ComponentInterface, Element, Event, EventEmitter, Hos
 
 import { getIonMode } from '../../global/ionic-global';
 import { Color, StyleEventDetail, TextareaChangeEventDetail } from '../../interface';
+import { FormControl, FormControlPatchValueOptions } from '../../utils/form/form-control';
 import { debounceEvent, findItemLabel, inheritAttributes, raf } from '../../utils/helpers';
 import { createColorClasses } from '../../utils/theme';
 
@@ -16,13 +17,14 @@ import { createColorClasses } from '../../utils/theme';
   },
   scoped: true
 })
-export class Textarea implements ComponentInterface {
+export class Textarea implements ComponentInterface, FormControl<string | null | undefined> {
 
   private nativeInput?: HTMLTextAreaElement;
   private inputId = `ion-textarea-${textareaIds++}`;
   private didBlurAfterEdit = false;
   private textareaWrapper?: HTMLElement;
   private inheritedAttributes: { [k: string]: any } = {};
+  private controlValue: string | null | undefined = '';
 
   /**
    * This is required for a WebKit bug which requires us to
@@ -154,19 +156,11 @@ export class Textarea implements ComponentInterface {
    */
   @Prop({ mutable: true }) value?: string | null = '';
 
-  /**
-   * Update the native input element when the value changes
-   */
   @Watch('value')
-  protected valueChanged() {
-    const nativeInput = this.nativeInput;
-    const value = this.getValue();
-    if (nativeInput && nativeInput.value !== value) {
-      nativeInput.value = value;
+  protected valueChanged(newValue: string | null) {
+    if (newValue !== this.controlValue) {
+      this.patchValue(newValue, { emitEvent: true, emitStyle: true });
     }
-    this.runAutoGrow();
-    this.emitStyle();
-    this.ionChange.emit({ value });
   }
 
   /**
@@ -254,6 +248,23 @@ export class Textarea implements ComponentInterface {
   async setBlur() {
     if (this.nativeInput) {
       this.nativeInput.blur();
+    }
+  }
+
+  @Method()
+  async patchValue(newValue: string | null | undefined, options?: FormControlPatchValueOptions) {
+    this.value = this.controlValue = newValue;
+    const nativeInput = this.nativeInput;
+    const value = this.getValue();
+    if (nativeInput && nativeInput.value !== value) {
+      nativeInput.value = value;
+    }
+    this.runAutoGrow();
+    if (options?.emitStyle) {
+      this.emitStyle();
+    }
+    if (options?.emitEvent) {
+      this.ionChange.emit({ value });
     }
   }
 

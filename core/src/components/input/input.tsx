@@ -2,6 +2,7 @@ import { Build, Component, ComponentInterface, Element, Event, EventEmitter, Hos
 
 import { getIonMode } from '../../global/ionic-global';
 import { AutocompleteTypes, Color, InputChangeEventDetail, StyleEventDetail, TextFieldTypes } from '../../interface';
+import { FormControl, FormControlPatchValueOptions } from '../../utils/form/form-control';
 import { debounceEvent, findItemLabel, inheritAttributes } from '../../utils/helpers';
 import { createColorClasses } from '../../utils/theme';
 
@@ -16,12 +17,13 @@ import { createColorClasses } from '../../utils/theme';
   },
   scoped: true
 })
-export class Input implements ComponentInterface {
+export class Input implements ComponentInterface, FormControl<string | number | null | undefined> {
 
   private nativeInput?: HTMLInputElement;
   private inputId = `ion-input-${inputIds++}`;
   private didBlurAfterEdit = false;
   private inheritedAttributes: { [k: string]: any } = {};
+  private controlValue: string | number | null | undefined = '';
 
   /**
    * This is required for a WebKit bug which requires us to
@@ -228,9 +230,13 @@ export class Input implements ComponentInterface {
    * Update the native input element when the value changes
    */
   @Watch('value')
-  protected valueChanged() {
-    this.emitStyle();
-    this.ionChange.emit({ value: this.value == null ? this.value : this.value.toString() });
+  protected valueChanged(newValue: string | number | null) {
+    if (newValue !== this.controlValue) {
+      this.patchValue(newValue, {
+        emitEvent: true,
+        emitStyle: true
+      });
+    }
   }
 
   componentWillLoad() {
@@ -275,6 +281,19 @@ export class Input implements ComponentInterface {
   async setBlur() {
     if (this.nativeInput) {
       this.nativeInput.blur();
+    }
+  }
+
+  @Method()
+  async patchValue(newValue: string | number | null | undefined, options?: FormControlPatchValueOptions) {
+    this.value = this.controlValue = newValue;
+    if (options?.emitStyle) {
+      this.emitStyle();
+    }
+    if (options?.emitEvent) {
+      this.ionChange.emit({
+        value: this.controlValue == null ? this.controlValue : this.controlValue.toString()
+      });
     }
   }
 

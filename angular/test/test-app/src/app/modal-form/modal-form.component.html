@@ -1,0 +1,60 @@
+<ion-content>
+  <ion-button id="open-modal">Open modal</ion-button>
+  <ion-modal trigger="open-modal">
+    <ng-template>
+      <ion-content>
+        <h3>Form Control</h3>
+        <form [formGroup]="form">
+          <pre>{{ form.value | json }}</pre>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Input</ion-label>
+              <ion-input formControlName="input" (ionChange)="onFormControlIonChange($event)"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Textarea</ion-label>
+              <ion-textarea formControlName="textarea" (ionChange)="onFormControlIonChange($event)"></ion-textarea>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Select</ion-label>
+              <ion-select formControlName="select" multiple="false" (ionChange)="onFormControlIonChange($event)">
+                <ion-select-option value="Red">Red</ion-select-option>
+                <ion-select-option value="White">White</ion-select-option>
+                <ion-select-option value="Blue">Blue</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Datetime</ion-label>
+              <ion-datetime formControlName="datetime" [showDefaultButtons]="true"
+                (ionChange)="onFormControlIonChange($event)"></ion-datetime>
+            </ion-item>
+          </ion-list>
+        </form>
+        <h3>Standalone</h3>
+        <ion-list>
+          <ion-item>
+            <ion-label position="floating">Input</ion-label>
+            <ion-input [(ngModel)]="inputModel" (ionChange)="onModelIonChange($event)"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Textarea</ion-label>
+            <ion-textarea [(ngModel)]="textareaModel" (ionChange)="onModelIonChange($event)"></ion-textarea>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Select</ion-label>
+            <ion-select [(ngModel)]="selectModel" multiple="false" (ionChange)="onModelIonChange($event)">
+              <ion-select-option value="Red">Red</ion-select-option>
+              <ion-select-option value="White">White</ion-select-option>
+              <ion-select-option value="Blue">Blue</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Datetime</ion-label>
+            <ion-datetime [(ngModel)]="datetimeModel" [showDefaultButtons]="true"
+              (ionChange)="onModelIonChange($event)"></ion-datetime>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

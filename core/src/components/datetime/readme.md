@@ -958,6 +958,16 @@ Type: `Promise<void>`
 
 
 
+### `patchValue(newValue: string | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>`
+
+Update the native input value.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `reset(startDate?: string | undefined) => Promise<void>`
 
 Resets the internal state of the datetime but does not update the value.

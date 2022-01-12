@@ -523,7 +523,7 @@ export declare interface IonDatetime extends Components.IonDatetime {
 @ProxyCmp({
   defineCustomElementFn: undefined,
   inputs: ['cancelText', 'clearText', 'color', 'dayValues', 'disabled', 'doneText', 'firstDayOfWeek', 'hourCycle', 'hourValues', 'locale', 'max', 'min', 'minuteValues', 'mode', 'monthValues', 'name', 'presentation', 'readonly', 'showClearButton', 'showDefaultButtons', 'showDefaultTimeLabel', 'showDefaultTitle', 'size', 'value', 'yearValues'],
-  methods: ['confirm', 'reset', 'cancel']
+  methods: ['confirm', 'reset', 'cancel', 'patchValue']
 })
 @Component({
   selector: 'ion-datetime',
@@ -812,7 +812,7 @@ export declare interface IonInput extends Components.IonInput {
 @ProxyCmp({
   defineCustomElementFn: undefined,
   inputs: ['accept', 'autocapitalize', 'autocomplete', 'autocorrect', 'autofocus', 'clearInput', 'clearOnEdit', 'color', 'debounce', 'disabled', 'enterkeyhint', 'inputmode', 'max', 'maxlength', 'min', 'minlength', 'mode', 'multiple', 'name', 'pattern', 'placeholder', 'readonly', 'required', 'size', 'spellcheck', 'step', 'type', 'value'],
-  methods: ['setFocus', 'getInputElement']
+  methods: ['setFocus', 'patchValue', 'getInputElement']
 })
 @Component({
   selector: 'ion-input',
@@ -1254,7 +1254,8 @@ export declare interface IonRadioGroup extends Components.IonRadioGroup {
 
 @ProxyCmp({
   defineCustomElementFn: undefined,
-  inputs: ['allowEmptySelection', 'name', 'value']
+  inputs: ['allowEmptySelection', 'name', 'value'],
+  methods: ['patchValue']
 })
 @Component({
   selector: 'ion-radio-group',
@@ -1290,7 +1291,8 @@ export declare interface IonRange extends Components.IonRange {
 
 @ProxyCmp({
   defineCustomElementFn: undefined,
-  inputs: ['color', 'debounce', 'disabled', 'dualKnobs', 'max', 'min', 'mode', 'name', 'pin', 'pinFormatter', 'snaps', 'step', 'ticks', 'value']
+  inputs: ['color', 'debounce', 'disabled', 'dualKnobs', 'max', 'min', 'mode', 'name', 'pin', 'pinFormatter', 'snaps', 'step', 'ticks', 'value'],
+  methods: ['patchValue']
 })
 @Component({
   selector: 'ion-range',
@@ -1491,7 +1493,7 @@ export declare interface IonSearchbar extends Components.IonSearchbar {
 @ProxyCmp({
   defineCustomElementFn: undefined,
   inputs: ['animated', 'autocomplete', 'autocorrect', 'cancelButtonIcon', 'cancelButtonText', 'clearIcon', 'color', 'debounce', 'disabled', 'enterkeyhint', 'inputmode', 'mode', 'placeholder', 'searchIcon', 'showCancelButton', 'showClearButton', 'spellcheck', 'type', 'value'],
-  methods: ['setFocus', 'getInputElement']
+  methods: ['setFocus', 'getInputElement', 'patchValue']
 })
 @Component({
   selector: 'ion-searchbar',
@@ -1520,7 +1522,8 @@ dragging pointer has been released from `ion-segment`.
 
 @ProxyCmp({
   defineCustomElementFn: undefined,
-  inputs: ['color', 'disabled', 'mode', 'scrollable', 'selectOnFocus', 'swipeGesture', 'value']
+  inputs: ['color', 'disabled', 'mode', 'scrollable', 'selectOnFocus', 'swipeGesture', 'value'],
+  methods: ['patchValue']
 })
 @Component({
   selector: 'ion-segment',
@@ -1582,7 +1585,7 @@ export declare interface IonSelect extends Components.IonSelect {
 @ProxyCmp({
   defineCustomElementFn: undefined,
   inputs: ['cancelText', 'compareWith', 'disabled', 'interface', 'interfaceOptions', 'mode', 'multiple', 'name', 'okText', 'placeholder', 'selectedText', 'value'],
-  methods: ['open']
+  methods: ['open', 'patchValue']
 })
 @Component({
   selector: 'ion-select',
@@ -1885,7 +1888,7 @@ export declare interface IonTextarea extends Components.IonTextarea {
 @ProxyCmp({
   defineCustomElementFn: undefined,
   inputs: ['autoGrow', 'autocapitalize', 'autofocus', 'clearOnEdit', 'color', 'cols', 'debounce', 'disabled', 'enterkeyhint', 'inputmode', 'maxlength', 'minlength', 'mode', 'name', 'placeholder', 'readonly', 'required', 'rows', 'spellcheck', 'value', 'wrap'],
-  methods: ['setFocus', 'getInputElement']
+  methods: ['setFocus', 'patchValue', 'getInputElement']
 })
 @Component({
   selector: 'ion-textarea',

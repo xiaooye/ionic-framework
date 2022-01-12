@@ -1,4 +1,5 @@
-import { Component, ComponentInterface, Element, Event, EventEmitter, Host, Listen, Prop, State, Watch, h, writeTask } from '@stencil/core';
+import { Component, ComponentInterface, Element, Event, EventEmitter, Host, Listen, Prop, State, Watch, h, writeTask, Method } from '@stencil/core';
+import { FormControl, FormControlPatchValueOptions } from '../../utils/form/form-control';
 
 import { config } from '../../global/config';
 import { getIonMode } from '../../global/ionic-global';
@@ -18,13 +19,15 @@ import { createColorClasses, hostContext } from '../../utils/theme';
   },
   shadow: true
 })
-export class Segment implements ComponentInterface {
+export class Segment implements ComponentInterface, FormControl<string | null | undefined> {
   private gesture?: Gesture;
   private didInit = false;
   private checked?: HTMLIonSegmentButtonElement;
 
   // Value to be emitted when gesture ends
   private valueAfterGesture?: any;
+
+  private controlValue: string | null | undefined = '';
 
   @Element() el!: HTMLIonSegmentElement;
 
@@ -81,13 +84,17 @@ export class Segment implements ComponentInterface {
   @Prop({ mutable: true }) value?: string | null;
 
   @Watch('value')
-  protected valueChanged(value: string | undefined, oldValue: string | undefined | null) {
-    this.ionSelect.emit({ value });
+  protected valueChanged(newValue: string | undefined, oldValue: string | undefined | null) {
+    this.ionSelect.emit({ value: newValue });
     if (oldValue !== '' || this.didInit) {
       if (!this.activated) {
-        this.ionChange.emit({ value });
+        if (newValue !== this.controlValue) {
+          this.patchValue(newValue, {
+            emitEvent: true
+          });
+        }
       } else {
-        this.valueAfterGesture = value;
+        this.valueAfterGesture = newValue;
       }
     }
   }
@@ -160,6 +167,15 @@ export class Segment implements ComponentInterface {
       this.disabledChanged();
     }
     this.didInit = true;
+  }
+
+  @Method()
+  async patchValue(newValue: string | null | undefined, options?: FormControlPatchValueOptions) {
+    this.value = this.controlValue = newValue;
+    if (options?.emitEvent) {
+      // TODO come back to fixing this type
+      this.ionChange.emit({ value: this.value as any });
+    }
   }
 
   onStart(detail: GestureDetail) {
@@ -364,7 +380,7 @@ export class Segment implements ComponentInterface {
         if (newIndex >= 0) {
           nextIndex = newIndex;
         }
-      // Increase index, moves right in LTR & left in RTL
+        // Increase index, moves right in LTR & left in RTL
       } else if (increaseIndex) {
         if (activated && !isEnd) {
 

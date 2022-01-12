@@ -378,6 +378,16 @@ Type: `Promise<HTMLInputElement>`
 
 
 
+### `patchValue(newValue: string | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>`
+
+Update the native input value.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `setFocus() => Promise<void>`
 
 Sets focus on the specified `ion-searchbar`. Use this method instead of the global

@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AccordionGroupChangeEventDetail, ActionSheetAttributes, ActionSheetButton, AlertButton, AlertInput, AnimationBuilder, AutocompleteTypes, BreadcrumbCollapsedClickEventDetail, CheckboxChangeEventDetail, Color, ComponentProps, ComponentRef, DatetimeChangeEventDetail, DomRenderFn, FooterHeightFn, FrameworkDelegate, HeaderFn, HeaderHeightFn, InputChangeEventDetail, ItemHeightFn, ItemRenderFn, ItemReorderEventDetail, LoadingAttributes, MenuChangeEventDetail, ModalAttributes, NavComponent, NavComponentWithProps, NavOptions, OverlayEventDetail, PickerAttributes, PickerButton, PickerColumn, PopoverAttributes, PopoverSize, PositionAlign, PositionReference, PositionSide, RadioGroupChangeEventDetail, RangeChangeEventDetail, RangeValue, RefresherEventDetail, RouteID, RouterDirection, RouterEventDetail, RouterOutletOptions, RouteWrite, ScrollBaseDetail, ScrollDetail, SearchbarChangeEventDetail, SegmentButtonLayout, SegmentChangeEventDetail, SelectChangeEventDetail, SelectInterface, SelectPopoverOption, Side, SpinnerTypes, StyleEventDetail, SwipeGestureHandler, TabBarChangedEventDetail, TabButtonClickEventDetail, TabButtonLayout, TextareaChangeEventDetail, TextFieldTypes, ToastButton, ToggleChangeEventDetail, TransitionDoneFn, TransitionInstruction, TriggerAction, ViewController } from "./interface";
 import { IonicSafeString } from "./utils/sanitization";
 import { AlertAttributes } from "./components/alert/alert-interface";
+import { FormControlPatchValueOptions } from "./utils/form/form-control";
 import { PickerColumnItem } from "./components/picker-column-internal/picker-column-internal-interfaces";
 import { PickerInternalChangeEventDetail } from "./components/picker-internal/picker-internal-interfaces";
 import { PinFormatter } from "./components/range/range-interface";
@@ -785,6 +786,12 @@ export namespace Components {
          */
         "name": string;
         /**
+          * Update the native input value.
+          * @param newValue The updated value.
+          * @param options Configurations to prevent `ionChange` event emission.
+         */
+        "patchValue": (newValue: string | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>;
+        /**
           * Which values you want to select. `'date'` will show a calendar picker to select the month, day, and year. `'time'` will show a time picker to select the hour, minute, and (optionally) AM/PM. `'date-time'` will show the date picker first and time picker second. `'time-date'` will show the time picker first and date picker second.
          */
         "presentation": 'date-time' | 'time-date' | 'date' | 'time' | 'month' | 'year' | 'month-year';
@@ -1076,6 +1083,12 @@ export namespace Components {
           * The name of the control, which is submitted with the form data.
          */
         "name": string;
+        /**
+          * Update the native input value.
+          * @param newValue The updated value.
+          * @param options Configurations to prevent `ionChange` event emission.
+         */
+        "patchValue": (newValue: string | number | null | undefined, options?: FormControlPatchValueOptions | undefined) => Promise<void>;
         /**
           * A regular expression that the value is checked against. The pattern must match the entire value, not just some subset. Use the title attribute to describe the pattern to help the user. This attribute applies when the value of the type attribute is `"text"`, `"search"`, `"tel"`, `"url"`, `"email"`, `"date"`, or `"password"`, otherwise it is ignored. When the type attribute is `"date"`, `pattern` will only be used in browsers that do not support the `"date"` input type natively. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date for more information.
          */
@@ -2012,6 +2025,12 @@ export namespace Components {
          */
         "name": string;
         /**
+          * Update the native input value.
+          * @param newValue The updated value.
+          * @param options Configurations to prevent `ionChange` event emission.
+         */
+        "patchValue": (newValue: string | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>;
+        /**
           * the value of the radio group.
          */
         "value"?: any | null;
@@ -2049,6 +2068,12 @@ export namespace Components {
           * The name of the control, which is submitted with the form data.
          */
         "name": string;
+        /**
+          * Update the native input value.
+          * @param newValue The updated value.
+          * @param options Configurations to prevent `ionChange` event emission.
+         */
+        "patchValue": (newValue: RangeValue, options?: FormControlPatchValueOptions | undefined) => Promise<void>;
         /**
           * If `true`, a pin with integer value is shown when the knob is pressed.
          */
@@ -2311,6 +2336,12 @@ export namespace Components {
          */
         "mode"?: "ios" | "md";
         /**
+          * Update the native input value.
+          * @param newValue The updated value.
+          * @param options Configurations to prevent `ionChange` event emission.
+         */
+        "patchValue": (newValue: string | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>;
+        /**
           * Set the input's placeholder. `placeholder` can accept either plaintext or HTML as a string. To display characters normally reserved for HTML, they must be escaped. For example `<Ionic>` would become `&lt;Ionic&gt;`  For more information: [Security Documentation](https://ionicframework.com/docs/faq/security)
          */
         "placeholder": string;
@@ -2356,6 +2387,12 @@ export namespace Components {
           * The mode determines which platform styles to use.
          */
         "mode"?: "ios" | "md";
+        /**
+          * Update the native input value.
+          * @param newValue The updated value.
+          * @param options Configurations to prevent `ionChange` event emission.
+         */
+        "patchValue": (newValue: string | null | undefined, options?: FormControlPatchValueOptions | undefined) => Promise<void>;
         /**
           * If `true`, the segment buttons will overflow and the user can swipe to see them. In addition, this will disable the gesture to drag the indicator between the buttons in order to swipe to see hidden buttons.
          */
@@ -2437,6 +2474,12 @@ export namespace Components {
           * @param event The user interface event that called the open.
          */
         "open": (event?: UIEvent | undefined) => Promise<any>;
+        /**
+          * Update the native input value.
+          * @param newValue The updated value.
+          * @param options Configurations to prevent `ionChange` event emission.
+         */
+        "patchValue": (newValue: any | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>;
         /**
           * The text to display when the select is empty.
          */
@@ -2781,6 +2824,12 @@ export namespace Components {
           * The name of the control, which is submitted with the form data.
          */
         "name": string;
+        /**
+          * Update the native input value.
+          * @param newValue The updated value.
+          * @param options Configurations to prevent `ionChange` event emission.
+         */
+        "patchValue": (newValue: string | null | undefined, options?: FormControlPatchValueOptions | undefined) => Promise<void>;
         /**
           * Instructional text that shows before the input has a value.
          */

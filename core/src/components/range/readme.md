@@ -375,6 +375,19 @@ export default defineComponent({
 | `ionFocus`  | Emitted when the range has focus.            | `CustomEvent<void>`                   |
 
 
+## Methods
+
+### `patchValue(newValue: RangeValue, options?: FormControlPatchValueOptions | undefined) => Promise<void>`
+
+Update the native input value.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Slots
 
 | Slot      | Description                                                                        |

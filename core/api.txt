@@ -398,6 +398,7 @@ ion-datetime,prop,value,null | string | undefined,undefined,false,false
 ion-datetime,prop,yearValues,number | number[] | string | undefined,undefined,false,false
 ion-datetime,method,cancel,cancel(closeOverlay?: boolean) => Promise<void>
 ion-datetime,method,confirm,confirm(closeOverlay?: boolean) => Promise<void>
+ion-datetime,method,patchValue,patchValue(newValue: string | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>
 ion-datetime,method,reset,reset(startDate?: string | undefined) => Promise<void>
 ion-datetime,event,ionBlur,void,true
 ion-datetime,event,ionCancel,void,true
@@ -536,6 +537,7 @@ ion-input,prop,step,string | undefined,undefined,false,false
 ion-input,prop,type,"date" | "datetime-local" | "email" | "month" | "number" | "password" | "search" | "tel" | "text" | "time" | "url" | "week",'text',false,false
 ion-input,prop,value,null | number | string | undefined,'',false,false
 ion-input,method,getInputElement,getInputElement() => Promise<HTMLInputElement>
+ion-input,method,patchValue,patchValue(newValue: string | number | null | undefined, options?: FormControlPatchValueOptions | undefined) => Promise<void>
 ion-input,method,setFocus,setFocus() => Promise<void>
 ion-input,event,ionBlur,FocusEvent,true
 ion-input,event,ionChange,InputChangeEventDetail,true
@@ -958,6 +960,7 @@ ion-radio-group,none
 ion-radio-group,prop,allowEmptySelection,boolean,false,false,false
 ion-radio-group,prop,name,string,this.inputId,false,false
 ion-radio-group,prop,value,any,undefined,false,false
+ion-radio-group,method,patchValue,patchValue(newValue: string | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>
 ion-radio-group,event,ionChange,RadioGroupChangeEventDetail<any>,true
 
 ion-range,shadow
@@ -975,6 +978,7 @@ ion-range,prop,snaps,boolean,false,false,false
 ion-range,prop,step,number,1,false,false
 ion-range,prop,ticks,boolean,true,false,false
 ion-range,prop,value,number | { lower: number; upper: number; },0,false,false
+ion-range,method,patchValue,patchValue(newValue: RangeValue, options?: FormControlPatchValueOptions | undefined) => Promise<void>
 ion-range,event,ionBlur,void,true
 ion-range,event,ionChange,RangeChangeEventDetail,true
 ion-range,event,ionFocus,void,true
@@ -1087,6 +1091,7 @@ ion-searchbar,prop,spellcheck,boolean,false,false,false
 ion-searchbar,prop,type,"email" | "number" | "password" | "search" | "tel" | "text" | "url",'search',false,false
 ion-searchbar,prop,value,null | string | undefined,'',false,false
 ion-searchbar,method,getInputElement,getInputElement() => Promise<HTMLInputElement>
+ion-searchbar,method,patchValue,patchValue(newValue: string | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>
 ion-searchbar,method,setFocus,setFocus() => Promise<void>
 ion-searchbar,event,ionBlur,void,true
 ion-searchbar,event,ionCancel,void,true
@@ -1114,6 +1119,7 @@ ion-segment,prop,scrollable,boolean,false,false,false
 ion-segment,prop,selectOnFocus,boolean,false,false,false
 ion-segment,prop,swipeGesture,boolean,true,false,false
 ion-segment,prop,value,null | string | undefined,undefined,false,false
+ion-segment,method,patchValue,patchValue(newValue: string | null | undefined, options?: FormControlPatchValueOptions | undefined) => Promise<void>
 ion-segment,event,ionChange,SegmentChangeEventDetail,true
 ion-segment,css-prop,--background
 
@@ -1169,6 +1175,7 @@ ion-select,prop,placeholder,string | undefined,undefined,false,false
 ion-select,prop,selectedText,null | string | undefined,undefined,false,false
 ion-select,prop,value,any,undefined,false,false
 ion-select,method,open,open(event?: UIEvent | undefined) => Promise<any>
+ion-select,method,patchValue,patchValue(newValue: any | null, options?: FormControlPatchValueOptions | undefined) => Promise<void>
 ion-select,event,ionBlur,void,true
 ion-select,event,ionCancel,void,true
 ion-select,event,ionChange,SelectChangeEventDetail<any>,true
@@ -1327,6 +1334,7 @@ ion-textarea,prop,spellcheck,boolean,false,false,false
 ion-textarea,prop,value,null | string | undefined,'',false,false
 ion-textarea,prop,wrap,"hard" | "off" | "soft" | undefined,undefined,false,false
 ion-textarea,method,getInputElement,getInputElement() => Promise<HTMLTextAreaElement>
+ion-textarea,method,patchValue,patchValue(newValue: string | null | undefined, options?: FormControlPatchValueOptions | undefined) => Promise<void>
 ion-textarea,method,setFocus,setFocus() => Promise<void>
 ion-textarea,event,ionBlur,FocusEvent,true
 ion-textarea,event,ionChange,TextareaChangeEventDetail,true
