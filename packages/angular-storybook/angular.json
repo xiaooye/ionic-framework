@@ -113,7 +113,7 @@
           "builder": "@storybook/angular:start-storybook",
           "options": {
             "browserTarget": "angular-cli:build",
-            "port": 6006
+            "port": 7003
           }
         },
         "build-storybook": {
