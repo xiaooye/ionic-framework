@@ -35,7 +35,7 @@ const argsToString = (args) => {
   for (const key of Object.keys(args)) {
     props += `${key}="${args[key]}" `;
   }
-  return props;
+  return props.trim();
 }
 
 // More on component templates: https://storybook.js.org/docs/web-components/writing-stories/introduction#using-args
