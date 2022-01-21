@@ -8,6 +8,7 @@ module.exports = {
     "@storybook/addon-essentials"
   ],
   "framework": "@storybook/web-components",
+  "staticDirs": ['../public'],
   refs: (config, { configType }) => {
     if (configType === 'DEVELOPMENT') {
       return {
