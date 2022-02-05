@@ -5,12 +5,14 @@
 // --------------------------------------------------
 
 :host {
-  --border-radius: #{$button-md-border-radius};
+  border-radius: $button-md-border-radius;
+
+
   --padding-top: #{$button-md-padding-top};
   --padding-bottom: #{$button-md-padding-bottom};
   --padding-start: #{$button-md-padding-start};
   --padding-end: #{$button-md-padding-end};
-  --transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),
                 background-color 15ms linear,
                 color 15ms linear;
 
@@ -36,20 +38,21 @@
   --background-activated-opacity: 0;
   --background-focused-opacity: .24;
   --background-hover-opacity: .08;
-  --box-shadow: #{$button-md-box-shadow};
+  box-shadow: #{$button-md-box-shadow};
 }
 
 :host(.button-solid.ion-activated) {
-  --box-shadow: #{$button-md-box-shadow-activated};
+  box-shadow: #{$button-md-box-shadow-activated};
 }
 
 // Material Design Outline Button
 // --------------------------------------------------
 
 :host(.button-outline) {
-  --border-width: 2px;
-  --border-style: solid;
-  --box-shadow: none;
+  border-width: 2px;
+  border-style: solid;
+
+  box-shadow: none;
   --background-activated: transparent;
   --background-focused: #{ion-color(primary, base)};
   --background-hover: #{ion-color(primary, base)};
@@ -80,7 +83,7 @@
 // --------------------------------------------------
 
 :host(.button-round) {
-  --border-radius: #{$button-md-round-border-radius};
+  border-radius: #{$button-md-round-border-radius};
   --padding-top: #{$button-md-round-padding-top};
   --padding-start: #{$button-md-round-padding-start};
   --padding-end: #{$button-md-round-padding-end};
