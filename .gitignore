@@ -21,6 +21,7 @@ tmp/
 temp/
 core/theme-builder/
 core/test-components/
+core/test-results/
 core/css/
 angular/css/
 $RECYCLE.BIN/
