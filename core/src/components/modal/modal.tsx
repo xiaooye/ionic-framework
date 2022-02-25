@@ -8,7 +8,6 @@ import { raf } from '../../utils/helpers';
 import { KEYBOARD_DID_OPEN } from '../../utils/keyboard/keyboard';
 import { BACKDROP, activeAnimations, dismiss, eventMethod, prepareOverlay, present } from '../../utils/overlays';
 import { getClassMap } from '../../utils/theme';
-import { deepReady } from '../../utils/transition';
 
 import { iosEnterAnimation } from './animations/ios.enter';
 import { iosLeaveAnimation } from './animations/ios.leave';
@@ -367,8 +366,6 @@ export class Modal implements ComponentInterface, OverlayInterface {
 
     const { inline, delegate } = this.getDelegate(true);
     this.usersElement = await attachComponent(delegate, this.el, this.component, ['ion-page'], data, inline);
-
-    await deepReady(this.usersElement);
 
     writeTask(() => this.el.classList.add('show-modal'));
 

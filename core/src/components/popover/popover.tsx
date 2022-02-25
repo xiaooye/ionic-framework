@@ -7,7 +7,6 @@ import { addEventListener, raf } from '../../utils/helpers';
 import { BACKDROP, dismiss, eventMethod, focusFirstDescendant, prepareOverlay, present } from '../../utils/overlays';
 import { isPlatform } from '../../utils/platform';
 import { getClassMap } from '../../utils/theme';
-import { deepReady } from '../../utils/transition';
 
 import { iosEnterAnimation } from './animations/ios.enter';
 import { iosLeaveAnimation } from './animations/ios.leave';
@@ -401,7 +400,6 @@ export class Popover implements ComponentInterface, PopoverInterface {
 
     const { inline, delegate } = this.getDelegate(true);
     this.usersElement = await attachComponent(delegate, this.el, this.component, ['popover-viewport'], data, inline);
-    await deepReady(this.usersElement);
 
     if (!this.keyboardEvents) {
       this.configureKeyboardInteraction();
