@@ -202,7 +202,7 @@ export const IonRouterOutlet = /*@__PURE__*/ defineComponent({
       progressAnimation: boolean,
       animationBuilder?: AnimationBuilder
     ) => {
-      return new Promise(resolve => {
+      return new Promise(async (resolve) => {
         if (skipTransition) {
           skipTransition = false;
           return resolve(false);
@@ -211,23 +211,18 @@ export const IonRouterOutlet = /*@__PURE__*/ defineComponent({
         if (enteringEl === leavingEl) {
           return resolve(false);
         }
+        enteringEl.classList.add('ion-page-invisible');
 
-        requestAnimationFrame(() => {
-          requestAnimationFrame(async () => {
-            enteringEl.classList.add('ion-page-invisible');
-
-            const result = await ionRouterOutlet.value.commit(enteringEl, leavingEl, {
-              deepWait: true,
-              duration: direction === undefined || direction === 'root' || direction === 'none' ? 0 : undefined,
-              direction,
-              showGoBack,
-              progressAnimation,
-              animationBuilder
-            });
-
-            return resolve(result);
-          });
+        const result = await ionRouterOutlet.value.commit(enteringEl, leavingEl, {
+          deepWait: true,
+          duration: direction === undefined || direction === 'root' || direction === 'none' ? 0 : undefined,
+          direction,
+          showGoBack,
+          progressAnimation,
+          animationBuilder
         });
+
+        return resolve(result);
       });
     }
 
