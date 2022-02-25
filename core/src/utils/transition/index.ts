@@ -2,7 +2,6 @@ import { Build, writeTask } from '@stencil/core';
 
 import { LIFECYCLE_DID_ENTER, LIFECYCLE_DID_LEAVE, LIFECYCLE_WILL_ENTER, LIFECYCLE_WILL_LEAVE } from '../../components/nav/constants';
 import { Animation, AnimationBuilder, NavDirection, NavOptions } from '../../interface';
-import { componentOnReady, raf } from '../helpers';
 
 const iosTransitionAnimation = () => import('./ios.transition');
 const mdTransitionAnimation = () => import('./md.transition');
@@ -90,8 +89,6 @@ const getAnimationBuilder = async (opts: TransitionOptions): Promise<AnimationBu
 };
 
 const animation = async (animationBuilder: AnimationBuilder, opts: TransitionOptions): Promise<TransitionResult> => {
-  await waitForReady(opts, true);
-
   const trans = animationBuilder(opts.baseEl, opts);
 
   fireWillEvents(opts.enteringEl, opts.leavingEl);
@@ -116,34 +113,12 @@ const noAnimation = async (opts: TransitionOptions): Promise<TransitionResult> =
   const enteringEl = opts.enteringEl;
   const leavingEl = opts.leavingEl;
 
-  await waitForReady(opts, false);
-
   fireWillEvents(enteringEl, leavingEl);
   fireDidEvents(enteringEl, leavingEl);
 
   return {
     hasCompleted: true
   };
-};
-
-const waitForReady = async (opts: TransitionOptions, defaultDeep: boolean) => {
-  const deep = opts.deepWait !== undefined ? opts.deepWait : defaultDeep;
-  const promises = deep ? [
-    deepReady(opts.enteringEl),
-    deepReady(opts.leavingEl),
-  ] : [
-      shallowReady(opts.enteringEl),
-      shallowReady(opts.leavingEl),
-    ];
-
-  await Promise.all(promises);
-  await notifyViewReady(opts.viewIsReady, opts.enteringEl);
-};
-
-const notifyViewReady = async (viewIsReady: undefined | ((enteringEl: HTMLElement) => Promise<any>), enteringEl: HTMLElement) => {
-  if (viewIsReady) {
-    await viewIsReady(enteringEl);
-  }
 };
 
 const playTransition = (trans: Animation, opts: TransitionOptions): Promise<boolean> => {
@@ -187,39 +162,6 @@ export const lifecycle = (el: HTMLElement | undefined, eventName: string) => {
       cancelable: false,
     });
     el.dispatchEvent(ev);
-  }
-};
-
-const shallowReady = (el: Element | undefined): Promise<any> => {
-  if (el) {
-    return new Promise(resolve => componentOnReady(el, resolve));
-  }
-  return Promise.resolve();
-};
-
-export const deepReady = async (el: any | undefined): Promise<void> => {
-  const element = el as any;
-  if (element) {
-    if (element.componentOnReady != null) {
-      const stencilEl = await element.componentOnReady();
-      if (stencilEl != null) {
-        return;
-      }
-
-    /**
-     * Custom elements in Stencil will have __registerHost.
-     */
-    } else if (element.__registerHost != null) {
-      /**
-       * Non-lazy loaded custom elements need to wait
-       * one frame for component to be loaded.
-       */
-      const waitForCustomElement = new Promise(resolve => raf(resolve));
-      await waitForCustomElement;
-
-      return;
-    }
-    await Promise.all(Array.from(element.children).map(deepReady));
   }
 };
 
