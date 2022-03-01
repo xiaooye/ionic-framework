@@ -9,9 +9,12 @@ import { menuRevealAnimation } from './animations/reveal';
 const createMenuController = () => {
   const menuAnimations = new Map<string, AnimationBuilder>();
   const menus: MenuI[] = [];
+  console.log("[top] menus from top of createMenuController:", menus);
 
   const open = async (menu?: string | null): Promise<boolean> => {
+    console.log("[open] open called on menu:", menu);
     const menuEl = await get(menu);
+    console.log("[open] found:", menuEl);
     if (menuEl) {
       return menuEl.open();
     }
@@ -19,7 +22,9 @@ const createMenuController = () => {
   };
 
   const close = async (menu?: string | null): Promise<boolean> => {
+    console.log("[close] close called on menu:", menu);
     const menuEl = await (menu !== undefined ? get(menu) : getOpen());
+    console.log("[close] found:", menuEl);
     if (menuEl !== undefined) {
       return menuEl.close();
     }
@@ -27,7 +32,9 @@ const createMenuController = () => {
   };
 
   const toggle = async (menu?: string | null): Promise<boolean> => {
+    console.log("[toggle] toggle called on menu:", menu);
     const menuEl = await get(menu);
+    console.log("[toggle] found:", menuEl);
     if (menuEl) {
       return menuEl.toggle();
     }
@@ -35,7 +42,9 @@ const createMenuController = () => {
   };
 
   const enable = async (shouldEnable: boolean, menu?: string | null): Promise<HTMLIonMenuElement | undefined> => {
+    console.log("[enable] enable called on menu:", menu);
     const menuEl = await get(menu);
+    console.log("[enable] found:", menuEl);
     if (menuEl) {
       menuEl.disabled = !shouldEnable;
     }
@@ -69,33 +78,40 @@ const createMenuController = () => {
   };
 
   const get = async (menu?: string | null): Promise<HTMLIonMenuElement | undefined> => {
+    console.log("[get] get called for menu:", menu);
     await waitUntilReady();
+    console.log("[get] ready");
 
     if (menu === 'start' || menu === 'end') {
       // there could be more than one menu on the same side
       // so first try to get the enabled one
       const menuRef = find(m => m.side === menu && !m.disabled);
+      console.log("[get] menu is start or end; search result:", menuRef);
       if (menuRef) {
         return menuRef;
       }
 
       // didn't find a menu side that is enabled
       // so try to get the first menu side found
+      console.log("[get] not found; returning:", find(m => m.side === menu));
       return find(m => m.side === menu);
 
     } else if (menu != null) {
       // the menuId was not left or right
       // so try to get the menu by its "id"
+      console.log("[get] menu not found by side; returning:", find(m => m.menuId === menu));
       return find(m => m.menuId === menu);
     }
 
     // return the first enabled menu
     const menuEl = find(m => !m.disabled);
+    console.log("[get] searching for first enabled menu:", menuEl);
     if (menuEl) {
       return menuEl;
     }
 
     // get the first menu in the array, if one exists
+    console.log("[get] searching for first menu period:", menus[0].el);
     return menus.length > 0 ? menus[0].el : undefined;
   };
 
