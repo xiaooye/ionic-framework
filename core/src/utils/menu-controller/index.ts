@@ -145,6 +145,7 @@ const createMenuController = () => {
   };
 
   const _register = (menu: MenuI) => {
+    console.log("[register] register called for menu:", menu);
     if (menus.indexOf(menu) < 0) {
       if (!menu.disabled) {
         _setActiveMenu(menu);
@@ -154,6 +155,7 @@ const createMenuController = () => {
   };
 
   const _unregister = (menu: MenuI) => {
+    console.log("[unregister] unregister called for menu:", menu);
     const index = menus.indexOf(menu);
     if (index > -1) {
       menus.splice(index, 1);
@@ -206,6 +208,7 @@ const createMenuController = () => {
   };
 
   const find = (predicate: (menu: MenuI) => boolean): HTMLIonMenuElement | undefined => {
+    console.log("[find] find called; current menus:", menus);
     const instance = menus.find(predicate);
     if (instance !== undefined) {
       return instance.el;
