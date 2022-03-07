@@ -199,6 +199,15 @@ export class Modal implements ComponentInterface, OverlayInterface {
   }
 
   /**
+   * Determines whether or not a modal can dismiss
+   * when calling the `dismiss` method.
+   *
+   * If the value is `true` or the value's function returns `true`, the modal will close when trying to dismiss.
+   * If the value is `false` or the value's function returns `false`, the modal will not close when trying to dismiss.
+   */
+  @Prop() canDismiss: boolean | (() => Promise<boolean>) = true;
+
+  /**
    * Emitted after the modal has presented.
    */
   @Event({ eventName: 'ionModalDidPresent' }) didPresent!: EventEmitter<void>;

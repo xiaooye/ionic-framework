@@ -62,6 +62,26 @@ See [Usage](#usage) for examples on how to use the sheet modal.
 
 > Note: The `swipeToClose` property has no effect when using a sheet modal as sheet modals must be swipeable in order to be usable.
 
+## Preventing a Modal from Dismissing
+
+When entering data into a modal, it is often desirable to have a way of preventing accidental data loss. The `canDismiss` property on `ion-modal` gives developers control over when a modal is allowed to dismiss.
+
+There are two different ways of using the `canDismiss` property.
+
+### Setting a boolean value
+
+Developers can set `canDismiss` to a boolean value. If `canDismiss` is `true`, then the modal will close when users attempt to dismiss the modal. If `canDismiss` is `false`, then the modal will not close when users attempt to dismiss the modal.
+
+Setting a boolean value should be used when you need to require a particular action to be taken prior to a modal being dismissed. For example, if developers want to require that a "Terms of Use" checkbox is checked prior to closing the modal, they could set `canDismiss` to `false` initially and update it to `true` when the checkbox is checked.
+
+### Setting a callback function
+
+Developers can set `canDismiss` to be a function. This function must return a `Promise` that resolves to either `true` or `false`. If the promise resolves to `true`, then the modal will dismiss. If the promise resolves to `false`, then the modal will not dismiss.
+
+Setting a callback function should be used when you have complex dismissing criteria such as showing a confirmation dialog prior to dismissing the modal. The option that users select in this dialog can then be used to determine whether or not the modal should proceed with dismissing.
+
+Note that setting a callback function will cause the swipe gesture to be interrupted when using a card or sheet modal. This is because Ionic does not know what your callback function will resolve to ahead of time.
+
 ## Interfaces
 
 Below you will find all of the options available to you when using the `modalController`. These options should be supplied when calling `modalController.create()`.
@@ -1364,6 +1384,7 @@ export default {
 | `backdropBreakpoint` | `backdrop-breakpoint` | A decimal value between 0 and 1 that indicates the point after which the backdrop will begin to fade in when using a sheet modal. Prior to this point, the backdrop will be hidden and the content underneath the sheet can be interacted with. This value is exclusive meaning the backdrop will become active after the value specified.                                                           | `number`                                                | `0`         |
 | `backdropDismiss`    | `backdrop-dismiss`    | If `true`, the modal will be dismissed when the backdrop is clicked.                                                                                                                                                                                                                                                                                                                                 | `boolean`                                               | `true`      |
 | `breakpoints`        | --                    | The breakpoints to use when creating a sheet modal. Each value in the array must be a decimal between 0 and 1 where 0 indicates the modal is fully closed and 1 indicates the modal is fully open. Values are relative to the height of the modal, not the height of the screen. One of the values in this array must be the value of the `initialBreakpoint` property. For example: [0, .25, .5, 1] | `number[] \| undefined`                                 | `undefined` |
+| `canDismiss`         | `can-dismiss`         | Determines whether or not a modal can dismiss when calling the `dismiss` method.  If the value is `true` or the value's function returns `true`, the modal will close when trying to dismiss. If the value is `false` or the value's function returns `false`, the modal will not close when trying to dismiss.                                                                                      | `(() => Promise<boolean>) \| boolean`                   | `true`      |
 | `enterAnimation`     | --                    | Animation to use when the modal is presented.                                                                                                                                                                                                                                                                                                                                                        | `((baseEl: any, opts?: any) => Animation) \| undefined` | `undefined` |
 | `handle`             | `handle`              | The horizontal line that displays at the top of a sheet modal. It is `true` by default when setting the `breakpoints` and `initialBreakpoint` properties.                                                                                                                                                                                                                                            | `boolean \| undefined`                                  | `undefined` |
 | `htmlAttributes`     | --                    | Additional attributes to pass to the modal.                                                                                                                                                                                                                                                                                                                                                          | `ModalAttributes \| undefined`                          | `undefined` |
