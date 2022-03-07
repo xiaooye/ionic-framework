@@ -349,6 +349,31 @@ export class Modal implements ComponentInterface, OverlayInterface {
   }
 
   /**
+   * Determines whether or not the
+   * modal is allowed to dismiss based
+   * on the state of the canDismiss prop.
+   */
+  private async checkCanDismiss() {
+    const { canDismiss } = this;
+
+    /**
+     * If canDismiss is a boolean, then
+     * we can return the true/false value.
+     */
+    if (typeof canDismiss === 'boolean') {
+      return canDismiss;
+    }
+
+    if (typeof canDismiss === 'function') {
+      return await canDismiss();
+    }
+
+    console.warn('[Ionic Warning]: Your canDismiss value must be a boolean or a function, otherwise it will default to true.');
+
+    return true;
+  }
+
+  /**
    * Present the modal overlay after it has been created.
    */
   @Method()
@@ -506,6 +531,10 @@ export class Modal implements ComponentInterface, OverlayInterface {
   @Method()
   async dismiss(data?: any, role?: string): Promise<boolean> {
     if (this.gestureAnimationDismissing && role !== 'gesture') {
+      return false;
+    }
+
+    if (!await this.checkCanDismiss()) {
       return false;
     }
 
