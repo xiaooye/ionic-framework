@@ -157,6 +157,7 @@ export class Modal implements ComponentInterface, OverlayInterface {
 
   /**
    * If `true`, the modal can be swiped to dismiss. Only applies in iOS mode.
+   * @deprecated - To prevent modals from dismissing, use canDismiss instead.
    */
   @Prop() swipeToClose = false;
 
@@ -265,7 +266,7 @@ export class Modal implements ComponentInterface, OverlayInterface {
   }
 
   componentWillLoad() {
-    const { breakpoints, initialBreakpoint } = this;
+    const { breakpoints, initialBreakpoint, swipeToClose } = this;
 
     /**
      * If user has custom ID set then we should
@@ -276,6 +277,10 @@ export class Modal implements ComponentInterface, OverlayInterface {
 
     if (breakpoints !== undefined && initialBreakpoint !== undefined && !breakpoints.includes(initialBreakpoint)) {
       console.warn('[Ionic Warning]: Your breakpoints array must include the initialBreakpoint value.')
+    }
+
+    if (swipeToClose) {
+      console.warn('[Ionic Warning]: swipeToClose has been deprecated in favor of canDismiss.');
     }
   }
 
