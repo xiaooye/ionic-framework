@@ -2,6 +2,7 @@ import { Animation } from '../../../interface';
 import { GestureDetail, createGesture } from '../../../utils/gesture';
 import { clamp, raf } from '../../../utils/helpers';
 import { getBackdropValueForSheet } from '../utils';
+import { handleCanDismiss } from './utils';
 
 export const createSheetGesture = (
   baseEl: HTMLIonModalElement,
@@ -38,6 +39,7 @@ export const createSheetGesture = (
   const height = wrapperEl.clientHeight;
   let currentBreakpoint = initialBreakpoint;
   let offset = 0;
+  let canDismissBlocksGesture = false;
   const wrapperAnimation = animation.childAnimations.find(ani => ani.id === 'wrapperAnimation');
   const backdropAnimation = animation.childAnimations.find(ani => ani.id === 'backdropAnimation');
   const maxBreakpoint = breakpoints[breakpoints.length - 1];
@@ -118,6 +120,14 @@ export const createSheetGesture = (
 
   const onStart = () => {
     /**
+     * If canDismiss is anything other than `true`
+     * then users should be able to swipe down
+     * until a threshold is hit. At that point,
+     * the card modal should not proceed any further.
+     */
+    canDismissBlocksGesture = baseEl.canDismiss !== true;
+
+    /**
      * If swiping on the content
      * we should disable scrolling otherwise
      * the sheet will expand and the content will scroll.
@@ -139,12 +149,19 @@ export const createSheetGesture = (
 
   const onMove = (detail: GestureDetail) => {
     /**
+     * TODO: Add easing
+     * Allowing a max step of 15% of the viewport
+     * height is roughly the same as what iOS allows.
+     */
+    const maxStep = canDismissBlocksGesture ? 0.85 : 0.9999;
+
+    /**
      * Given the change in gesture position on the Y axis,
      * compute where the offset of the animation should be
      * relative to where the user dragged.
      */
     const initialStep = 1 - currentBreakpoint;
-    offset = clamp(0.0001, initialStep + (detail.deltaY / height), 0.9999);
+    offset = clamp(0.0001, initialStep + (detail.deltaY / height), maxStep);
     animation.progressStep(offset);
   };
 
@@ -157,7 +174,7 @@ export const createSheetGesture = (
     const threshold = (detail.deltaY + velocity * 100) / height;
     const diff = currentBreakpoint - threshold;
 
-    const closest = breakpoints.reduce((a, b) => {
+    const closest = canDismissBlocksGesture ? currentBreakpoint : breakpoints.reduce((a, b) => {
       return Math.abs(b - diff) < Math.abs(a - diff) ? b : a;
     });
 
@@ -241,7 +258,9 @@ export const createSheetGesture = (
       }, { oneTimeCallback: true })
       .progressEnd(1, 0, 500);
 
-    if (!shouldRemainOpen) {
+    if (canDismissBlocksGesture) {
+      handleCanDismiss(baseEl, animation, 0, 0.85);
+    } else if (!shouldRemainOpen) {
       onDismiss();
     }
   };
