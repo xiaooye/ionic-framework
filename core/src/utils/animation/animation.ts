@@ -115,6 +115,10 @@ export const createAnimation = (animationId?: string): Animation => {
     willComplete = true;
   };
 
+  const isFinished = () => {
+    return finished;
+  }
+
   const onFinish = (callback: AnimationLifecycle, opts?: AnimationCallbackOptions) => {
     const callbacks = (opts && opts.oneTimeCallback) ? onFinishOneTimeCallbacks : onFinishCallbacks;
     callbacks.push({ c: callback, o: opts });
@@ -1000,6 +1004,7 @@ export const createAnimation = (animationId?: string): Animation => {
     beforeRemoveClass,
     beforeAddClass,
     onFinish,
+    isFinished,
 
     progressStart,
     progressStep,

@@ -212,6 +212,13 @@ export interface Animation {
    * upon the animation ending
    */
   onFinish(callback: AnimationLifecycle, opts?: AnimationCallbackOptions): Animation;
+
+  /**
+   * Returns `true` if the animation has completed.
+   * An animation is complete if it is at step 1.
+   * Returns `false` otherwise.
+   */
+  isFinished(): boolean;
 }
 
 export type AnimationLifecycle = (currentStep: 0 | 1, animation: Animation) => void;

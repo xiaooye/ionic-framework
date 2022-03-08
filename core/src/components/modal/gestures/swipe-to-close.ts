@@ -2,6 +2,7 @@ import { Animation } from '../../../interface';
 import { getTimeGivenProgression } from '../../../utils/animation/cubic-bezier';
 import { GestureDetail, createGesture } from '../../../utils/gesture';
 import { clamp } from '../../../utils/helpers';
+import { handleCanDismiss } from './utils';
 
 // Defaults for the card swipe animation
 export const SwipeToCloseDefaults = {
@@ -89,14 +90,11 @@ export const createSwipeToCloseGesture = (
 
     gesture.enable(false);
 
-    let gestureEndDone = false;
     animation
       .onFinish(() => {
         if (!shouldComplete) {
           gesture.enable(true);
         }
-
-        gestureEndDone = true;
       })
       .progressEnd((shouldComplete) ? 1 : 0, newStepValue, duration);
 
@@ -108,47 +106,7 @@ export const createSwipeToCloseGesture = (
      * canDismiss.
      */
     if (canDismissBlocksGesture) {
-      /**
-       * If the swiped >25% of the way
-       * to the max step, then we should
-       * check canDismiss. 25% was chosen
-       * to avoid accidental swipes.
-       *
-       * Also, if canDismiss is not a function
-       * then we can return early. If `true`,
-       * then canDismissBlocksGesture is `false`,
-       * so this code block is never reached. If `false`,
-       * then we never dismiss.
-       */
-      if (step <= (maxStep / 4)) return;
-      if (typeof el.canDismiss !== 'function') return;
-
-      /**
-       * Run the canDismiss callback.
-       * If the function returns `true`,
-       * then we can proceed with dismiss.
-       */
-      el.canDismiss().then((shouldDismiss: boolean) => {
-        if (!shouldDismiss) return;
-
-        /**
-         * If canDismiss resolved after the snap
-         * back animation finished, we can
-         * dismiss immediately.
-         *
-         * If canDismiss resolved before the snap
-         * back animation finished, we need to
-         * wait until the snap back animation is
-         * done before dismissing.
-         */
-        if (gestureEndDone) {
-          el.dismiss(undefined, 'handler');
-        } else {
-          animation.onFinish(() => {
-            el.dismiss(undefined, 'handler');
-          });
-        }
-      })
+      handleCanDismiss(el, animation, step, maxStep);
     } else if (shouldComplete) {
       onDismiss();
     }
