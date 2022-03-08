@@ -18,7 +18,7 @@ export const createSwipeToCloseGesture = (
   const height = el.offsetHeight;
   let isOpen = false;
   let canDismissBlocksGesture = false;
-  const canDismissMaxStep = 0.15;
+  const canDismissMaxStep = 0.20;
 
   const canStart = (detail: GestureDetail) => {
     const target = detail.event.target as HTMLElement | null;
@@ -50,14 +50,17 @@ export const createSwipeToCloseGesture = (
   };
 
   const onMove = (detail: GestureDetail) => {
+    const step = detail.deltaY / height;
     /**
      * TODO: Add easing
      * Allowing a max step of 15% of the viewport
      * height is roughly the same as what iOS allows.
      */
-    const maxStep = canDismissBlocksGesture ? canDismissMaxStep : 0.9999;
 
-    const clampedStep = clamp(0.0001, detail.deltaY / height, maxStep);
+    const maxStep = canDismissBlocksGesture ? canDismissMaxStep : 0.9999;
+    const processedStep = canDismissBlocksGesture ? calculateSpringStep(step / maxStep) : step;
+
+    const clampedStep = clamp(0.0001, processedStep, maxStep);
 
     animation.progressStep(clampedStep);
   };
@@ -65,8 +68,11 @@ export const createSwipeToCloseGesture = (
   const onEnd = (detail: GestureDetail) => {
     const velocity = detail.velocityY;
     const maxStep = canDismissBlocksGesture ? canDismissMaxStep : 0.9999;
+    const step = detail.deltaY / height;
 
-    const step = clamp(0.0001, detail.deltaY / height, maxStep);
+    const processedStep = canDismissBlocksGesture ? calculateSpringStep(step / maxStep) : step;
+
+    const clampedStep = clamp(0.0001, processedStep, maxStep);
 
     const threshold = (detail.deltaY + velocity * 1000) / height;
 
@@ -81,13 +87,13 @@ export const createSwipeToCloseGesture = (
 
     if (!shouldComplete) {
       animation.easing('cubic-bezier(1, 0, 0.68, 0.28)');
-      newStepValue += getTimeGivenProgression([0, 0], [1, 0], [0.68, 0.28], [1, 1], step)[0];
+      newStepValue += getTimeGivenProgression([0, 0], [1, 0], [0.68, 0.28], [1, 1], clampedStep)[0];
     } else {
       animation.easing('cubic-bezier(0.32, 0.72, 0, 1)');
-      newStepValue += getTimeGivenProgression([0, 0], [0.32, 0.72], [0, 1], [1, 1], step)[0];
+      newStepValue += getTimeGivenProgression([0, 0], [0.32, 0.72], [0, 1], [1, 1], clampedStep)[0];
     }
 
-    const duration = (shouldComplete) ? computeDuration(step * height, velocity) : computeDuration((1 - step) * height, velocity);
+    const duration = (shouldComplete) ? computeDuration(step * height, velocity) : computeDuration((1 - clampedStep) * height, velocity);
     isOpen = shouldComplete;
 
     gesture.enable(false);
@@ -112,7 +118,7 @@ export const createSwipeToCloseGesture = (
      * check canDismiss. 25% was chosen
      * to avoid accidental swipes.
      */
-    if (canDismissBlocksGesture && step > (maxStep / 4)) {
+    if (canDismissBlocksGesture && clampedStep > (maxStep / 4)) {
       handleCanDismiss(el, animation);
     } else if (shouldComplete) {
       onDismiss();
@@ -136,3 +142,35 @@ export const createSwipeToCloseGesture = (
 const computeDuration = (remaining: number, velocity: number) => {
   return clamp(400, remaining / Math.abs(velocity * 1.1), 500);
 };
+
+/**
+ * This function lets us simulate a realistic spring-like animation
+ * when swiping down on the modal.
+ * We can represent the position of the spring as a function of time: x = f(t)
+ * t = time, x = position
+ * The derivative of the position yields the velocity.
+ * The derivative of the velocity yields the acceleration.
+ * We know that at t = 0, the position is 0: f(0) = 0
+ * We also know that at this point, the spring does not move. Therefore,
+ * we also know that the velocity is 0: f'(0) = 0.
+ *
+ * Now, we need to figure out the acceleration which is f"(t).
+ * To do this we need to define two values:
+ * 1. The spring force, k: This force pulls a spring back into its equilibrium position.
+ * 2. The dampening force, c: This force slows down the motion over time. Without it, a spring would oscillate forever.
+ *
+ * We derive the following differential equation to find acceleration:
+ *
+ * f"(t) = -k * (f(t) - 1) - c * f'(t)
+ *
+ * This value is what we plug into our `progressStep` call.
+ * We cheat a bit and hardcode the formula we do not need to calculate
+ * all of this on the fly:
+ * f(0) = 0
+ * f'(0) = 0
+ * k = 0.57
+ * c = 15
+ */
+const calculateSpringStep = (t: number) => {
+  return 0.00255275 * 2.71828**(-14.9619 * t) - 1.00255 * 2.71828**(-0.0380968 * t) + 1
+}
