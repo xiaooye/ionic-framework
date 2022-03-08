@@ -534,10 +534,15 @@ export class Modal implements ComponentInterface, OverlayInterface {
       return false;
     }
 
+    /**
+     * If a canDismiss handler is responsible
+     * for calling the dismiss method, we should
+     * not run the canDismiss check again.
+     */
     if (role !== 'handler' && !await this.checkCanDismiss()) {
       return false;
     }
-    console.log('calling dismiss')
+
     /* tslint:disable-next-line */
     if (typeof window !== 'undefined' && this.keyboardOpenCallback) {
       window.removeEventListener(KEYBOARD_DID_OPEN, this.keyboardOpenCallback);
