@@ -12,7 +12,7 @@ export const handleCanDismiss = async (
    * this code block is never reached. If canDismiss is `false`,
    * then we never dismiss.
    */
-  if (typeof el.canDismiss !== 'function') return;
+  if (typeof el.canDismiss !== 'function') { return; }
 
   /**
    * Run the canDismiss callback.
@@ -20,7 +20,7 @@ export const handleCanDismiss = async (
    * then we can proceed with dismiss.
    */
   const shouldDismiss = await el.canDismiss();
-  if (!shouldDismiss) return;
+  if (!shouldDismiss) { return; }
 
   /**
    * If canDismiss resolved after the snap

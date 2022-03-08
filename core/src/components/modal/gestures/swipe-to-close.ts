@@ -2,6 +2,7 @@ import { Animation } from '../../../interface';
 import { getTimeGivenProgression } from '../../../utils/animation/cubic-bezier';
 import { GestureDetail, createGesture } from '../../../utils/gesture';
 import { clamp } from '../../../utils/helpers';
+
 import { handleCanDismiss } from './utils';
 
 // Defaults for the card swipe animation
@@ -17,6 +18,7 @@ export const createSwipeToCloseGesture = (
   const height = el.offsetHeight;
   let isOpen = false;
   let canDismissBlocksGesture = false;
+  const canDismissMaxStep = 0.15;
 
   const canStart = (detail: GestureDetail) => {
     const target = detail.event.target as HTMLElement | null;
@@ -53,7 +55,7 @@ export const createSwipeToCloseGesture = (
      * Allowing a max step of 15% of the viewport
      * height is roughly the same as what iOS allows.
      */
-    const maxStep = canDismissBlocksGesture ? 0.15 : 0.9999;
+    const maxStep = canDismissBlocksGesture ? canDismissMaxStep : 0.9999;
 
     const clampedStep = clamp(0.0001, detail.deltaY / height, maxStep);
 
@@ -62,7 +64,7 @@ export const createSwipeToCloseGesture = (
 
   const onEnd = (detail: GestureDetail) => {
     const velocity = detail.velocityY;
-    const maxStep = canDismissBlocksGesture ? 0.15 : 0.9999;
+    const maxStep = canDismissBlocksGesture ? canDismissMaxStep : 0.9999;
 
     const step = clamp(0.0001, detail.deltaY / height, maxStep);
 

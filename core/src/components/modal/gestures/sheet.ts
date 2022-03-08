@@ -2,6 +2,7 @@ import { Animation } from '../../../interface';
 import { GestureDetail, createGesture } from '../../../utils/gesture';
 import { clamp, raf } from '../../../utils/helpers';
 import { getBackdropValueForSheet } from '../utils';
+
 import { handleCanDismiss } from './utils';
 
 export const createSheetGesture = (
@@ -40,6 +41,7 @@ export const createSheetGesture = (
   let currentBreakpoint = initialBreakpoint;
   let offset = 0;
   let canDismissBlocksGesture = false;
+  const canDismissMaxStep = 0.90;
   const wrapperAnimation = animation.childAnimations.find(ani => ani.id === 'wrapperAnimation');
   const backdropAnimation = animation.childAnimations.find(ani => ani.id === 'backdropAnimation');
   const maxBreakpoint = breakpoints[breakpoints.length - 1];
@@ -158,7 +160,7 @@ export const createSheetGesture = (
      * Allowing a max step of 15% of the viewport
      * height is roughly the same as what iOS allows.
      */
-    const maxStep = canDismissBlocksGesture ? 0.85 : 0.9999;
+    const maxStep = canDismissBlocksGesture ? canDismissMaxStep : 0.9999;
 
     /**
      * Given the change in gesture position on the Y axis,
@@ -178,12 +180,20 @@ export const createSheetGesture = (
     const velocity = detail.velocityY;
     const threshold = (detail.deltaY + velocity * 100) / height;
     const diff = currentBreakpoint - threshold;
-
-    const closest = canDismissBlocksGesture ? currentBreakpoint : breakpoints.reduce((a, b) => {
+    const closest = breakpoints.reduce((a, b) => {
       return Math.abs(b - diff) < Math.abs(a - diff) ? b : a;
     });
 
-    const shouldRemainOpen = closest !== 0;
+    /**
+     * canDismiss should only prevent snapping
+     * when users are trying to dismiss. If canDismiss
+     * is present but the user is trying to swipe upwards,
+     * we should allow that to happen,
+     */
+    const shouldPreventDismiss = canDismissBlocksGesture && closest === 0;
+    const snapToBreakpoint = shouldPreventDismiss ? currentBreakpoint : closest;
+
+    const shouldRemainOpen = snapToBreakpoint !== 0;
     currentBreakpoint = 0;
 
     /**
@@ -193,12 +203,12 @@ export const createSheetGesture = (
     if (wrapperAnimation && backdropAnimation) {
       wrapperAnimation.keyframes([
         { offset: 0, transform: `translateY(${offset * 100}%)` },
-        { offset: 1, transform: `translateY(${(1 - closest) * 100}%)` }
+        { offset: 1, transform: `translateY(${(1 - snapToBreakpoint) * 100}%)` }
       ]);
 
       backdropAnimation.keyframes([
         { offset: 0, opacity: `calc(var(--backdrop-opacity) * ${getBackdropValueForSheet(1 - offset, backdropBreakpoint)})` },
-        { offset: 1, opacity: `calc(var(--backdrop-opacity) * ${getBackdropValueForSheet(closest, backdropBreakpoint)})` }
+        { offset: 1, opacity: `calc(var(--backdrop-opacity) * ${getBackdropValueForSheet(snapToBreakpoint, backdropBreakpoint)})` }
       ]);
 
       animation.progressStep(0);
@@ -225,8 +235,8 @@ export const createSheetGesture = (
             raf(() => {
               wrapperAnimation.keyframes([...SheetDefaults.WRAPPER_KEYFRAMES]);
               backdropAnimation.keyframes([...SheetDefaults.BACKDROP_KEYFRAMES]);
-              animation.progressStart(true, 1 - closest);
-              currentBreakpoint = closest;
+              animation.progressStart(true, 1 - snapToBreakpoint);
+              currentBreakpoint = snapToBreakpoint;
               onBreakpointChange(currentBreakpoint);
 
               /**
@@ -263,7 +273,7 @@ export const createSheetGesture = (
       }, { oneTimeCallback: true })
       .progressEnd(1, 0, 500);
 
-    if (canDismissBlocksGesture) {
+    if (shouldPreventDismiss) {
       handleCanDismiss(baseEl, animation);
     } else if (!shouldRemainOpen) {
       onDismiss();
