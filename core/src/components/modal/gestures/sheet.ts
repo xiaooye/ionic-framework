@@ -43,6 +43,7 @@ export const createSheetGesture = (
   const wrapperAnimation = animation.childAnimations.find(ani => ani.id === 'wrapperAnimation');
   const backdropAnimation = animation.childAnimations.find(ani => ani.id === 'backdropAnimation');
   const maxBreakpoint = breakpoints[breakpoints.length - 1];
+  const minBreakpoint = breakpoints[0];
 
   const enableBackdrop = () => {
     baseEl.style.setProperty('pointer-events', 'auto');
@@ -124,8 +125,12 @@ export const createSheetGesture = (
      * then users should be able to swipe down
      * until a threshold is hit. At that point,
      * the card modal should not proceed any further.
+     *
+     * canDismiss is never fired via gesture if there is
+     * no 0 breakpoint. However, it can be fired if the user
+     * presses Esc or the hardware back button.
      */
-    canDismissBlocksGesture = baseEl.canDismiss !== true;
+    canDismissBlocksGesture = baseEl.canDismiss !== true && minBreakpoint === 0;
 
     /**
      * If swiping on the content

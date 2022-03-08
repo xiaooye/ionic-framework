@@ -68,6 +68,8 @@ When entering data into a modal, it is often desirable to have a way of preventi
 
 There are two different ways of using the `canDismiss` property.
 
+> Note: When using a sheet modal, `canDismiss` will not be checked on swipe if there is no `0` breakpoint set. However, it will still be checked when pressing `Esc` or the hardware back button.
+
 ### Setting a boolean value
 
 Developers can set `canDismiss` to a boolean value. If `canDismiss` is `true`, then the modal will close when users attempt to dismiss the modal. If `canDismiss` is `false`, then the modal will not close when users attempt to dismiss the modal.
