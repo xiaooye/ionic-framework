@@ -356,21 +356,11 @@ export class Modal implements ComponentInterface, OverlayInterface {
   private async checkCanDismiss() {
     const { canDismiss } = this;
 
-    /**
-     * If canDismiss is a boolean, then
-     * we can return the true/false value.
-     */
-    if (typeof canDismiss === 'boolean') {
-      return canDismiss;
-    }
-
     if (typeof canDismiss === 'function') {
       return canDismiss();
     }
 
-    console.warn('[Ionic Warning]: Your canDismiss value must be a boolean or a function, otherwise it will default to true.');
-
-    return true;
+    return canDismiss;
   }
 
   /**
