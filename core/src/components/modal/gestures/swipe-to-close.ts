@@ -15,6 +15,7 @@ export const createSwipeToCloseGesture = (
 ) => {
   const height = el.offsetHeight;
   let isOpen = false;
+  let canDismissBlocksGesture = false;
 
   const canStart = (detail: GestureDetail) => {
     const target = detail.event.target as HTMLElement | null;
@@ -35,23 +36,44 @@ export const createSwipeToCloseGesture = (
   };
 
   const onStart = () => {
+    /**
+     * If canDismiss is anything other than `true`
+     * then users should be able to swipe down
+     * until a threshold is hit. At that point,
+     * the card modal should not proceed any further.
+     */
+    canDismissBlocksGesture = el.canDismiss !== true;
     animation.progressStart(true, (isOpen) ? 1 : 0);
   };
 
   const onMove = (detail: GestureDetail) => {
-    const step = clamp(0.0001, detail.deltaY / height, 0.9999);
+    /**
+     * TODO: Add easing
+     * Allowing a max step of 15% of the viewport
+     * height is roughly the same as what iOS allows.
+     */
+    const maxStep = canDismissBlocksGesture ? 0.15 : 0.9999;
 
-    animation.progressStep(step);
+    const clampedStep = clamp(0.0001, detail.deltaY / height, maxStep);
+
+    animation.progressStep(clampedStep);
   };
 
   const onEnd = (detail: GestureDetail) => {
     const velocity = detail.velocityY;
+    const maxStep = canDismissBlocksGesture ? 0.15 : 0.9999;
 
-    const step = clamp(0.0001, detail.deltaY / height, 0.9999);
+    const step = clamp(0.0001, detail.deltaY / height, maxStep);
 
     const threshold = (detail.deltaY + velocity * 1000) / height;
 
-    const shouldComplete = threshold >= 0.5;
+    /**
+     * If canDismiss blocks
+     * the swipe gesture, then the
+     * animation can never complete until
+     * canDismiss is checked.
+     */
+    const shouldComplete = !canDismissBlocksGesture && threshold >= 0.5;
     let newStepValue = (shouldComplete) ? -0.001 : 0.001;
 
     if (!shouldComplete) {
@@ -67,15 +89,67 @@ export const createSwipeToCloseGesture = (
 
     gesture.enable(false);
 
+    let gestureEndDone = false;
     animation
       .onFinish(() => {
         if (!shouldComplete) {
           gesture.enable(true);
         }
+
+        gestureEndDone = true;
       })
       .progressEnd((shouldComplete) ? 1 : 0, newStepValue, duration);
 
-    if (shouldComplete) {
+    /**
+     * If the canDismiss value blocked the gesture
+     * from proceeding, then we should ignore whatever
+     * shouldComplete is. Whether or not the modal
+     * animation should complete is now determined by
+     * canDismiss.
+     */
+    if (canDismissBlocksGesture) {
+      /**
+       * If the swiped >25% of the way
+       * to the max step, then we should
+       * check canDismiss. 25% was chosen
+       * to avoid accidental swipes.
+       *
+       * Also, if canDismiss is not a function
+       * then we can return early. If `true`,
+       * then canDismissBlocksGesture is `false`,
+       * so this code block is never reached. If `false`,
+       * then we never dismiss.
+       */
+      if (step <= (maxStep / 4)) return;
+      if (typeof el.canDismiss !== 'function') return;
+
+      /**
+       * Run the canDismiss callback.
+       * If the function returns `true`,
+       * then we can proceed with dismiss.
+       */
+      el.canDismiss().then((shouldDismiss: boolean) => {
+        if (!shouldDismiss) return;
+
+        /**
+         * If canDismiss resolved after the snap
+         * back animation finished, we can
+         * dismiss immediately.
+         *
+         * If canDismiss resolved before the snap
+         * back animation finished, we need to
+         * wait until the snap back animation is
+         * done before dismissing.
+         */
+        if (gestureEndDone) {
+          el.dismiss(undefined, 'handler');
+        } else {
+          animation.onFinish(() => {
+            el.dismiss(undefined, 'handler');
+          });
+        }
+      })
+    } else if (shouldComplete) {
       onDismiss();
     }
   };

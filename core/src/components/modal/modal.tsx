@@ -534,10 +534,10 @@ export class Modal implements ComponentInterface, OverlayInterface {
       return false;
     }
 
-    if (!await this.checkCanDismiss()) {
+    if (role !== 'handler' && !await this.checkCanDismiss()) {
       return false;
     }
-
+    console.log('calling dismiss')
     /* tslint:disable-next-line */
     if (typeof window !== 'undefined' && this.keyboardOpenCallback) {
       window.removeEventListener(KEYBOARD_DID_OPEN, this.keyboardOpenCallback);
