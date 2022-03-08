@@ -259,7 +259,7 @@ export const createSheetGesture = (
       .progressEnd(1, 0, 500);
 
     if (canDismissBlocksGesture) {
-      handleCanDismiss(baseEl, animation, 0, 0.85);
+      handleCanDismiss(baseEl, animation);
     } else if (!shouldRemainOpen) {
       onDismiss();
     }

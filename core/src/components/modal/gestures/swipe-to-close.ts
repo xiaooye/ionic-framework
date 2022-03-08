@@ -104,9 +104,14 @@ export const createSwipeToCloseGesture = (
      * shouldComplete is. Whether or not the modal
      * animation should complete is now determined by
      * canDismiss.
+     *
+     * If the user swiped >25% of the way
+     * to the max step, then we should
+     * check canDismiss. 25% was chosen
+     * to avoid accidental swipes.
      */
-    if (canDismissBlocksGesture) {
-      handleCanDismiss(el, animation, step, maxStep);
+    if (canDismissBlocksGesture && step > (maxStep / 4)) {
+      handleCanDismiss(el, animation);
     } else if (shouldComplete) {
       onDismiss();
     }
