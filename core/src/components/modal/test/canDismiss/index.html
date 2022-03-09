@@ -9,8 +9,9 @@
     <script src="../../../../../scripts/testing/scripts.js"></script>
     <script type="module" src="../../../../../dist/ionic/ionic.esm.js"></script>
     <script type="module">
-      import { modalController } from '../../../../dist/ionic/index.esm.js';
+      import { modalController, actionSheetController } from '../../../../dist/ionic/index.esm.js';
       window.modalController = modalController;
+      window.actionSheetController = actionSheetController;
     </script>
 
     <style>
@@ -57,6 +58,13 @@
             <input type="radio" id="radio-promise-false" value="promise-false" name="canDismiss" />
             <label for="radio-promise-false">
               <code>Promise&lt;false&gt;</code>
+            </label>
+
+            <br />
+
+            <input type="radio" id="radio-action-sheet" value="action-sheet" name="canDismiss" />
+            <label for="radio-action-sheet">
+              <code>Action Sheet</code>
             </label>
           </form>
 
@@ -136,6 +144,33 @@
               });
             }
             break;
+          case "action-sheet":
+            handler = async () => {
+              const actionSheet = await actionSheetController.create({
+                header: 'Are you sure you want to discard your changes?',
+                buttons: [
+                  {
+                    text: 'Discard Changes',
+                    role: 'destructive'
+                  },
+                  {
+                    text: 'Keep Editing',
+                    role: 'cancel'
+                  }
+                ]
+              });
+
+              await actionSheet.present();
+
+              const { role } = await actionSheet.onDidDismiss();
+
+              if (role === 'destructive') {
+              console.log('in here')
+                return true;
+              }
+
+              return false;
+            }
           default:
             break;
         }
