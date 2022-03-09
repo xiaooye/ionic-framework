@@ -407,7 +407,17 @@ export class Modal implements ComponentInterface, OverlayInterface {
 
     if (this.isSheetModal) {
       this.initSheetGesture();
-    } else if (this.swipeToClose) {
+
+    /**
+     * TODO (FW-937) - In the next major release of Ionic, all card modals
+     * will be swipeable by default. canDismiss will be used to determine if the
+     * modal can be dismissed. This check should change to check the presence of
+     * presentingElement instead.
+     *
+     * If we did not do this check, then not using swipeToClose would mean you could
+     * not run canDismiss on swipe as there would be no swipe gesture created.
+     */
+    } else if (this.swipeToClose || (this.canDismiss !== undefined && this.presentingElement !== undefined)) {
       this.initSwipeToClose();
     }
 
