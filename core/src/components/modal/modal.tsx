@@ -200,13 +200,21 @@ export class Modal implements ComponentInterface, OverlayInterface {
   }
 
   /**
+   * TODO (FW-937)
+   * This needs to default to true in the next
+   * major release. We default it to undefined
+   * so we can force the card modal to be swipeable
+   * when using canDismiss.
+   */
+
+  /**
    * Determines whether or not a modal can dismiss
    * when calling the `dismiss` method.
    *
    * If the value is `true` or the value's function returns `true`, the modal will close when trying to dismiss.
    * If the value is `false` or the value's function returns `false`, the modal will not close when trying to dismiss.
    */
-  @Prop() canDismiss: boolean | (() => Promise<boolean>) = true;
+  @Prop() canDismiss?: undefined | boolean | (() => Promise<boolean>);
 
   /**
    * Emitted after the modal has presented.
@@ -360,6 +368,8 @@ export class Modal implements ComponentInterface, OverlayInterface {
    */
   private async checkCanDismiss() {
     const { canDismiss } = this;
+
+    if (canDismiss === undefined) return true;
 
     if (typeof canDismiss === 'function') {
       return canDismiss();

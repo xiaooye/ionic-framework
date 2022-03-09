@@ -131,8 +131,10 @@ export const createSheetGesture = (
      * canDismiss is never fired via gesture if there is
      * no 0 breakpoint. However, it can be fired if the user
      * presses Esc or the hardware back button.
+     * TODO (FW-937)
+     * Remove undefined check
      */
-    canDismissBlocksGesture = baseEl.canDismiss !== true && minBreakpoint === 0;
+    canDismissBlocksGesture = baseEl.canDismiss !== undefined && baseEl.canDismiss !== true && minBreakpoint === 0;
 
     /**
      * If swiping on the content

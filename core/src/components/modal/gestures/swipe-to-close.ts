@@ -44,8 +44,10 @@ export const createSwipeToCloseGesture = (
      * then users should be able to swipe down
      * until a threshold is hit. At that point,
      * the card modal should not proceed any further.
+     * TODO (FW-937)
+     * Remove undefined check
      */
-    canDismissBlocksGesture = el.canDismiss !== true;
+    canDismissBlocksGesture = el.canDismiss !== undefined && el.canDismiss !== true;
     animation.progressStart(true, (isOpen) ? 1 : 0);
   };
 
