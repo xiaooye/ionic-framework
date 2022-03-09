@@ -165,7 +165,6 @@
               const { role } = await actionSheet.onDidDismiss();
 
               if (role === 'destructive') {
-              console.log('in here')
                 return true;
               }
 
@@ -210,7 +209,6 @@
 
         if (type === 'card') {
           opts.presentingElement = rootPage;
-          opts.swipeToClose = true;
         } else if (type === 'sheet') {
           opts.breakpoints = [0, 0.25, 0.5, 1];
           opts.initialBreakpoint = 0.25;
