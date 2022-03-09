@@ -33,12 +33,11 @@ export const handleCanDismiss = async (
    * done before dismissing.
    */
 
-   console.log(animation)
-  if (!animation.isRunning()) {
-    el.dismiss(undefined, 'handler');
-  } else {
+  if (animation.isRunning()) {
     animation.onFinish(() => {
       el.dismiss(undefined, 'handler')
     }, { oneTimeCallback: true })
+  } else {
+    el.dismiss(undefined, 'handler');
   }
 }
