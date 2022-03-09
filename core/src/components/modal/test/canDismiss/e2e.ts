@@ -60,7 +60,7 @@ describe('modal - canDismiss handler', () => {
 
       expect(returnValue).toBe(false);
     });
-    it.only('should dismiss when canDismiss is Action Sheet and user clicks confirm', async () => {
+    it('should dismiss when canDismiss is Action Sheet and user clicks confirm', async () => {
       const ionModalDidPresent = await page.spyOnEvent('ionModalDidPresent');
       const ionModalDidDismiss = await page.spyOnEvent('ionModalDidDismiss');
       const ionActionSheetDidPresent = await page.spyOnEvent('ionActionSheetDidPresent');
@@ -194,7 +194,7 @@ describe('modal - canDismiss handler', () => {
       const modal = await page.find('ion-modal');
       expect(modal).not.toBe(null);
     });
-    it.only('should dismiss when canDismiss is Action Sheet and user clicks confirm', async () => {
+    it('should dismiss when canDismiss is Action Sheet and user clicks confirm', async () => {
       const ionModalDidPresent = await page.spyOnEvent('ionModalDidPresent');
       const ionModalDidDismiss = await page.spyOnEvent('ionModalDidDismiss');
       const ionActionSheetDidPresent = await page.spyOnEvent('ionActionSheetDidPresent');
@@ -366,7 +366,7 @@ describe('modal - canDismiss handler', () => {
 
       await ionModalDidDismiss.next();
     });
-    it.only('should dismiss when canDismiss is Action Sheet and user clicks confirm', async () => {
+    it('should dismiss when canDismiss is Action Sheet and user clicks confirm', async () => {
       const ionModalDidPresent = await page.spyOnEvent('ionModalDidPresent');
       const ionModalDidDismiss = await page.spyOnEvent('ionModalDidDismiss');
       const ionActionSheetDidPresent = await page.spyOnEvent('ionActionSheetDidPresent');
