@@ -53,14 +53,9 @@ export const createSwipeToCloseGesture = (
 
   const onMove = (detail: GestureDetail) => {
     const step = detail.deltaY / height;
-    /**
-     * TODO: Add easing
-     * Allowing a max step of 15% of the viewport
-     * height is roughly the same as what iOS allows.
-     */
-
-    const maxStep = canDismissBlocksGesture ? canDismissMaxStep : 0.9999;
-    const processedStep = canDismissBlocksGesture ? calculateSpringStep(step / maxStep) : step;
+    const isAttempingDismissWithCanDismiss = step >= 0 && canDismissBlocksGesture;
+    const maxStep = isAttempingDismissWithCanDismiss ? canDismissMaxStep : 0.9999;
+    const processedStep = isAttempingDismissWithCanDismiss ? calculateSpringStep(step / maxStep) : step;
 
     const clampedStep = clamp(0.0001, processedStep, maxStep);
 
@@ -69,10 +64,11 @@ export const createSwipeToCloseGesture = (
 
   const onEnd = (detail: GestureDetail) => {
     const velocity = detail.velocityY;
-    const maxStep = canDismissBlocksGesture ? canDismissMaxStep : 0.9999;
     const step = detail.deltaY / height;
+    const isAttempingDismissWithCanDismiss = step >= 0 && canDismissBlocksGesture;
+    const maxStep = isAttempingDismissWithCanDismiss ? canDismissMaxStep : 0.9999;
 
-    const processedStep = canDismissBlocksGesture ? calculateSpringStep(step / maxStep) : step;
+    const processedStep = isAttempingDismissWithCanDismiss ? calculateSpringStep(step / maxStep) : step;
 
     const clampedStep = clamp(0.0001, processedStep, maxStep);
 
@@ -84,7 +80,7 @@ export const createSwipeToCloseGesture = (
      * animation can never complete until
      * canDismiss is checked.
      */
-    const shouldComplete = !canDismissBlocksGesture && threshold >= 0.5;
+    const shouldComplete = !isAttempingDismissWithCanDismiss && threshold >= 0.5;
     let newStepValue = (shouldComplete) ? -0.001 : 0.001;
 
     if (!shouldComplete) {
@@ -120,7 +116,7 @@ export const createSwipeToCloseGesture = (
      * check canDismiss. 25% was chosen
      * to avoid accidental swipes.
      */
-    if (canDismissBlocksGesture && clampedStep > (maxStep / 4)) {
+    if (isAttempingDismissWithCanDismiss && clampedStep > (maxStep / 4)) {
       handleCanDismiss(el, animation);
     } else if (shouldComplete) {
       onDismiss();
