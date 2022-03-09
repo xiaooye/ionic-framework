@@ -60,6 +60,23 @@ describe('modal - canDismiss handler', () => {
 
       expect(returnValue).toBe(false);
     });
+    it.only('should dismiss when canDismiss is Action Sheet and user clicks confirm', async () => {
+      const ionModalDidPresent = await page.spyOnEvent('ionModalDidPresent');
+      const ionModalDidDismiss = await page.spyOnEvent('ionModalDidDismiss');
+      const ionActionSheetDidPresent = await page.spyOnEvent('ionActionSheetDidPresent');
+
+      await page.click('#radio-action-sheet');
+      await page.click('#show-modal');
+
+      await ionModalDidPresent.next();
+
+      await page.keyboard.press('Escape');
+
+      await ionActionSheetDidPresent.next();
+      await page.click('.button-confirm');
+
+      await ionModalDidDismiss.next();
+    });
   });
 
   describe('card modal', () => {
@@ -176,6 +193,24 @@ describe('modal - canDismiss handler', () => {
 
       const modal = await page.find('ion-modal');
       expect(modal).not.toBe(null);
+    });
+    it.only('should dismiss when canDismiss is Action Sheet and user clicks confirm', async () => {
+      const ionModalDidPresent = await page.spyOnEvent('ionModalDidPresent');
+      const ionModalDidDismiss = await page.spyOnEvent('ionModalDidDismiss');
+      const ionActionSheetDidPresent = await page.spyOnEvent('ionActionSheetDidPresent');
+
+      await page.click('#radio-action-sheet');
+      await page.click('#show-modal');
+
+      await ionModalDidPresent.next();
+
+      const modalHeader = await page.$('#modal-header');
+      await dragElementBy(modalHeader, page, 0, 500);
+
+      await ionActionSheetDidPresent.next();
+      await page.click('.button-confirm');
+
+      await ionModalDidDismiss.next();
     });
   });
 
@@ -328,6 +363,24 @@ describe('modal - canDismiss handler', () => {
 
       const modalHeader = await page.$('#modal-header');
       await dragElementBy(modalHeader, page, 0, 100);
+
+      await ionModalDidDismiss.next();
+    });
+    it.only('should dismiss when canDismiss is Action Sheet and user clicks confirm', async () => {
+      const ionModalDidPresent = await page.spyOnEvent('ionModalDidPresent');
+      const ionModalDidDismiss = await page.spyOnEvent('ionModalDidDismiss');
+      const ionActionSheetDidPresent = await page.spyOnEvent('ionActionSheetDidPresent');
+
+      await page.click('#radio-action-sheet');
+      await page.click('#show-modal');
+
+      await ionModalDidPresent.next();
+
+      const modalHeader = await page.$('#modal-header');
+      await dragElementBy(modalHeader, page, 0, 500);
+
+      await ionActionSheetDidPresent.next();
+      await page.click('.button-confirm');
 
       await ionModalDidDismiss.next();
     });
