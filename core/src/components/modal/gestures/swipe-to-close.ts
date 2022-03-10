@@ -53,8 +53,30 @@ export const createSwipeToCloseGesture = (
 
   const onMove = (detail: GestureDetail) => {
     const step = detail.deltaY / height;
+
+    /**
+     * Check if user is swiping down and
+     * if we have a canDismiss value that
+     * should block the gesture from
+     * proceeding,
+     */
     const isAttempingDismissWithCanDismiss = step >= 0 && canDismissBlocksGesture;
+
+    /**
+     * If we are blocking the gesture from dismissing,
+     * set the max step value so that the sheet cannot be
+     * completely hidden.
+     */
     const maxStep = isAttempingDismissWithCanDismiss ? canDismissMaxStep : 0.9999;
+
+    /**
+     * If we are blocking the gesture from
+     * dismissing, calculate the spring modifier value
+     * this will be added to the starting breakpoint
+     * value to give the gesture a spring-like feeling.
+     * Note that the starting breakpoint is always 0,
+     * so we omit adding 0 to the result.
+     */
     const processedStep = isAttempingDismissWithCanDismiss ? calculateSpringStep(step / maxStep) : step;
 
     const clampedStep = clamp(0.0001, processedStep, maxStep);
@@ -65,6 +87,7 @@ export const createSwipeToCloseGesture = (
   const onEnd = (detail: GestureDetail) => {
     const velocity = detail.velocityY;
     const step = detail.deltaY / height;
+
     const isAttempingDismissWithCanDismiss = step >= 0 && canDismissBlocksGesture;
     const maxStep = isAttempingDismissWithCanDismiss ? canDismissMaxStep : 0.9999;
 

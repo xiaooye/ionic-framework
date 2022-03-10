@@ -162,12 +162,32 @@ export const createSheetGesture = (
      * compute where the offset of the animation should be
      * relative to where the user dragged.
      */
-    const initialStep = 1 - currentBreakpoint;
+    const initialBreakpoint = 1 - currentBreakpoint;
     const secondToLastBreakpoint = 1 - breakpoints[1];
-    const step = initialStep + (detail.deltaY / height);
+    const step = initialBreakpoint + (detail.deltaY / height);
     const isAttempingDismissWithCanDismiss = step >= secondToLastBreakpoint && canDismissBlocksGesture;
+
+    /**
+     * If we are blocking the gesture from dismissing,
+     * set the max step value so that the sheet cannot be
+     * completely hidden.
+     */
     const maxStep = isAttempingDismissWithCanDismiss ? canDismissMaxStep : 0.9999;
 
+    /**
+     * If we are blocking the gesture from
+     * dismissing, calculate the spring modifier value
+     * this will be added to the starting breakpoint
+     * value to give the gesture a spring-like feeling.
+     * Note that when isAttempingDismissWithCanDismiss is true,
+     * the modifier is always added to the breakpoint that
+     * appears right after the 0 breakpoint.
+     *
+     * Note that this modifier is essentially the progression
+     * between secondToLastBreakpoint and maxStep which is
+     * why we subtract secondToLastBreakpoint. This lets us get
+     * the result as a value from 0 to 1.
+     */
     const processedStep = isAttempingDismissWithCanDismiss ? secondToLastBreakpoint + calculateSpringStep((step - secondToLastBreakpoint) / (maxStep - secondToLastBreakpoint)) : step;
 
     offset = clamp(0.0001, processedStep, maxStep);
