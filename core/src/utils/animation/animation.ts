@@ -776,6 +776,8 @@ export const createAnimation = (animationId?: string): Animation => {
           setStyleProperty(element, 'animation-play-state', 'paused');
         });
       }
+
+      paused = true;
     }
   };
 
@@ -785,8 +787,6 @@ export const createAnimation = (animationId?: string): Animation => {
     });
 
     pauseAnimation();
-
-    paused = true;
 
     return ani;
   };
