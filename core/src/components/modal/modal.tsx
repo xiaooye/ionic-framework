@@ -369,6 +369,10 @@ export class Modal implements ComponentInterface, OverlayInterface {
   private async checkCanDismiss() {
     const { canDismiss } = this;
 
+    /**
+     * TODO (FW-937) - Remove the following check in
+     * the next major release of Ionic.
+     */
     if (canDismiss === undefined) { return true; }
 
     if (typeof canDismiss === 'function') {
