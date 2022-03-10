@@ -290,7 +290,7 @@ export class Modal implements ComponentInterface, OverlayInterface {
     }
 
     if (swipeToClose) {
-      printIonWarning('swipeToClose has been deprecated in favor of canDismiss.');
+      printIonWarning('swipeToClose has been deprecated in favor of canDismiss.\n\nIf you want a card modal to be swipeable, set canDismiss to `true`. In the next major release of Ionic, swipeToClose will be removed, and all card modals will be swipeable by default.');
     }
   }
 
