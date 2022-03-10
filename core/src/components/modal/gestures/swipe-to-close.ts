@@ -170,5 +170,5 @@ const computeDuration = (remaining: number, velocity: number) => {
  * c = 15
  */
 const calculateSpringStep = (t: number) => {
-  return 0.00255275 * 2.71828**(-14.9619 * t) - 1.00255 * 2.71828**(-0.0380968 * t) + 1
+  return 0.00255275 * 2.71828 ** (-14.9619 * t) - 1.00255 * 2.71828 ** (-0.0380968 * t) + 1
 }

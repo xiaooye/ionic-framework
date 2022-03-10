@@ -369,7 +369,7 @@ export class Modal implements ComponentInterface, OverlayInterface {
   private async checkCanDismiss() {
     const { canDismiss } = this;
 
-    if (canDismiss === undefined) return true;
+    if (canDismiss === undefined) { return true; }
 
     if (typeof canDismiss === 'function') {
       return canDismiss();
