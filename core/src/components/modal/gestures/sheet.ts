@@ -3,7 +3,7 @@ import { GestureDetail, createGesture } from '../../../utils/gesture';
 import { clamp, raf } from '../../../utils/helpers';
 import { getBackdropValueForSheet } from '../utils';
 
-import { handleCanDismiss } from './utils';
+import { handleCanDismiss, calculateSpringStep } from './utils';
 
 export const createSheetGesture = (
   baseEl: HTMLIonModalElement,
@@ -41,7 +41,7 @@ export const createSheetGesture = (
   let currentBreakpoint = initialBreakpoint;
   let offset = 0;
   let canDismissBlocksGesture = false;
-  const canDismissMaxStep = 0.90;
+  const canDismissMaxStep = 0.95;
   const wrapperAnimation = animation.childAnimations.find(ani => ani.id === 'wrapperAnimation');
   const backdropAnimation = animation.childAnimations.find(ani => ani.id === 'backdropAnimation');
   const maxBreakpoint = breakpoints[breakpoints.length - 1];
@@ -158,19 +158,19 @@ export const createSheetGesture = (
 
   const onMove = (detail: GestureDetail) => {
     /**
-     * TODO: Add easing
-     * Allowing a max step of 15% of the viewport
-     * height is roughly the same as what iOS allows.
-     */
-    const maxStep = canDismissBlocksGesture ? canDismissMaxStep : 0.9999;
-
-    /**
      * Given the change in gesture position on the Y axis,
      * compute where the offset of the animation should be
      * relative to where the user dragged.
      */
     const initialStep = 1 - currentBreakpoint;
-    offset = clamp(0.0001, initialStep + (detail.deltaY / height), maxStep);
+    const secondToLastBreakpoint = 1 - breakpoints[1];
+    const step = initialStep + (detail.deltaY / height);
+    const isAttempingDismissWithCanDismiss = step >= secondToLastBreakpoint && canDismissBlocksGesture;
+    const maxStep = isAttempingDismissWithCanDismiss ? canDismissMaxStep : 0.9999;
+
+    const processedStep = isAttempingDismissWithCanDismiss ? secondToLastBreakpoint + calculateSpringStep((step - secondToLastBreakpoint) / (maxStep - secondToLastBreakpoint)) : step;
+
+    offset = clamp(0.0001, processedStep, maxStep);
     animation.progressStep(offset);
   };
 
