@@ -17,6 +17,8 @@ import { mdLeaveAnimation } from './animations/md.leave';
 import { createSheetGesture } from './gestures/sheet';
 import { createSwipeToCloseGesture } from './gestures/swipe-to-close';
 
+import { printIonWarning } from '@utils/logging';
+
 /**
  * @virtualProp {"ios" | "md"} mode - The mode determines which platform styles to use.
  *
@@ -284,11 +286,11 @@ export class Modal implements ComponentInterface, OverlayInterface {
     this.isSheetModal = breakpoints !== undefined && initialBreakpoint !== undefined;
 
     if (breakpoints !== undefined && initialBreakpoint !== undefined && !breakpoints.includes(initialBreakpoint)) {
-      console.warn('[Ionic Warning]: Your breakpoints array must include the initialBreakpoint value.')
+      printIonWarning('Your breakpoints array must include the initialBreakpoint value.')
     }
 
     if (swipeToClose) {
-      console.warn('[Ionic Warning]: swipeToClose has been deprecated in favor of canDismiss.');
+      printIonWarning('swipeToClose has been deprecated in favor of canDismiss.');
     }
   }
 
