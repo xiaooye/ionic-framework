@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from '@utils/test/playwright';
+import { test } from '@ionic/playwright';
 
 test.describe('button: basic', () => {
   test('should not have visual regressions', async ({ page }) => {

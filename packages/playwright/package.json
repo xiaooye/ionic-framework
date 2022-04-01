@@ -1,0 +1,36 @@
+{
+  "name": "@ionic/playwright",
+  "version": "0.0.1",
+  "private": true,
+  "types": "types.d.ts",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -b && cp \"package.json\" ./dist/",
+    "clean": "rimraf dist/*",
+    "dev": "ts-node src/index.ts",
+    "start": "ts-node dit/index.js"
+  },
+  "publishConfig": {
+    "directory": "dist"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.20.0",
+    "playwright": "^1.20.0"
+  },
+  "peerDependenciesMeta": {
+    "playwright": {
+      "optional": true
+    },
+    "@playwright/test": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.20.0",
+    "playwright": "^1.20.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.7.0",
+    "tslib": "^2.1.0",
+    "typescript": "4.5.4"
+  }
+}

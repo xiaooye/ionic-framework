@@ -1,5 +1,4 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
-import { devices } from '@playwright/test';
+import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 const projects = [
   {
@@ -102,7 +101,8 @@ const config: PlaywrightTestConfig = {
   projects: generateProjects(),
   webServer: {
     command: 'python3 -m http.server 3333',
-    port: 3333
+    port: 3333,
+    reuseExistingServer: true
   }
 };
 
