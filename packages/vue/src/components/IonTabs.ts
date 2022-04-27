@@ -3,7 +3,7 @@ import { h, defineComponent, VNode } from 'vue';
 const WILL_CHANGE = 'ionTabsWillChange';
 const DID_CHANGE = 'ionTabsDidChange';
 
-export const IonTabs = /*@__PURE__*/ defineComponent({
+const defineIonTabs = () => defineComponent({
   name: 'IonTabs',
   emits: [WILL_CHANGE, DID_CHANGE],
   render() {
@@ -27,9 +27,9 @@ export const IonTabs = /*@__PURE__*/ defineComponent({
       h('div', {
         class: 'tabs-inner',
         style: {
-            'position': 'relative',
-            'flex': '1',
-            'contain': 'layout size style'
+          'position': 'relative',
+          'flex': '1',
+          'contain': 'layout size style'
         }
       }, routerOutlet)
     ];
@@ -101,3 +101,6 @@ export const IonTabs = /*@__PURE__*/ defineComponent({
     )
   }
 });
+
+
+export const IonTabs = /*@__PURE__*/ defineIonTabs();

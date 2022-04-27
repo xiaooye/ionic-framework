@@ -3,12 +3,9 @@ import { defineCustomElement } from '../utils';
 import { IonBackButton as IonBackButtonCmp } from '@ionic/core/components/ion-back-button.js';
 import { IonIcon as IonIconCmp } from 'ionicons/components/ion-icon.js';
 
-
-
-export const IonBackButton = /*@__PURE__*/ defineComponent({
+const defineIonBackButton = () => defineComponent({
   name: 'IonBackButton',
   setup(_, { attrs, slots }) {
-
     defineCustomElement('ion-back-button', IonBackButtonCmp);
     defineCustomElement('ion-icon', IonIconCmp);
 
@@ -33,3 +30,5 @@ export const IonBackButton = /*@__PURE__*/ defineComponent({
     }
   }
 });
+
+export const IonBackButton = /*@__PURE__*/ defineIonBackButton();

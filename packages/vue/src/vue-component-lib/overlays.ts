@@ -7,13 +7,12 @@ export interface OverlayProps {
 const EMPTY_PROP = Symbol();
 const DEFAULT_EMPTY_PROP = { default: EMPTY_PROP };
 
-const tagNameToPascalCase = (tagName: string) => {
-  return tagName.split('-')
-    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
-    .join('');
-};
-
 export const defineOverlayContainer = <Props extends object>(tagName: string, defineCustomElement: () => void, componentProps: string[] = [], controller?: any) => {
+  const tagNameToPascalCase = (tagName: string) => {
+    return tagName.split('-')
+      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+      .join('');
+  };
 
   const createControllerComponent = () => {
     return defineComponent<Props & OverlayProps>({

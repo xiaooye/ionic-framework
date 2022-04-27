@@ -3,7 +3,7 @@ import { isPlatform } from '@ionic/core/components';
 import { defineCustomElement } from '../utils';
 import { IonIcon as IonIconCmp } from 'ionicons/components/ion-icon.js';
 
-export const IonIcon = /*@__PURE__*/ defineComponent({
+const defineIonIcon = () => defineComponent({
   name: 'IonIcon',
   props: {
     color: String,
@@ -44,3 +44,5 @@ export const IonIcon = /*@__PURE__*/ defineComponent({
     }
   }
 });
+
+export const IonIcon = /*@__PURE__*/ defineIonIcon();

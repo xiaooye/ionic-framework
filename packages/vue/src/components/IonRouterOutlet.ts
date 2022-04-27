@@ -21,7 +21,8 @@ const isViewVisible = (enteringEl: HTMLElement) => {
 }
 
 let viewDepthKey: InjectionKey<0> = Symbol(0);
-export const IonRouterOutlet = /*@__PURE__*/ defineComponent({
+
+const defineIonRouterOutlet = () => defineComponent({
   name: 'IonRouterOutlet',
   setup() {
     defineCustomElement('ion-router-outlet', IonRouterOutletCmp);
@@ -369,7 +370,7 @@ See https://ionicframework.com/docs/vue/navigation#ionpage for more information.
         !matchedRouteRef.value ||
         (matchedRouteRef.value !== firstMatchedRoute && firstMatchedRoute.path !== parentOutletPath)
       ) {
-          return;
+        return;
       }
 
       const currentRoute = ionRouter.getCurrentRouteInfo();
@@ -418,19 +419,19 @@ See https://ionicframework.com/docs/vue/navigation#ionpage for more information.
       if (viewItem.registerCallback) {
         viewItem.registerCallback();
 
-      /**
-       * If there is no registerCallback, then
-       * this component is likely being re-registered
-       * as a result of a hot module replacement.
-       * We need to see if the oldIonPageEl has
-       * .ion-page-invisible. If it does not then we
-       * need to remove it from the new ionPageEl otherwise
-       * the page will be hidden when it is replaced.
-       */
+        /**
+         * If there is no registerCallback, then
+         * this component is likely being re-registered
+         * as a result of a hot module replacement.
+         * We need to see if the oldIonPageEl has
+         * .ion-page-invisible. If it does not then we
+         * need to remove it from the new ionPageEl otherwise
+         * the page will be hidden when it is replaced.
+         */
       } else if (oldIonPageEl && !oldIonPageEl.classList.contains('ion-page-invisible')) {
         ionPageEl.classList.remove('ion-page-invisible');
       }
-  };
+    };
     return {
       id,
       components,
@@ -485,8 +486,8 @@ See https://ionicframework.com/docs/vue/navigation#ionpage for more information.
           ? routePropsOption === true
             ? c.params
             : typeof routePropsOption === 'function'
-            ? getPropsFunctionResult()
-            : routePropsOption
+              ? getPropsFunctionResult()
+              : routePropsOption
           : null
 
         props = {
@@ -502,3 +503,5 @@ See https://ionicframework.com/docs/vue/navigation#ionpage for more information.
     )
   }
 });
+
+export const IonRouterOutlet = /*@__PURE__*/ defineIonRouterOutlet();

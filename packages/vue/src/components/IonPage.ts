@@ -1,10 +1,10 @@
 import { h, defineComponent } from 'vue';
 
-export const IonPage = /*@__PURE__*/ defineComponent({
+const defineIonPage = () => defineComponent({
   name: 'IonPage',
   props: {
     isInOutlet: { type: Boolean, default: false },
-    registerIonPage: { type: Function, default: () => {} }
+    registerIonPage: { type: Function, default: () => { } }
   },
   mounted() {
     this.$props.registerIonPage(this.$refs.ionPage);
@@ -25,3 +25,6 @@ export const IonPage = /*@__PURE__*/ defineComponent({
     }
   }
 });
+
+
+export const IonPage = /*@__PURE__*/ defineIonPage();

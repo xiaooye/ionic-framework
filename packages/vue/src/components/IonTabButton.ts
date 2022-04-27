@@ -2,7 +2,7 @@ import { h, defineComponent, inject } from 'vue';
 import { defineCustomElement } from '../utils';
 import { IonTabButton as IonTabButtonCmp } from '@ionic/core/components/ion-tab-button.js';
 
-export const IonTabButton = /*@__PURE__*/ defineComponent({
+const defineIonTabButton = () => defineComponent({
   name: 'IonTabButton',
   props: {
     _getTabState: { type: Function, default: () => { return {} } },
@@ -65,3 +65,6 @@ export const IonTabButton = /*@__PURE__*/ defineComponent({
     }
   }
 });
+
+
+export const IonTabButton = /*@__PURE__*/ defineIonTabButton();
