@@ -151,6 +151,9 @@ export class Select implements ComponentInterface {
   valueChanged() {
     this.emitStyle();
     if (this.didInit) {
+      if (this.multiple && !Array.isArray(this.value)) {
+        return;
+      }
       this.ionChange.emit({
         value: this.value,
       });
