@@ -147,13 +147,21 @@ export class Select implements ComponentInterface {
     this.emitStyle();
   }
 
+  private lastEmittedValue: any;
+
   @Watch('value')
   valueChanged() {
     this.emitStyle();
     if (this.didInit) {
-      if (this.multiple && !Array.isArray(this.value)) {
-        return;
+      if (this.multiple) {
+        if (
+          !Array.isArray(this.value) ||
+          (this.lastEmittedValue !== undefined && this.lastEmittedValue === this.value)
+        ) {
+          return;
+        }
       }
+      this.lastEmittedValue = this.value;
       this.ionChange.emit({
         value: this.value,
       });
