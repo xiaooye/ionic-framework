@@ -1,24 +1,33 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
-import { devices } from '@playwright/test';
+import { devices, expect } from '@playwright/test';
+
+import { matchers } from './src/utils/test/playwright';
+
+expect.extend(matchers);
 
 const projects = [
   {
-    name: 'chromium',
-
+    /**
+     * This is really just desktop Firefox
+     * but with a mobile viewport.
+     */
+    name: 'Mobile Firefox',
     use: {
-      ...devices['Desktop Chrome'],
-    },
-  },
-  {
-    name: 'firefox',
-    use: {
-      ...devices['Desktop Firefox'],
-    },
-  },
-  {
-    name: 'webkit',
-    use: {
-      ...devices['Desktop Safari'],
+      browserName: 'firefox',
+      /**
+       * This is the Pixel 5 configuration.
+       * We can't use devices['Pixel 5']
+       * because the "isMobile" option is
+       * not supported on Firefox.
+       */
+      viewport: {
+        width: 393,
+        height: 727
+      },
+      screen: {
+        width: 393,
+        height: 851
+      }
     },
   },
   {
@@ -46,14 +55,16 @@ const generateProjects = () => {
         ...project,
         metadata: {
           mode,
-          rtl: false
+          rtl: false,
+          _testing: true
         }
       });
       projectsWithMetadata.push({
         ...project,
         metadata: {
           mode,
-          rtl: true
+          rtl: true,
+          _testing: true
         }
       });
     });
@@ -72,11 +83,18 @@ const config: PlaywrightTestConfig = {
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000
+    timeout: 5000,
+    toMatchSnapshot: {
+      /**
+       * Increases the maximum allowed pixel difference to account
+       * for slight browser rendering inconsistencies.
+       */
+      maxDiffPixelRatio: 0.05
+    }
   },
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -102,7 +120,8 @@ const config: PlaywrightTestConfig = {
   projects: generateProjects(),
   webServer: {
     command: 'serve -p 3333',
-    port: 3333
+    port: 3333,
+    reuseExistingServer: !process.env.CI
   }
 };
 

@@ -1,10 +1,10 @@
 import type { ComponentInterface } from '@stencil/core';
 import { Component, Element, Host, Prop, h, writeTask } from '@stencil/core';
-import { findIonContent, getScrollElement, printIonContentErrorMsg } from '@utils/content';
 
 import { getIonMode } from '../../global/ionic-global';
+import { findIonContent, getScrollElement, printIonContentErrorMsg } from '../../utils/content';
 import type { Attributes } from '../../utils/helpers';
-import { inheritAttributes } from '../../utils/helpers';
+import { inheritAriaAttributes } from '../../utils/helpers';
 import { hostContext } from '../../utils/theme';
 
 import {
@@ -55,7 +55,7 @@ export class Header implements ComponentInterface {
   @Prop() translucent = false;
 
   componentWillLoad() {
-    this.inheritedAttributes = inheritAttributes(this.el, ['role']);
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   componentDidLoad() {

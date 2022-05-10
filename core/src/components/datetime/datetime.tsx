@@ -1,6 +1,5 @@
 import type { ComponentInterface, EventEmitter } from '@stencil/core';
 import { Component, Element, Event, Host, Method, Prop, State, Watch, h, writeTask } from '@stencil/core';
-import { printIonError, printIonWarning } from '@utils/logging';
 import { caretDownSharp, caretUpSharp, chevronBack, chevronDown, chevronForward } from 'ionicons/icons';
 
 import { getIonMode } from '../../global/ionic-global';
@@ -14,6 +13,7 @@ import type {
 } from '../../interface';
 import { startFocusVisible } from '../../utils/focus-visible';
 import { getElementRoot, raf, renderHiddenInput } from '../../utils/helpers';
+import { printIonError, printIonWarning } from '../../utils/logging';
 import { isRTL } from '../../utils/rtl';
 import { createColorClasses } from '../../utils/theme';
 import type { PickerColumnItem } from '../picker-column-internal/picker-column-internal-interfaces';
@@ -74,6 +74,16 @@ export class Datetime implements ComponentInterface {
   private popoverRef?: HTMLIonPopoverElement;
   private clearFocusVisible?: () => void;
   private overlayIsPresenting = false;
+
+  /**
+   * Whether to highlight the active day with a solid circle (as opposed
+   * to the outline circle around today). If you don't specify an initial
+   * value for the datetime, it doesn't automatically init to a default to
+   * avoid unwanted change events firing. If the solid circle were still
+   * shown then, it would look like a date had already been selected, which
+   * is misleading UX.
+   */
+  private highlightActiveParts = false;
 
   private parsedMinuteValues?: number[];
   private parsedHourValues?: number[];
@@ -324,6 +334,8 @@ export class Datetime implements ComponentInterface {
       const valueDateParts = parseDate(this.value);
       if (valueDateParts) {
         const { month, day, year, hour, minute } = valueDateParts;
+        const ampm = hour >= 12 ? 'pm' : 'am';
+
         this.activePartsClone = {
           ...this.activeParts,
           month,
@@ -331,7 +343,17 @@ export class Datetime implements ComponentInterface {
           year,
           hour,
           minute,
+          ampm,
         };
+
+        /**
+         * The working parts am/pm value must be updated when the value changes, to
+         * ensure the time picker hour column values are generated correctly.
+         */
+        this.setWorkingParts({
+          ...this.workingParts,
+          ampm,
+        });
       } else {
         printIonWarning(`Unable to parse date string: ${this.value}. Please provide a valid ISO 8601 datetime string.`);
       }
@@ -1053,10 +1075,11 @@ export class Datetime implements ComponentInterface {
   };
 
   private processValue = (value?: string | null) => {
+    this.highlightActiveParts = !!value;
     const valueToProcess = value || getToday();
     const { month, day, year, hour, minute, tzOffset } = parseDate(valueToProcess);
 
-    this.workingParts = {
+    this.setWorkingParts({
       month,
       day,
       year,
@@ -1064,7 +1087,7 @@ export class Datetime implements ComponentInterface {
       minute,
       tzOffset,
       ampm: hour >= 12 ? 'pm' : 'am',
-    };
+    });
 
     this.activeParts = {
       month,
@@ -1344,6 +1367,7 @@ export class Datetime implements ComponentInterface {
   }
 
   private renderMonth(month: number, year: number) {
+    const { highlightActiveParts } = this;
     const yearAllowed = this.parsedYearValues === undefined || this.parsedYearValues.includes(year);
     const monthAllowed = this.parsedMonthValues === undefined || this.parsedMonthValues.includes(month);
     const isCalMonthDisabled = !yearAllowed || !monthAllowed;
@@ -1419,7 +1443,7 @@ export class Datetime implements ComponentInterface {
                 class={{
                   'calendar-day-padding': day === null,
                   'calendar-day': true,
-                  'calendar-day-active': isActive,
+                  'calendar-day-active': isActive && highlightActiveParts,
                   'calendar-day-today': isToday,
                 }}
                 aria-selected={ariaSelected}
@@ -1428,6 +1452,14 @@ export class Datetime implements ComponentInterface {
                   if (day === null) {
                     return;
                   }
+
+                  /**
+                   * Note that for datetimes with confirm/cancel buttons, the value
+                   * isn't updated until you call confirm(). We need to bring the
+                   * solid circle back on day click for UX reasons, rather than only
+                   * show the circle if `value` is truthy.
+                   */
+                  this.highlightActiveParts = true;
 
                   this.setWorkingParts({
                     ...this.workingParts,
@@ -1635,7 +1667,7 @@ export class Datetime implements ComponentInterface {
     const timeOnlyPresentation = presentation === 'time';
     const use24Hour = is24Hour(this.locale, this.hourCycle);
     const { hours, minutes, am, pm } = generateTime(
-      this.workingParts,
+      workingParts,
       use24Hour ? 'h23' : 'h12',
       this.minParts,
       this.maxParts,
@@ -1738,6 +1770,7 @@ export class Datetime implements ComponentInterface {
     const isMonthAndYearPresentation =
       presentation === 'year' || presentation === 'month' || presentation === 'month-year';
     const shouldShowMonthAndYear = showMonthAndYear || isMonthAndYearPresentation;
+    const monthYearPickerOpen = showMonthAndYear && !isMonthAndYearPresentation;
 
     renderHiddenInput(true, el, name, value, disabled);
 
@@ -1753,6 +1786,7 @@ export class Datetime implements ComponentInterface {
             ['datetime-readonly']: readonly,
             ['datetime-disabled']: disabled,
             'show-month-and-year': shouldShowMonthAndYear,
+            'month-year-picker-open': monthYearPickerOpen,
             [`datetime-presentation-${presentation}`]: true,
             [`datetime-size-${size}`]: true,
           }),
