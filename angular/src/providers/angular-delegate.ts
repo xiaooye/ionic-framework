@@ -96,15 +96,26 @@ export const attachView = (
   params: any,
   cssClasses: string[] | undefined
 ): any => {
-  const factory = resolver.resolveComponentFactory(component);
+  const needsFactory = 'resolveComponentFactory' in resolver;
+  const factory = (needsFactory) ? resolver.resolveComponentFactory(component) : undefined;
   const childInjector = Injector.create({
     providers: getProviders(params),
     parent: injector,
   });
-  const componentRef = location
-    ? location.createComponent(factory, location.length, childInjector)
-    : factory.create(childInjector);
 
+  const createComponent = () => {
+    if (location) {
+      if (needsFactory) {
+        return location.createComponent(factory!, location.length, childInjector);
+      } else {
+        return location.createComponent(component, { index: location.length, injector: childInjector } as any);
+      }
+    } else {
+      return factory!.create(childInjector);
+    }
+  }
+
+  const componentRef = createComponent();
   const instance = componentRef.instance;
   const hostElement = componentRef.location.nativeElement;
   if (params) {
