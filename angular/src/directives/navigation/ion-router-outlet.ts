@@ -231,7 +231,8 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
       const component = snapshot.routeConfig!.component as any;
       resolver = resolver || this.resolver;
 
-      const factory = resolver.resolveComponentFactory(component);
+      const needsFactory = 'resolveComponentFactory' in resolver;
+      const factory = (needsFactory) ? resolver.resolveComponentFactory(component) : undefined;
       const childContexts = this.parentContexts.getOrCreateContext(this.name).children;
 
       // We create an activated route proxy object that will maintain future updates for this component
@@ -240,7 +241,12 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
       const activatedRouteProxy = this.createActivatedRouteProxy(component$, activatedRoute);
 
       const injector = new OutletInjector(activatedRouteProxy, childContexts, this.location.injector);
-      cmpRef = this.activated = this.location.createComponent(factory, this.location.length, injector);
+
+      if (needsFactory) {
+        cmpRef = this.activated = this.location.createComponent(factory!, this.location.length, injector);
+      } else {
+        cmpRef = this.activated = this.location.createComponent(component, { index: this.location.length, injector } as any);
+      }
 
       // Once the component is created we can push it to our local subject supplied to the proxy
       component$.next(cmpRef.instance);
