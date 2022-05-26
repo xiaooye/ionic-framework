@@ -3,6 +3,7 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   ElementRef,
+  EnvironmentInjector,
   Injector,
   NgZone,
   OnDestroy,
@@ -82,11 +83,11 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
   constructor(
     private parentContexts: ChildrenOutletContexts,
     private location: ViewContainerRef,
-    private resolver: ComponentFactoryResolver,
     @Attribute('name') name: string,
     @Optional() @Attribute('tabs') tabs: string,
     private config: Config,
     private navCtrl: NavController,
+    private environmentInjector: EnvironmentInjector,
     commonLocation: Location,
     elementRef: ElementRef,
     router: Router,
@@ -206,11 +207,15 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
     }
   }
 
-  activateWith(activatedRoute: ActivatedRoute, resolver: ComponentFactoryResolver | null): void {
+  activateWith(
+    activatedRoute: ActivatedRoute,
+    resolverOrInjector?: ComponentFactoryResolver | EnvironmentInjector | null
+  ): void {
     if (this.isActivated) {
       throw new Error('Cannot activate an already activated outlet');
     }
     this._activatedRoute = activatedRoute;
+    const location = this.location;
 
     let cmpRef: any;
     let enteringView = this.stackCtrl.getExistingView(activatedRoute);
@@ -229,9 +234,6 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
       const snapshot = (activatedRoute as any)._futureSnapshot;
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const component = snapshot.routeConfig!.component as any;
-      resolver = resolver || this.resolver;
-
-      const factory = resolver.resolveComponentFactory(component);
       const childContexts = this.parentContexts.getOrCreateContext(this.name).children;
 
       // We create an activated route proxy object that will maintain future updates for this component
@@ -240,13 +242,22 @@ export class IonRouterOutlet implements OnDestroy, OnInit {
       const activatedRouteProxy = this.createActivatedRouteProxy(component$, activatedRoute);
 
       const injector = new OutletInjector(activatedRouteProxy, childContexts, this.location.injector);
-      cmpRef = this.activated = this.location.createComponent(factory, this.location.length, injector);
+
+      if (resolverOrInjector && isComponentFactoryResolver(resolverOrInjector)) {
+        const factory = resolverOrInjector.resolveComponentFactory(component);
+        cmpRef = this.activated = location.createComponent(factory, this.location.length, injector);
+      } else {
+        const environmentInjector = resolverOrInjector ?? this.environmentInjector;
+        cmpRef = this.activated = location.createComponent(component, {
+          index: location.length,
+          injector,
+          environmentInjector,
+        });
+      }
 
       // Once the component is created we can push it to our local subject supplied to the proxy
       component$.next(cmpRef.instance);
 
-      // Calling `markForCheck` to make sure we will run the change detection when the
-      // `RouterOutlet` is inside a `ChangeDetectionStrategy.OnPush` component.
       enteringView = this.stackCtrl.createView(this.activated, activatedRoute);
 
       // Store references to the proxy by component
@@ -382,4 +393,8 @@ class OutletInjector implements Injector {
 
     return this.parent.get(token, notFoundValue);
   }
+}
+
+function isComponentFactoryResolver(item: any): item is ComponentFactoryResolver {
+  return !!item.resolveComponentFactory;
 }

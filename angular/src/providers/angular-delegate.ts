@@ -6,6 +6,8 @@ import {
   Injectable,
   InjectionToken,
   Injector,
+  EnvironmentInjector,
+  ComponentRef,
 } from '@angular/core';
 import {
   FrameworkDelegate,
@@ -23,11 +25,11 @@ export class AngularDelegate {
   constructor(private zone: NgZone, private appRef: ApplicationRef) {}
 
   create(
-    resolver: ComponentFactoryResolver,
+    resolverOrInjector: ComponentFactoryResolver | EnvironmentInjector,
     injector: Injector,
     location?: ViewContainerRef
   ): AngularFrameworkDelegate {
-    return new AngularFrameworkDelegate(resolver, injector, location, this.appRef, this.zone);
+    return new AngularFrameworkDelegate(resolverOrInjector, injector, location, this.appRef, this.zone);
   }
 }
 
@@ -36,7 +38,7 @@ export class AngularFrameworkDelegate implements FrameworkDelegate {
   private elEventsMap = new WeakMap<HTMLElement, () => void>();
 
   constructor(
-    private resolver: ComponentFactoryResolver,
+    private resolverOrInjector: ComponentFactoryResolver | EnvironmentInjector,
     private injector: Injector,
     private location: ViewContainerRef | undefined,
     private appRef: ApplicationRef,
@@ -48,7 +50,7 @@ export class AngularFrameworkDelegate implements FrameworkDelegate {
       return new Promise((resolve) => {
         const el = attachView(
           this.zone,
-          this.resolver,
+          this.resolverOrInjector,
           this.injector,
           this.location,
           this.appRef,
@@ -85,7 +87,7 @@ export class AngularFrameworkDelegate implements FrameworkDelegate {
 
 export const attachView = (
   zone: NgZone,
-  resolver: ComponentFactoryResolver,
+  resolverOrInjector: ComponentFactoryResolver | EnvironmentInjector,
   injector: Injector,
   location: ViewContainerRef | undefined,
   appRef: ApplicationRef,
@@ -96,14 +98,28 @@ export const attachView = (
   params: any,
   cssClasses: string[] | undefined
 ): any => {
-  const factory = resolver.resolveComponentFactory(component);
+  let componentRef: ComponentRef<any>;
+
   const childInjector = Injector.create({
     providers: getProviders(params),
     parent: injector,
   });
-  const componentRef = location
-    ? location.createComponent(factory, location.length, childInjector)
-    : factory.create(childInjector);
+
+  if (resolverOrInjector && isComponentFactoryResolver(resolverOrInjector)) {
+    const factory = resolverOrInjector.resolveComponentFactory(component);
+    componentRef = location
+      ? location.createComponent(factory, location.length, childInjector)
+      : factory.create(childInjector);
+  } else if (location) {
+    const environmentInjector = resolverOrInjector as EnvironmentInjector;
+    componentRef = location.createComponent(component, {
+      index: location.length,
+      injector: childInjector,
+      environmentInjector,
+    });
+  } else {
+    return;
+  }
 
   const instance = componentRef.instance;
   const hostElement = componentRef.location.nativeElement;
@@ -165,3 +181,7 @@ const getProviders = (params: { [key: string]: any }) => {
 const provideNavParamsInjectable = (params: { [key: string]: any }) => {
   return new NavParams(params);
 };
+
+function isComponentFactoryResolver(item: any): item is ComponentFactoryResolver {
+  return !!item.resolveComponentFactory;
+}

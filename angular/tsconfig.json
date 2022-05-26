@@ -1,10 +1,9 @@
 {
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
-    "strictMetadataEmit": true,
-    "skipTemplateCodegen": true,
-    "fullTemplateTypeCheck": false,
-    "enableResourceInlining": true,
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true,
     "compilationMode": "partial"
   },
   "compilerOptions": {
@@ -16,30 +15,25 @@
     "declarationDir": "dist",
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["dom", "es2017"],
-    "module": "es2015",
+    "lib": ["dom", "es2018"],
+    "module": "es2020",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "build/es2015",
+    "outDir": "./dist/out-tsc",
     "pretty": true,
     "removeComments": false,
     "importHelpers": true,
     "rootDir": "src",
     "strictPropertyInitialization": false,
-    "target": "es2015",
+    "target": "es2020",
     "baseUrl": ".",
     "paths": {
       "@ionic/core/hydrate": ["../core/hydrate"],
       "@ionic/core": ["../core"]
-    },
-    "plugins": [
-      {
-        "name": "typescript-eslint-language-service"
-      }
-    ]
+    }
   },
   "exclude": ["node_modules", "src/schematics"],
   "files": ["src/index.ts"]
