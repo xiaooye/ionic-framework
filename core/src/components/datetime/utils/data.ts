@@ -341,7 +341,8 @@ export const getDayColumnData = (
   dayValues?: number[],
   formatOptions: Intl.DateTimeFormatOptions = {
     day: 'numeric',
-  }
+  },
+  renderAllDays = false
 ): PickerColumnItem[] => {
   const { month, year } = refParts;
   const days = [];
@@ -351,26 +352,36 @@ export const getDayColumnData = (
    * month/year as the refParts, we should
    * use the define day as the max/min day.
    * Otherwise, fallback to the max/min days in a month.
+   *
+   * If all days should be rendered, then we can set this
+   * to 31 as all months will have at most 31 days.
+   * For the individual date picker wheel, we should
+   * always render 31 days. Days that are greater than the
+   * number of days in a month should be disabled.
+   * Example: The wheel picker for April should always
+   * show 31 days, but day 31 should be disabled because
+   * April only has 30 days.
    */
   const numDaysInMonth = getNumDaysInMonth(month, year);
-  const maxDay = maxParts?.day && maxParts.year === year && maxParts.month === month ? maxParts.day : numDaysInMonth;
+  const daysToShow = renderAllDays ? 31 : numDaysInMonth;
+  const maxDay = maxParts?.day && maxParts.year === year && maxParts.month === month ? maxParts.day : daysToShow;
   const minDay = minParts?.day && minParts.year === year && minParts.month === month ? minParts.day : 1;
 
   if (dayValues !== undefined) {
     let processedDays = dayValues;
     processedDays = processedDays.filter((day) => day >= minDay && day <= maxDay);
     processedDays.forEach((processedDay) => {
-      const date = new Date(`${month}/${processedDay}/${year} GMT+0000`);
+      const date = new Date(`1/${processedDay}/${year} GMT+0000`);
 
       const dayString = new Intl.DateTimeFormat(locale, { ...formatOptions, timeZone: 'UTC' }).format(date);
-      days.push({ text: dayString, value: processedDay });
+      days.push({ text: dayString, value: processedDay, disabled: processedDay > numDaysInMonth });
     });
   } else {
     for (let i = minDay; i <= maxDay; i++) {
-      const date = new Date(`${month}/${i}/${year} GMT+0000`);
+      const date = new Date(`1/${i}/${year} GMT+0000`);
 
       const dayString = new Intl.DateTimeFormat(locale, { ...formatOptions, timeZone: 'UTC' }).format(date);
-      days.push({ text: dayString, value: i });
+      days.push({ text: dayString, value: i, disabled: i > numDaysInMonth });
     }
   }
 

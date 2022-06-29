@@ -110,6 +110,55 @@ test.describe('datetime: prefer wheel', () => {
       expect(monthValues).toHaveText(['1月', '2月', '3月']);
       expect(dayValues).toHaveText(['1日', '2日', '3日']);
     });
+    test('should always render 31 days', async ({ page }) => {
+      await page.setContent(`
+        <ion-datetime
+          presentation="date"
+          prefer-wheel="true"
+          value="2022-01-01"
+        ></ion-datetime>
+      `);
+
+      await page.waitForSelector('.datetime-ready');
+
+      const dayValues = page.locator('.day-column .picker-item:not(.picker-item-empty)');
+      expect(await dayValues.count()).toBe(31);
+    });
+    test('should disable dates outside of range', async ({ page }) => {
+      await page.setContent(`
+        <ion-datetime
+          presentation="date"
+          prefer-wheel="true"
+          value="2022-02-01"
+        ></ion-datetime>
+      `);
+
+      await page.waitForSelector('.datetime-ready');
+
+      const dayValues = page.locator('.day-column .picker-item:not(.picker-item-empty)');
+      await expect(dayValues.nth(28)).not.toBeEnabled();
+      await expect(dayValues.nth(29)).not.toBeEnabled();
+      await expect(dayValues.nth(30)).not.toBeEnabled();
+    });
+    test('should not render disabled dates if day-values is set', async ({ page }) => {
+      await page.setContent(`
+        <ion-datetime
+          presentation="date"
+          prefer-wheel="true"
+          value="2022-02-01"
+          day-values="28,29,31"
+          locale="en-US"
+        ></ion-datetime>
+      `);
+
+      await page.waitForSelector('.datetime-ready');
+
+      const dayValues = page.locator('.day-column .picker-item:not(.picker-item-empty)');
+      expect(dayValues).toHaveText(['28', '29', '31']);
+      expect(dayValues.nth(0)).toBeEnabled();
+      expect(dayValues.nth(1)).not.toBeEnabled();
+      expect(dayValues.nth(2)).not.toBeEnabled();
+    });
   });
   test.describe('datetime: date-time wheel rendering', () => {
     test('should not have visual regressions', async ({ page }) => {

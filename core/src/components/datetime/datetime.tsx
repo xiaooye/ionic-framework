@@ -1410,7 +1410,7 @@ export class Datetime implements ComponentInterface {
 
     const shouldRenderDays = forcePresentation === 'date';
     let days = shouldRenderDays
-      ? getDayColumnData(this.locale, workingParts, this.minParts, this.maxParts, this.parsedDayValues)
+      ? getDayColumnData(this.locale, workingParts, this.minParts, this.maxParts, this.parsedDayValues, undefined, true)
       : [];
 
     if (isDateEnabled) {
@@ -1432,9 +1432,14 @@ export class Datetime implements ComponentInterface {
           );
         }
 
+        /**
+         * The `isDateEnabled` result should
+         * never override any disabled setting
+         * set in getDayColumnData.
+         */
         return {
-          ...dayObject,
           disabled,
+          ...dayObject,
         };
       });
     }
