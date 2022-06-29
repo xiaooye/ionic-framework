@@ -364,6 +364,16 @@ export const getDayColumnData = (
    */
   const numDaysInMonth = getNumDaysInMonth(month, year);
   const daysToShow = renderAllDays ? 31 : numDaysInMonth;
+
+  /**
+   * When renderAllDays is true, we need to set the month
+   * to January when localizing the days. The reason is that
+   * January has 31 days. If we tried to localize April 31st
+   * (a date that does not exist), we would get May 1st.
+   * Note: renderAllDays should never be used if the localized
+   * month data is important as it will always return January.
+   */
+  const processedMonth = renderAllDays ? 1 : month;
   const maxDay = maxParts?.day && maxParts.year === year && maxParts.month === month ? maxParts.day : daysToShow;
   const minDay = minParts?.day && minParts.year === year && minParts.month === month ? minParts.day : 1;
 
@@ -371,14 +381,14 @@ export const getDayColumnData = (
     let processedDays = dayValues;
     processedDays = processedDays.filter((day) => day >= minDay && day <= maxDay);
     processedDays.forEach((processedDay) => {
-      const date = new Date(`1/${processedDay}/${year} GMT+0000`);
+      const date = new Date(`${processedMonth}/${processedDay}/${year} GMT+0000`);
 
       const dayString = new Intl.DateTimeFormat(locale, { ...formatOptions, timeZone: 'UTC' }).format(date);
       days.push({ text: dayString, value: processedDay, disabled: processedDay > numDaysInMonth });
     });
   } else {
     for (let i = minDay; i <= maxDay; i++) {
-      const date = new Date(`1/${i}/${year} GMT+0000`);
+      const date = new Date(`${processedMonth}/${i}/${year} GMT+0000`);
 
       const dayString = new Intl.DateTimeFormat(locale, { ...formatOptions, timeZone: 'UTC' }).format(date);
       days.push({ text: dayString, value: i, disabled: i > numDaysInMonth });
