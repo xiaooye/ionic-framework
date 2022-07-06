@@ -1665,6 +1665,10 @@ export namespace Components {
          */
         "insertPages": (insertIndex: number, insertComponents: NavComponent[] | NavComponentWithProps[], opts?: NavOptions | null | undefined, done?: TransitionDoneFn | undefined) => Promise<boolean>;
         /**
+          * The mode determines which platform styles to use.
+         */
+        "mode"?: "ios" | "md";
+        /**
           * Pop a component off of the navigation stack. Navigates back from the current component.
           * @param opts The navigation options.
           * @param done The transition complete function.
@@ -5557,6 +5561,10 @@ declare namespace LocalJSX {
          */
         "animation"?: AnimationBuilder;
         "delegate"?: FrameworkDelegate;
+        /**
+          * The mode determines which platform styles to use.
+         */
+        "mode"?: "ios" | "md";
         /**
           * Event fired when the nav has changed components
          */

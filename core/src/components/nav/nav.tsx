@@ -29,9 +29,16 @@ import { lifecycle, setPageHidden, transition } from '../../utils/transition';
 import { LIFECYCLE_DID_LEAVE, LIFECYCLE_WILL_LEAVE, LIFECYCLE_WILL_UNLOAD } from './constants';
 import { VIEW_STATE_ATTACHED, VIEW_STATE_DESTROYED, VIEW_STATE_NEW, convertToViews, matches } from './view-controller';
 
+/**
+ * @virtualProp {"ios" | "md"} mode - The mode determines which platform styles to use.
+ *
+ */
 @Component({
   tag: 'ion-nav',
-  styleUrl: 'nav.scss',
+  styleUrls: {
+    ios: 'nav.scss',
+    md: 'nav.scss',
+  },
   shadow: true,
 })
 export class Nav implements NavOutlet {
