@@ -141,7 +141,10 @@ export const startTapClick = (config: Config) => {
   const doc = document;
   doc.addEventListener('ionGestureCaptured', cancelActive);
 
-  doc.addEventListener('touchstart', onTouchStart, true);
+  doc.addEventListener('touchstart', onTouchStart, {
+    passive: true,
+    capture: true,
+  });
   doc.addEventListener('touchcancel', onTouchEnd, true);
   doc.addEventListener('touchend', onTouchEnd, true);
 

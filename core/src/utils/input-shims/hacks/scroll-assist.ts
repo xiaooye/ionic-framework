@@ -31,11 +31,17 @@ export const enableScrollAssist = (
       jsSetFocus(componentEl, inputEl, contentEl, footerEl, keyboardHeight);
     }
   };
-  componentEl.addEventListener('touchstart', touchStart, true);
-  componentEl.addEventListener('touchend', touchEnd, true);
+  componentEl.addEventListener('touchstart', touchStart, {
+    passive: true,
+    capture: true,
+  });
+  componentEl.addEventListener('touchend', touchEnd, {
+    passive: true,
+    capture: true,
+  });
 
   return () => {
-    componentEl.removeEventListener('touchstart', touchStart, true);
+    componentEl.removeEventListener('touchstart', touchStart);
     componentEl.removeEventListener('touchend', touchEnd, true);
   };
 };
