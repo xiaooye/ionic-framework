@@ -19,7 +19,6 @@
     <main class="ion-padding">
       <h1>Alert - A11y</h1>
 
-      <ion-button id="noHeader" expand="block" onclick="presentNoHeader()">Alert With No Header</ion-button>
       <ion-button id="customHeader" expand="block" onclick="presentCustomHeader()">Alert With Custom Header</ion-button>
       <ion-button id="subHeaderOnly" expand="block" onclick="presentSubHeaderOnly()"
         >Alert With Subheader Only</ion-button
@@ -33,13 +32,6 @@
       async function openAlert(opts) {
         const alert = await alertController.create(opts);
         await alert.present();
-      }
-
-      function presentNoHeader() {
-        openAlert({
-          message: 'This is an alert message.',
-          buttons: ['OK'],
-        });
       }
 
       function presentCustomHeader() {

@@ -25,10 +25,6 @@ test.describe('alert: a11y', () => {
     expect(results.violations).toEqual([]);
   });
 
-  test('should have fallback aria-label when no header or subheader is specified', async ({ page }) => {
-    await testAriaLabel(page, 'noHeader', 'Alert');
-  });
-
   test('should inherit aria-label from header', async ({ page }) => {
     await testAriaLabel(page, 'customHeader', 'Header');
   });
