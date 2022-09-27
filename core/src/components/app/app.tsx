@@ -73,7 +73,7 @@ export class App implements ComponentInterface {
 }
 
 const needInputShims = () => {
-  return isPlatform(window, 'ios') && isPlatform(window, 'mobile');
+  return isPlatform(window, 'mobile');
 };
 
 const rIC = (callback: () => void) => {

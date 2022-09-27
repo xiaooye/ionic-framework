@@ -18,6 +18,13 @@ export const enableScrollAssist = (
   enableScrollPadding: boolean,
   keyboardResize: KeyboardResizeOptions | undefined
 ) => {
+
+  /**
+   * Disable Chrome auto adjustment.
+   */
+  if (typeof navigator !== 'undefined' && 'virtualKeyboard' in navigator) {
+    //(navigator as any).virtualKeyboard.overlaysContent = true;
+  }
   /**
    * Scroll padding should only be added if:
    * 1. The global scrollPadding config option
