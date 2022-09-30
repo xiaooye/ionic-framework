@@ -8,6 +8,7 @@
    * @prop --background: Background of the segment button
    */
   --ripple-color: currentColor;
+  --min-height: auto;
 
   @include font-smoothing();
 
@@ -19,6 +20,7 @@
   justify-content: center;
 
   width: 100%;
+  min-height: var(--min-height);
 
   background: var(--background);
 

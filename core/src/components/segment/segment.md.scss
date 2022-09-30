@@ -9,6 +9,13 @@
 }
 
 
+// Segment: In Toolbar
+// --------------------------------------------------
+
+:host(.in-toolbar) {
+  --min-height: inherit;
+}
+
 // Segment: Scrollable
 // --------------------------------------------------
 
