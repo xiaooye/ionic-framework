@@ -1,17 +1,19 @@
 import type { Page, TestInfo } from '@playwright/test';
 
+import type { IonicTestOptions } from '../../playwright-page';
+
 /**
  * This provides metadata that can be used to
  * create a unique screenshot URL.
  * For example, we need to be able to differentiate
  * between iOS in LTR mode and iOS in RTL mode.
  */
-export const getSnapshotSettings = (page: Page, testInfo: TestInfo) => {
+export const getSnapshotSettings = (page: Page, testInfo: TestInfo, options: IonicTestOptions) => {
   const url = page.url();
   const splitUrl = url.split('?');
   const paramsString = splitUrl[1];
 
-  const { mode, rtl } = testInfo.project.metadata;
+  const { rtl } = testInfo.project.metadata;
 
   /**
    * Account for custom settings when overriding
@@ -21,7 +23,7 @@ export const getSnapshotSettings = (page: Page, testInfo: TestInfo) => {
    * before page.goto.
    */
   const urlToParams = new URLSearchParams(paramsString);
-  const formattedMode = urlToParams.get('ionic:mode') ?? mode;
+  const formattedMode = urlToParams.get('ionic:mode') ?? options.mode;
   const formattedRtl = urlToParams.get('rtl') ?? rtl;
 
   /**

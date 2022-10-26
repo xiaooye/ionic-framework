@@ -42,30 +42,30 @@ const projects: Project<PlaywrightTestOptions, PlaywrightWorkerOptions>[] = [
   }
 ];
 
-const modes = ['ios', 'md'];
+// const modes = ['ios', 'md'];
 
 const generateProjects = () => {
   const projectsWithMetadata: Project<PlaywrightTestOptions, PlaywrightWorkerOptions>[] = [];
 
-  modes.forEach(mode => {
-    projects.forEach(project => {
-      projectsWithMetadata.push({
-        ...project,
-        metadata: {
-          mode,
-          rtl: false,
-          _testing: true
-        }
-      });
-      projectsWithMetadata.push({
-        ...project,
-        metadata: {
-          mode,
-          rtl: true,
-          _testing: true
-        }
-      });
+  // modes.forEach(mode => {
+  projects.forEach(project => {
+    projectsWithMetadata.push({
+      ...project,
+      metadata: {
+        // mode,
+        rtl: false,
+        _testing: true
+      }
     });
+    projectsWithMetadata.push({
+      ...project,
+      metadata: {
+        // mode,
+        rtl: true,
+        _testing: true
+      }
+    });
+    // });
   });
 
   return projectsWithMetadata;

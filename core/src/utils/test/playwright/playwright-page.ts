@@ -4,6 +4,7 @@ import type {
   PlaywrightWorkerArgs,
   PlaywrightWorkerOptions,
   TestInfo,
+  TestType,
 } from '@playwright/test';
 import { test as base } from '@playwright/test';
 
@@ -25,12 +26,21 @@ type CustomTestArgs = PlaywrightTestArgs &
   PlaywrightWorkerArgs &
   PlaywrightWorkerOptions & {
     page: E2EPage;
+    mode?: 'ios' | 'md';
+    dir?: 'rtl' | 'ltr';
   };
 
 type CustomFixtures = {
   page: E2EPage;
   skip: E2ESkip;
+  mode: any;
+  dir: any;
 };
+
+export type IonicTestOptions = {
+  mode?: 'ios' | 'md';
+  dir?: 'rtl' | 'ltr';
+}
 
 /**
  * Extends the base `page` test figure within Playwright.
@@ -38,17 +48,17 @@ type CustomFixtures = {
  * @param testInfo The test info.
  * @returns The modified playwright page with extended functionality.
  */
-export async function extendPageFixture(page: E2EPage, testInfo: TestInfo) {
+export async function extendPageFixture(page: E2EPage, testInfo: TestInfo, testOptions: IonicTestOptions) {
   const originalGoto = page.goto.bind(page);
   const originalLocator = page.locator.bind(page);
 
   // Overridden Playwright methods
-  page.goto = (url: string, options) => goToPage(page, url, options, testInfo, originalGoto);
+  page.goto = (url: string, options) => goToPage(page, url, options, testInfo, testOptions, originalGoto);
   page.setContent = (html: string) => setContent(page, html, testInfo);
   page.locator = (selector: string, options?: LocatorOptions) => locator(page, originalLocator, selector, options);
 
   // Custom Ionic methods
-  page.getSnapshotSettings = () => getSnapshotSettings(page, testInfo);
+  page.getSnapshotSettings = () => getSnapshotSettings(page, testInfo, testOptions);
   page.setIonViewport = (options?: SetIonViewportOptions) => setIonViewport(page, options);
   page.waitForChanges = (timeoutMs?: number) => waitForChanges(page, timeoutMs);
   page.spyOnEvent = (eventName: string) => spyOnEvent(page, eventName);
@@ -59,9 +69,17 @@ export async function extendPageFixture(page: E2EPage, testInfo: TestInfo) {
   return page;
 }
 
-export const test = base.extend<CustomFixtures>({
-  page: async ({ page }: CustomTestArgs, use: (r: E2EPage) => Promise<void>, testInfo: TestInfo) => {
-    page = await extendPageFixture(page, testInfo);
+const testFixture: any = base.extend<CustomFixtures>({
+  // Define an option and provide a default value.
+  // We can later override it in the config.
+  mode: ['md', { option: true }],
+  dir: ['ltr', { option: true }],
+
+  page: async ({ page, mode, dir }: CustomTestArgs, use: (r: E2EPage) => Promise<void>, testInfo: TestInfo) => {
+    page = await extendPageFixture(page, testInfo, {
+      mode,
+      dir
+    });
     await use(page);
   },
   skip: {
@@ -86,3 +104,18 @@ export const test = base.extend<CustomFixtures>({
     },
   },
 });
+
+export const testIonicMode = (mode: 'ios' | 'md', callback: () => void) => {
+  // Run tests in this describe block with the specified mode
+  base.describe(`${mode}`, async () => {
+    await testFixture.use({ mode });
+    callback();
+  });
+}
+
+export const testIonicModes = (callback: () => void) => {
+  testIonicMode('ios', callback);
+  testIonicMode('md', callback);
+}
+
+export const test: TestType<PlaywrightTestArgs & PlaywrightTestOptions & CustomFixtures, PlaywrightWorkerArgs & PlaywrightWorkerOptions> = testFixture;
