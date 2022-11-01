@@ -12,7 +12,7 @@ import type {
 } from '../../interface';
 import type { Attributes } from '../../utils/helpers';
 import { inheritAriaAttributes, debounceEvent, findItemLabel, inheritAttributes } from '../../utils/helpers';
-import { defaultMaskVisibility, defaultPlaceHolderChar } from '../../utils/input-mask';
+import { defaultMaskVisibility, defaultPlaceHolderChar, validateMaskPlaceholder } from '../../utils/input-mask';
 import type { MaskFormat, MaskVisibility } from '../../utils/input-mask';
 import { createColorClasses } from '../../utils/theme';
 
@@ -225,6 +225,11 @@ export class Input implements ComponentInterface {
    */
   @Prop() maskPlaceholder?: string = defaultPlaceHolderChar;
 
+  @Watch('maskPlaceholder')
+  protected maskPlaceholderChanged() {
+    validateMaskPlaceholder(this.maskPlaceholder, this.mask);
+  }
+
   /**
    * The `ionInput` event fires when the `value` of an `<ion-input>` element
    * has been changed.
@@ -306,6 +311,7 @@ export class Input implements ComponentInterface {
   connectedCallback() {
     this.emitStyle();
     this.debounceChanged();
+    this.maskPlaceholderChanged();
     if (Build.isBrowser) {
       document.dispatchEvent(
         new CustomEvent('ionInputDidLoad', {
