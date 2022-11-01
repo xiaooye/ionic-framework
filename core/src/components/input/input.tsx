@@ -12,6 +12,8 @@ import type {
 } from '../../interface';
 import type { Attributes } from '../../utils/helpers';
 import { inheritAriaAttributes, debounceEvent, findItemLabel, inheritAttributes } from '../../utils/helpers';
+import { defaultMaskVisibility, defaultPlaceHolderChar } from '../../utils/input-mask';
+import type { MaskFormat, MaskVisibility } from '../../utils/input-mask';
 import { createColorClasses } from '../../utils/theme';
 
 /**
@@ -201,6 +203,27 @@ export class Input implements ComponentInterface {
    * The value of the input.
    */
   @Prop({ mutable: true }) value?: string | number | null = '';
+
+  /**
+   * Mask format. Can either be a string or an array of either
+   * characters or regular expressions.
+   */
+  @Prop() mask?: MaskFormat;
+
+  /**
+   * The visibility of the mask placeholder. With always, the placeholder
+   * will be visible even when the control does not have focus. With focus,
+   * the placeholder will only be visible when the control has focus.
+   * With never, the placeholder will never be visible.
+   */
+  @Prop() maskVisibility: MaskVisibility = defaultMaskVisibility;
+
+  /**
+   * Character or string to cover unfilled parts of the mask. Default
+   * character is `_`. If set to `null`, `undefined` or an empty string,
+   * unfilled parts will be empty as in a regular input.
+   */
+  @Prop() maskPlaceholder?: string = defaultPlaceHolderChar;
 
   /**
    * The `ionInput` event fires when the `value` of an `<ion-input>` element
