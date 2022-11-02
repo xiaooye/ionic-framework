@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AccordionGroupChangeEventDetail, ActionSheetButton, AlertButton, AlertInput, AnimationBuilder, AutocompleteTypes, BreadcrumbCollapsedClickEventDetail, CheckboxChangeEventDetail, Color, ComponentProps, ComponentRef, DatetimeChangeEventDetail, DatetimePresentation, FrameworkDelegate, InputChangeEventDetail, InputInputEventDetail, ItemReorderEventDetail, MenuChangeEventDetail, ModalBreakpointChangeEventDetail, ModalHandleBehavior, NavComponent, NavComponentWithProps, NavOptions, OverlayEventDetail, PickerButton, PickerColumn, PopoverSize, PositionAlign, PositionReference, PositionSide, RadioGroupChangeEventDetail, RangeChangeEventDetail, RangeKnobMoveEndEventDetail, RangeKnobMoveStartEventDetail, RangeValue, RefresherEventDetail, RouteID, RouterDirection, RouterEventDetail, RouterOutletOptions, RouteWrite, ScrollBaseDetail, ScrollDetail, SearchbarChangeEventDetail, SegmentButtonLayout, SegmentChangeEventDetail, SelectChangeEventDetail, SelectInterface, SelectPopoverOption, Side, SpinnerTypes, StyleEventDetail, SwipeGestureHandler, TabBarChangedEventDetail, TabButtonClickEventDetail, TabButtonLayout, TextareaChangeEventDetail, TextFieldTypes, TitleSelectedDatesFormatter, ToastButton, ToggleChangeEventDetail, TransitionDoneFn, TransitionInstruction, TriggerAction, ViewController } from "./interface";
 import { IonicSafeString } from "./utils/sanitization";
+import { MaskFormat, MaskVisibility } from "./utils/input-mask";
 import { CounterFormatter } from "./components/item/item-interface";
 import { PickerColumnItem } from "./components/picker-column-internal/picker-column-internal-interfaces";
 import { PickerInternalChangeEventDetail } from "./components/picker-internal/picker-internal-interfaces";
@@ -1093,6 +1094,18 @@ export namespace Components {
           * A hint to the browser for which keyboard to display. Possible values: `"none"`, `"text"`, `"tel"`, `"url"`, `"email"`, `"numeric"`, `"decimal"`, and `"search"`.
          */
         "inputmode"?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
+        /**
+          * Mask format. Can either be a string or an array of either characters or regular expressions.
+         */
+        "mask"?: MaskFormat;
+        /**
+          * Character or string to cover unfilled parts of the mask. Default character is `_`. If set to `null`, `undefined` or an empty string, unfilled parts will be empty as in a regular input.
+         */
+        "maskPlaceholder"?: string;
+        /**
+          * The visibility of the mask placeholder. With always, the placeholder will be visible even when the control does not have focus. With focus, the placeholder will only be visible when the control has focus. With never, the placeholder will never be visible.
+         */
+        "maskVisibility": MaskVisibility;
         /**
           * The maximum value, which must not be less than its minimum (min attribute) value.
          */
@@ -4895,6 +4908,18 @@ declare namespace LocalJSX {
           * A hint to the browser for which keyboard to display. Possible values: `"none"`, `"text"`, `"tel"`, `"url"`, `"email"`, `"numeric"`, `"decimal"`, and `"search"`.
          */
         "inputmode"?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
+        /**
+          * Mask format. Can either be a string or an array of either characters or regular expressions.
+         */
+        "mask"?: MaskFormat;
+        /**
+          * Character or string to cover unfilled parts of the mask. Default character is `_`. If set to `null`, `undefined` or an empty string, unfilled parts will be empty as in a regular input.
+         */
+        "maskPlaceholder"?: string;
+        /**
+          * The visibility of the mask placeholder. With always, the placeholder will be visible even when the control does not have focus. With focus, the placeholder will only be visible when the control has focus. With never, the placeholder will never be visible.
+         */
+        "maskVisibility"?: MaskVisibility;
         /**
           * The maximum value, which must not be less than its minimum (min attribute) value.
          */

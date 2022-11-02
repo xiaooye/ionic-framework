@@ -12,8 +12,13 @@ import type {
 } from '../../interface';
 import type { Attributes } from '../../utils/helpers';
 import { inheritAriaAttributes, debounceEvent, findItemLabel, inheritAttributes } from '../../utils/helpers';
-import { defaultMaskVisibility, defaultPlaceHolderChar, validateMaskPlaceholder } from '../../utils/input-mask';
-import type { MaskFormat, MaskVisibility } from '../../utils/input-mask';
+import {
+  defaultMaskVisibility,
+  defaultPlaceHolderChar,
+  validateMaskPlaceholder,
+  createMaskInputElement,
+} from '../../utils/input-mask';
+import type { MaskFormat, MaskVisibility, MaskInstance } from '../../utils/input-mask';
 import { createColorClasses } from '../../utils/theme';
 
 /**
@@ -32,6 +37,7 @@ export class Input implements ComponentInterface {
   private inputId = `ion-input-${inputIds++}`;
   private inheritedAttributes: Attributes = {};
   private isComposing = false;
+  private maskInstance?: MaskInstance;
   /**
    * `true` if the input was cleared as a result of the user typing
    * with `clearOnEdit` enabled.
@@ -298,6 +304,9 @@ export class Input implements ComponentInterface {
        */
       nativeInput.value = value;
     }
+    if (this.maskInstance) {
+      this.maskInstance.update(value);
+    }
     this.emitStyle();
   }
 
@@ -306,6 +315,12 @@ export class Input implements ComponentInterface {
       ...inheritAriaAttributes(this.el),
       ...inheritAttributes(this.el, ['tabindex', 'title', 'data-form-type']),
     };
+  }
+
+  componentDidRender() {
+    if (this.maskInstance) {
+      this.maskInstance.update(this.getValue());
+    }
   }
 
   connectedCallback() {
@@ -328,6 +343,16 @@ export class Input implements ComponentInterface {
       // https://github.com/ionic-team/stencil/issues/3235
       nativeInput.addEventListener('compositionstart', this.onCompositionStart);
       nativeInput.addEventListener('compositionend', this.onCompositionEnd);
+
+      if (this.mask !== undefined) {
+        this.maskInstance = createMaskInputElement({
+          inputElement: nativeInput,
+          mask: this.mask,
+          maskVisibility: this.maskVisibility,
+          placeholderChar: this.maskPlaceholder,
+        });
+        this.maskInstance.update(this.getValue());
+      }
     }
   }
 

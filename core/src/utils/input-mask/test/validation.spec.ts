@@ -1,4 +1,4 @@
-import { isMaskPlaceholderValid } from './validation';
+import { isMaskPlaceholderValid } from '../validation';
 
 describe('isMaskPlaceholderValid', () => {
 

@@ -7,4 +7,4 @@ export type MaskVisibility = 'always' | 'focus' | 'never';
 /**
  * The accepted format for the mask.
  */
-export type MaskFormat = string | (string | RegExp)[];
+export type MaskFormat = string | (string | RegExp)[] | boolean;
