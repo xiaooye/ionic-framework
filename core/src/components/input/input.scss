@@ -269,6 +269,8 @@
   transition: background-color 15ms linear;
 
   background: var(--background);
+
+  overflow: hidden;
 }
 
 // Input Native Wrapper
