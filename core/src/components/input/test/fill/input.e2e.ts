@@ -6,6 +6,19 @@ test.describe('input: fill', () => {
     skip.mode('ios', 'Fill is only available in MD mode');
   });
 
+  test.describe('input: fill none', () => {
+    test('highlight should follow border radius with shape', async ({ page }) => {
+      await page.setContent(`
+        <ion-input
+          class="has-value"
+          shape="round"
+          label="Email"
+        ></ion-input>
+      `);
+      const input = page.locator('ion-input');
+      expect(await input.screenshot()).toMatchSnapshot(`input-fill-none-${page.getSnapshotSettings()}.png`);
+    })
+  })
   test.describe('input: fill solid', () => {
     test('should not have visual regressions', async ({ page }) => {
       await page.setContent(`
