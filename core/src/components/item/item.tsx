@@ -312,7 +312,8 @@ export class Item implements ComponentInterface, AnchorInterface, ButtonInterfac
 
   private hasModernInput(): boolean {
     const input = this.el.querySelector('ion-input:not(.legacy-input)');
-    return input !== null;
+    const textarea = this.el.querySelector('ion-textarea:not(.legacy-textarea)');
+    return input !== null || textarea !== null;
   }
 
   private getFirstInput(): HTMLIonInputElement | HTMLIonTextareaElement {

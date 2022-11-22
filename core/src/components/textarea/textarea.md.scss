@@ -1,18 +1,27 @@
 @import "./textarea";
 @import "./textarea.md.vars";
+@import "./textarea.md.solid.scss";
+@import "./textarea.md.outline.scss";
+@import "../item/item.md.vars.scss";
 
 // Material Design Textarea
 // --------------------------------------------------
 
 :host {
+  --border-width: 1px;
+  --border-color: #{$item-md-border-color};
+
+  font-size: $textarea-md-font-size;
+}
+
+// TODO FW-2876 Remove this
+:host(.legacy-textarea) {
   --padding-top: #{$textarea-md-padding-top};
   --padding-end: #{$textarea-md-padding-end};
   --padding-bottom: #{$textarea-md-padding-bottom};
   --padding-start: #{$textarea-md-padding-start};
 
-  @include margin(8px, 0, 0, 0);
-
-  font-size: $textarea-md-font-size;
+  // @include margin(8px, 0, 0, 0);
 }
 
 :host-context(.item-label-stacked),
@@ -20,4 +29,91 @@
   --padding-top: 8px;
   --padding-bottom: 8px;
   --padding-start: 0;
+}
+
+/**
+ * The textarea with no fill in item should
+ * have start padding applied on the textarea
+ * not the item.
+ */
+:host(.in-full-item:not(.input-fill-outline)),
+:host(.in-full-item:not(.input-fill-solid)) {
+  --padding-start: #{$item-md-padding-start};
+}
+
+// Textarea Bottom
+// ----------------------------------------------------------------
+/**
+  * If the textarea has a validity state, the
+  * border and label should reflect that as a color.
+  */
+:host(.ion-touched.ion-valid) .input-bottom,
+:host(.ion-touched.ion-invalid) .input-bottom {
+  --border-color: var(--highlight-color);
+}
+
+.input-bottom .counter {
+  letter-spacing: 0.0333333333em;
+}
+
+// Textarea Wrapper
+// ----------------------------------------------------------------
+
+.textarea-wrapper {
+  min-height: 56px;
+}
+
+// Textarea Label
+// ----------------------------------------------------------------
+
+/**
+ * When the textarea is focused the label should
+ * take on the highlight color.
+ */
+:host(.has-focus) .label-text-wrapper {
+  color: var(--highlight-color);
+}
+
+:host(.ion-touched.ion-valid) .label-text-wrapper,
+:host(.ion-touched.ion-invalid) .label-text-wrapper {
+  color: var(--highlight-color);
+}
+
+// Textarea Highlight
+// ----------------------------------------------------------------
+
+.input-highlight {
+  @include position(null, null, -1px, 0);
+
+  position: absolute;
+
+  width: 100%;
+  height: 2px;
+
+  transform: scale(0);
+
+  transition: transform 200ms;
+
+  background: var(--highlight-color);
+}
+
+:host(.has-focus) .input-highlight {
+  transform: scale(1);
+}
+
+// Textarea Shape Rounded
+// ----------------------------------------------------------------
+
+:host(.input-shape-round) {
+  --border-radius: 16px;
+}
+
+/**
+ * This ensures that the textarea contents are not
+ * partially clipped when the textarea has multiple
+ * lines of text.
+ */
+:host(.input-label-placement-stacked) textarea,
+:host(.input-label-placement-floating) textarea {
+  @include margin(10px, 0, 10px, 0);
 }
