@@ -2,9 +2,15 @@
 @import "./select.md.vars";
 @import "./select.md.solid.scss";
 @import "./select.md.outline.scss";
+@import "../item/item.md.vars.scss";
 
 // Material Design Select
 // --------------------------------------------------
+
+:host {
+  --border-width: 1px;
+  --border-color: #{$item-md-border-color};
+}
 
 :host(.legacy-select) {
   --padding-top: #{$select-md-padding-top};

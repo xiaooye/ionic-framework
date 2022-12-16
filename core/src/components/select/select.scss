@@ -32,14 +32,29 @@
   --placeholder-color: currentColor;
   --placeholder-opacity: #{$placeholder-opacity};
   --background: transparent;
+  --border-style: solid;
+  --highlight-color-focused: #{ion-color(primary, base)};
+  --highlight-color-valid: #{ion-color(success, base)};
+  --highlight-color-invalid: #{ion-color(danger, base)};
+
+  /**
+   * This is a private API that is used to switch
+   * out the highlight color based on the state
+   * of the component without having to write
+   * different selectors for different fill variants.
+   */
+  --highlight-color: var(--highlight-color-focused);
 
   display: block;
   position: relative;
 
   font-family: $font-family-base;
 
-  overflow: hidden;
   z-index: $z-index-item-input;
+}
+
+:host(.ion-color) {
+  --highlight-color-focused: #{current-color(base)};
 }
 
 :host(.legacy-select) {
@@ -48,6 +63,8 @@
   display: flex;
 
   align-items: center;
+
+  overflow: hidden;
 }
 
 :host(:not(.legacy-select)) {

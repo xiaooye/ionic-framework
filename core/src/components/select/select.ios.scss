@@ -4,6 +4,11 @@
 // iOS Select
 // --------------------------------------------------
 
+:host {
+  --border-width: #{$hairlines-width};
+  --border-color: #{$item-ios-border-color};
+}
+
 :host(.legacy-select) {
   --padding-top: #{$select-ios-padding-top};
   --padding-end: #{$select-ios-padding-end};
