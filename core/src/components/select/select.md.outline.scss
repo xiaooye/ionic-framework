@@ -141,6 +141,16 @@
 :host(.select-fill-outline) .select-outline-end {
   border-top: var(--border-width) var(--border-style) var(--border-color);
   border-bottom: var(--border-width) var(--border-style) var(--border-color);
+
+  /**
+   * `border-box` is applied in the global
+   * Ionic stylesheet, but since this is in
+   * the Shadow DOM, these elements do not
+   * receive the global style. The outline
+   * pieces for `ion-input` do because that
+   * component is in the Light DOM.
+   */
+  box-sizing: border-box;
 }
 
 /**
