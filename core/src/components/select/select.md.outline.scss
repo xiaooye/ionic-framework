@@ -62,10 +62,20 @@
   border-bottom: none;
 }
 
+:host(.select-ltr.select-fill-outline.select-label-placement-stacked) .label-text-wrapper,
+:host(.select-ltr.select-fill-outline.select-label-placement-floating) .label-text-wrapper {
+  // stylelint-disable-next-line property-disallowed-list
+  transform-origin: left top;
+}
+
+:host(.select-rtl.select-fill-outline.select-label-placement-stacked) .label-text-wrapper,
+:host(.select-rtl.select-fill-outline.select-label-placement-floating) .label-text-wrapper {
+  // stylelint-disable-next-line property-disallowed-list
+  transform-origin: right top;
+}
+
 :host(.select-fill-outline.select-label-placement-stacked) .label-text-wrapper,
 :host(.select-fill-outline.select-label-placement-floating) .label-text-wrapper {
-  @include transform-origin(start, top);
-
   position: absolute;
 
   /**
@@ -184,10 +194,21 @@
   pointer-events: none;
 }
 
-:host(.select-fill-outline) .select-outline-start {
-  @include border-radius(var(--border-radius), 0px, 0px, var(--border-radius));
-  @include border(null, null, null, var(--border-width) var(--border-style) var(--border-color));
+:host(.select-ltr.select-fill-outline) .select-outline-start {
+  // stylelint-disable-next-line property-disallowed-list
+  border-left: var(--border-width) var(--border-style) var(--border-color);
+  // stylelint-disable-next-line property-disallowed-list
+  border-radius: var(--border-radius) 0px 0px var(--border-radius);
+}
 
+:host(.select-rtl.select-fill-outline) .select-outline-start {
+  // stylelint-disable-next-line property-disallowed-list
+  border-right: var(--border-width) var(--border-style) var(--border-color);
+  // stylelint-disable-next-line property-disallowed-list
+  border-radius: 0px var(--border-radius) var(--border-radius) 0px;
+}
+
+:host(.select-fill-outline) .select-outline-start {
   /**
    * There should be spacing between the translated text
    * and .select-outline-start. However, we can't add this
@@ -199,10 +220,21 @@
   width: calc(var(--padding-start) - #{$select-md-floating-label-padding});
 }
 
-:host(.select-fill-outline) .select-outline-end {
-  @include border(null, var(--border-width) var(--border-style) var(--border-color), null, null);
-  @include border-radius(0px, var(--border-radius), var(--border-radius), 0px);
+:host(.select-ltr.select-fill-outline) .select-outline-end {
+  // stylelint-disable-next-line property-disallowed-list
+  border-right: var(--border-width) var(--border-style) var(--border-color);
+  // stylelint-disable-next-line property-disallowed-list
+  border-radius: 0px var(--border-radius) var(--border-radius) 0px;
+}
 
+:host(.select-rtl.select-fill-outline) .select-outline-end {
+  // stylelint-disable-next-line property-disallowed-list
+  border-left: var(--border-width) var(--border-style) var(--border-color);
+  // stylelint-disable-next-line property-disallowed-list
+  border-radius: var(--border-radius) 0px 0px var(--border-radius);
+}
+
+:host(.select-fill-outline) .select-outline-end {
   /**
    * The ending outline fragment
    * should take up the remaining free space.
