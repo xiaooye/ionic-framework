@@ -5,6 +5,7 @@
 
 :host {
   /**
+   * @prop --background: Background of the select
    * @prop --padding-top: Top padding of the select
    * @prop --padding-end: Right padding if direction is left-to-right, and left padding if direction is right-to-left of the select
    * @prop --padding-bottom: Bottom padding of the select
@@ -30,6 +31,7 @@
   --padding-start: 0px;
   --placeholder-color: currentColor;
   --placeholder-opacity: #{$placeholder-opacity};
+  --background: transparent;
 
   display: block;
   position: relative;
@@ -109,7 +111,7 @@ button {
   width: 13px;
 }
 
-/**
+/**.
  * This rotates the chevron icon
  * when the select is activated.
  */
@@ -140,13 +142,13 @@ button {
 :host(.select-ltr.select-label-placement-stacked) .select-icon,
 :host(.select-ltr.select-label-placement-floating) .select-icon {
   // stylelint-disable-next-line property-disallowed-list
-  right: 0;
+  right: var(--padding-end, 0);
 }
 
 :host(.select-rtl.select-label-placement-stacked) .select-icon,
 :host(.select-rtl.select-label-placement-floating) .select-icon {
   // stylelint-disable-next-line property-disallowed-list
-  left: 0;
+  left: var(--padding-start, 0);
 }
 
 // Select Text
@@ -190,6 +192,8 @@ button {
   min-height: inherit;
 
   transition: background-color 15ms linear;
+
+  background: var(--background);
 
   cursor: inherit;
 }
