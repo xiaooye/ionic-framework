@@ -159,7 +159,8 @@
   }
 }
 
-.native-textarea[disabled]:not(.cloned-input) {
+:host(.legacy-textarea) .native-textarea[disabled]:not(.cloned-input),
+:host[disabled] {
   opacity: 0.4;
 }
 
