@@ -1,12 +1,14 @@
 import { Build, writeTask } from '@stencil/core';
 
+
 import {
   LIFECYCLE_DID_ENTER,
   LIFECYCLE_DID_LEAVE,
   LIFECYCLE_WILL_ENTER,
   LIFECYCLE_WILL_LEAVE,
 } from '../../components/nav/constants';
-import type { Animation, AnimationBuilder, NavDirection, NavOptions } from '../../interface';
+import type { NavDirection, NavOptions } from '../../components/nav/nav-interface';
+import type { Animation, AnimationBuilder } from '../../interface';
 import { raf } from '../helpers';
 
 const iosTransitionAnimation = () => import('./ios.transition');

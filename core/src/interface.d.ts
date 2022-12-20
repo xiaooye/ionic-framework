@@ -3,38 +3,11 @@ import type { Components as IoniconsComponents, JSX as IoniconsJSX } from 'ionic
 
 export * from './components';
 export * from './index';
-export * from './components/accordion-group/accordion-group-interface';
-export * from './components/alert/alert-interface';
-export * from './components/action-sheet/action-sheet-interface';
-export * from './components/breadcrumb/breadcrumb-interface';
-export * from './components/content/content-interface';
-export * from './components/checkbox/checkbox-interface';
-export * from './components/datetime/datetime-interface';
 export * from './components/infinite-scroll/infinite-scroll-interface';
-export * from './components/input/input-interface';
 export * from './components/item/item-interface';
 export * from './components/item-sliding/item-sliding-interface';
 export * from './components/loading/loading-interface';
-export * from './components/menu/menu-interface';
-export * from './components/modal/modal-interface';
-export * from './components/nav/nav-interface';
-export * from './components/picker/picker-interface';
-export * from './components/popover/popover-interface';
-export * from './components/radio-group/radio-group-interface';
-export * from './components/range/range-interface';
-export * from './components/router/utils/interface';
-export * from './components/refresher/refresher-interface';
-export * from './components/reorder-group/reorder-group-interface';
-export * from './components/searchbar/searchbar-interface';
-export * from './components/segment/segment-interface';
-export * from './components/select/select-interface';
-export * from './components/select-popover/select-popover-interface';
-export * from './components/spinner/spinner-interface';
 export * from './components/tabs/tabs-interface';
-export * from './components/tab-bar/tab-bar-interface';
-export * from './components/textarea/textarea-interface';
-export * from './components/toast/toast-interface';
-export * from './components/toggle/toggle-interface';
 
 // Types from utils
 export {
@@ -46,7 +19,6 @@ export {
   AnimationKeyFrames,
   AnimationLifecycle,
 } from './utils/animation/animation-interface';
-export * from './utils/overlays-interface';
 export * from './global/config';
 export { Gesture, GestureConfig, GestureDetail } from './utils/gesture';
 

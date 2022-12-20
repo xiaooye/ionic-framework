@@ -1,25 +1,24 @@
+import type { ActionSheetOptions } from '../components/action-sheet/action-sheet-interface';
+import type { AlertOptions } from '../components/alert/alert-interface';
+import type { ModalOptions } from '../components/modal/modal-interface';
+import type { PickerOptions } from '../components/picker/picker-interface';
+import type { PopoverOptions } from '../components/popover/popover-interface';
+import type { ToastOptions } from '../components/toast/toast-interface';
 import { config } from '../global/config';
 import { getIonMode } from '../global/ionic-global';
 import type {
-  ActionSheetOptions,
-  AlertOptions,
   Animation,
   AnimationBuilder,
   BackButtonEvent,
   FrameworkDelegate,
-  HTMLIonOverlayElement,
   IonicConfig,
   LoadingOptions,
-  ModalOptions,
-  OverlayInterface,
-  PickerOptions,
-  PopoverOptions,
-  ToastOptions,
 } from '../interface';
 
 import { CoreDelegate } from './framework-delegate';
 import { OVERLAY_BACK_BUTTON_PRIORITY } from './hardware-back-button';
 import { addEventListener, componentOnReady, focusElement, getElementRoot, removeEventListener } from './helpers';
+import type { HTMLIonOverlayElement, OverlayInterface } from './overlays-interface';
 
 let lastId = 0;
 
