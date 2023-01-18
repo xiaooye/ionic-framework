@@ -1,4 +1,5 @@
-import type { Animation } from '../../interface';
+import type { Animation } from '@utils/animation/animation-interface';
+
 import { createAnimation } from '../animation/animation';
 import type { TransitionOptions } from '../transition';
 import { getIonPageElement } from '../transition';

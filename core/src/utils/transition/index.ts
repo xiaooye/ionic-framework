@@ -1,4 +1,6 @@
+import type { NavDirection, NavOptions } from '@components/nav/nav-interface';
 import { Build, writeTask } from '@stencil/core';
+import type { Animation, AnimationBuilder } from '@utils/animation/animation-interface';
 
 import {
   LIFECYCLE_DID_ENTER,
@@ -6,7 +8,6 @@ import {
   LIFECYCLE_WILL_ENTER,
   LIFECYCLE_WILL_LEAVE,
 } from '../../components/nav/constants';
-import type { Animation, AnimationBuilder, NavDirection, NavOptions } from '../../interface';
 import { raf } from '../helpers';
 
 const iosTransitionAnimation = () => import('./ios.transition');
