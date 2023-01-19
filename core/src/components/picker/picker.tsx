@@ -10,7 +10,7 @@ import type {
   PickerButton,
   PickerColumn,
   FrameworkDelegate,
-} from '../../interface';
+} from '../../internal-interface';
 import {
   createDelegateController,
   createTriggerController,

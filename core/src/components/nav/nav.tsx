@@ -20,7 +20,7 @@ import type {
   TransitionDoneFn,
   TransitionInstruction,
   ViewController,
-} from '../../interface';
+} from '../../internal-interface';
 import { getTimeGivenProgression } from '../../utils/animation/cubic-bezier';
 import { assert } from '../../utils/helpers';
 import type { TransitionOptions } from '../../utils/transition';

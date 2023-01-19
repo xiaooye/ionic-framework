@@ -2,7 +2,7 @@ import type { ComponentInterface, EventEmitter } from '@stencil/core';
 import { Component, Element, Event, Host, Method, Prop, State, Watch, h, readTask, writeTask } from '@stencil/core';
 
 import { getIonMode } from '../../global/ionic-global';
-import type { Animation, Gesture, GestureDetail, RefresherEventDetail } from '../../interface';
+import type { Animation, Gesture, GestureDetail, RefresherEventDetail } from '../../internal-interface';
 import { getTimeGivenProgression } from '../../utils/animation/cubic-bezier';
 import {
   getScrollElement,

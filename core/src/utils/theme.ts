@@ -1,4 +1,4 @@
-import type { AnimationBuilder, Color, CssClassMap, RouterDirection } from '../interface';
+import type { AnimationBuilder, Color, CssClassMap, RouterDirection } from '../internal-interface';
 
 export const hostContext = (selector: string, el: HTMLElement): boolean => {
   return el.closest(selector) !== null;

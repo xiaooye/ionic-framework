@@ -1,4 +1,4 @@
-import type { Animation } from '../../../interface';
+import type { Animation } from '../../../internal-interface';
 import type { GestureDetail } from '../../../utils/gesture';
 import { createGesture } from '../../../utils/gesture';
 import { clamp, raf } from '../../../utils/helpers';

@@ -2,7 +2,7 @@ import type { ComponentInterface } from '@stencil/core';
 import { Component, Element, Host, Prop, State, forceUpdate, h } from '@stencil/core';
 
 import { getIonMode } from '../../global/ionic-global';
-import type { SegmentButtonLayout } from '../../interface';
+import type { SegmentButtonLayout } from '../../internal-interface';
 import type { ButtonInterface } from '../../utils/element-interface';
 import { addEventListener, removeEventListener } from '../../utils/helpers';
 import { hostContext } from '../../utils/theme';

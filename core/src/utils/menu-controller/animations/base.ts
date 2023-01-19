@@ -1,4 +1,4 @@
-import type { Animation } from '../../../interface';
+import type { Animation } from '../../../internal-interface';
 import { createAnimation } from '../../animation/animation';
 
 /**

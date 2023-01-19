@@ -7,7 +7,7 @@ import type {
   RouteChain,
   RouterDirection,
   RouterEventDetail,
-} from '../../interface';
+} from '../../internal-interface';
 import { debounce } from '../../utils/helpers';
 import type { NavigationHookResult } from '../route/route-interface';
 

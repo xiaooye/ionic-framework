@@ -1,4 +1,4 @@
-import type { Config } from '../../interface';
+import type { Config } from '../../internal-interface';
 import { now, pointerCoord } from '../helpers';
 
 export const startTapClick = (config: Config) => {

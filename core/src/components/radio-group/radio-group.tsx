@@ -2,7 +2,7 @@ import type { ComponentInterface, EventEmitter } from '@stencil/core';
 import { Component, Element, Event, Host, Listen, Prop, Watch, h } from '@stencil/core';
 
 import { getIonMode } from '../../global/ionic-global';
-import type { RadioGroupChangeEventDetail } from '../../interface';
+import type { RadioGroupChangeEventDetail } from '../../internal-interface';
 
 /**
  * The Radio Group component mandates that only one radio button

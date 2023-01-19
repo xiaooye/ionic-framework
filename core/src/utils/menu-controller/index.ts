@@ -1,4 +1,4 @@
-import type { AnimationBuilder, BackButtonEvent, MenuI } from '../../interface';
+import type { AnimationBuilder, BackButtonEvent, MenuI } from '../../internal-interface';
 import { MENU_BACK_BUTTON_PRIORITY } from '../hardware-back-button';
 import { componentOnReady } from '../helpers';
 

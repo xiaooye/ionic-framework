@@ -3,7 +3,7 @@ import { Component, Element, Event, Host, Listen, Prop, h } from '@stencil/core'
 
 import { config } from '../../global/config';
 import { getIonMode } from '../../global/ionic-global';
-import type { TabBarChangedEventDetail, TabButtonClickEventDetail, TabButtonLayout } from '../../interface';
+import type { TabBarChangedEventDetail, TabButtonClickEventDetail, TabButtonLayout } from '../../internal-interface';
 import type { AnchorInterface } from '../../utils/element-interface';
 
 /**

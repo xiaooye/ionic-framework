@@ -3,7 +3,7 @@ import { Build, Component, Element, Event, Host, Listen, Method, Prop, State, Wa
 
 import { config } from '../../global/config';
 import { getIonMode } from '../../global/ionic-global';
-import type { Animation, Gesture, GestureDetail, MenuChangeEventDetail, MenuI, Side } from '../../interface';
+import type { Animation, Gesture, GestureDetail, MenuChangeEventDetail, MenuI, Side } from '../../internal-interface';
 import { getTimeGivenProgression } from '../../utils/animation/cubic-bezier';
 import { GESTURE_CONTROLLER } from '../../utils/gesture';
 import type { Attributes } from '../../utils/helpers';

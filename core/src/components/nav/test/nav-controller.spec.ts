@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 
 import { Config } from '../../../global/config';
-import type { ComponentProps } from '../../../interface';
+import type { ComponentProps } from '../../../internal-interface';
 import { Nav } from '../nav';
 import type { NavOptions } from '../nav-interface';
 import { ViewController } from '../view-controller';

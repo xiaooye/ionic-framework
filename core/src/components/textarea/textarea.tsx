@@ -2,7 +2,7 @@ import type { ComponentInterface, EventEmitter } from '@stencil/core';
 import { Build, Component, Element, Event, Host, Method, Prop, State, Watch, h, writeTask } from '@stencil/core';
 
 import { getIonMode } from '../../global/ionic-global';
-import type { Color, StyleEventDetail, TextareaChangeEventDetail, TextareaInputEventDetail } from '../../interface';
+import type { Color, StyleEventDetail, TextareaChangeEventDetail, TextareaInputEventDetail } from '../../internal-interface';
 import type { Attributes } from '../../utils/helpers';
 import { inheritAriaAttributes, debounceEvent, findItemLabel, inheritAttributes } from '../../utils/helpers';
 import { createColorClasses } from '../../utils/theme';

@@ -9,7 +9,7 @@ import type {
   OverlayEventDetail,
   OverlayInterface,
   SpinnerTypes,
-} from '../../interface';
+} from '../../internal-interface';
 import { raf } from '../../utils/helpers';
 import {
   BACKDROP,

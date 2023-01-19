@@ -12,7 +12,7 @@ import type {
   ToastButton,
   FrameworkDelegate,
   ToastPosition,
-} from '../../interface';
+} from '../../internal-interface';
 import {
   createDelegateController,
   createTriggerController,

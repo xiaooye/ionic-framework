@@ -1,4 +1,4 @@
-import type { Config } from '../../interface';
+import type { Config } from '../../internal-interface';
 import { findClosestIonContent } from '../content';
 import { componentOnReady } from '../helpers';
 import { Keyboard } from '../native/keyboard';

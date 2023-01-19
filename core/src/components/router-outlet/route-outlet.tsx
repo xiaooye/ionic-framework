@@ -16,7 +16,7 @@ import type {
   RouterDirection,
   RouterOutletOptions,
   SwipeGestureHandler,
-} from '../../interface';
+} from '../../internal-interface';
 import { getTimeGivenProgression } from '../../utils/animation/cubic-bezier';
 import { attachComponent, detachComponent } from '../../utils/framework-delegate';
 import { shallowEqualStringMap, hasLazyBuild } from '../../utils/helpers';

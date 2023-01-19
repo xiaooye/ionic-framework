@@ -2,7 +2,7 @@ import type { ComponentInterface } from '@stencil/core';
 import { Component, Element, Host, Prop, State, h } from '@stencil/core';
 
 import { getIonMode } from '../../global/ionic-global';
-import type { Color, DatetimePresentation } from '../../interface';
+import type { Color, DatetimePresentation } from '../../internal-interface';
 import { componentOnReady, addEventListener } from '../../utils/helpers';
 import { printIonError } from '../../utils/logging';
 import { createColorClasses } from '../../utils/theme';

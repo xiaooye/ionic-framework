@@ -1,4 +1,4 @@
-import type { AnimationBuilder, ComponentProps, FrameworkDelegate, NavComponentWithProps } from '../../interface';
+import type { AnimationBuilder, ComponentProps, FrameworkDelegate, NavComponentWithProps } from '../../internal-interface';
 import { attachComponent } from '../../utils/framework-delegate';
 import { assert, shallowEqualStringMap } from '../../utils/helpers';
 

@@ -1,4 +1,4 @@
-import type { ComponentRef, FrameworkDelegate } from '../interface';
+import type { ComponentRef, FrameworkDelegate } from '../internal-interface';
 
 import { componentOnReady } from './helpers';
 

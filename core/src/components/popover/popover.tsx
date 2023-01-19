@@ -14,7 +14,7 @@ import type {
   PositionReference,
   PositionSide,
   TriggerAction,
-} from '../../interface';
+} from '../../internal-interface';
 import { CoreDelegate, attachComponent, detachComponent } from '../../utils/framework-delegate';
 import { addEventListener, raf, hasLazyBuild } from '../../utils/helpers';
 import { BACKDROP, dismiss, eventMethod, focusFirstDescendant, prepareOverlay, present } from '../../utils/overlays';

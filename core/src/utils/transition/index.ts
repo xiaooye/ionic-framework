@@ -6,7 +6,7 @@ import {
   LIFECYCLE_WILL_ENTER,
   LIFECYCLE_WILL_LEAVE,
 } from '../../components/nav/constants';
-import type { Animation, AnimationBuilder, NavDirection, NavOptions } from '../../interface';
+import type { Animation, AnimationBuilder, NavDirection, NavOptions } from '../../internal-interface';
 import { raf } from '../helpers';
 
 const iosTransitionAnimation = () => import('./ios.transition');

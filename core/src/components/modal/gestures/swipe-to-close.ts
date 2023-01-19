@@ -1,4 +1,4 @@
-import type { Animation } from '../../../interface';
+import type { Animation } from '../../../internal-interface';
 import { getTimeGivenProgression } from '../../../utils/animation/cubic-bezier';
 import {
   isIonContent,

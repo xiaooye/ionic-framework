@@ -1,4 +1,4 @@
-import type { AnimationBuilder, Mode } from '../../interface';
+import type { AnimationBuilder, Mode } from '../../internal-interface';
 
 export interface ActionSheetOptions {
   header?: string;

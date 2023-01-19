@@ -3,7 +3,7 @@ import { Component, Host, Prop, h } from '@stencil/core';
 
 import { config } from '../../global/config';
 import { getIonMode } from '../../global/ionic-global';
-import type { SpinnerTypes } from '../../interface';
+import type { SpinnerTypes } from '../../internal-interface';
 import type { IonicSafeString } from '../../utils/sanitization';
 import { sanitizeDOMString } from '../../utils/sanitization';
 

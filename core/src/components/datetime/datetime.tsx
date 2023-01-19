@@ -11,7 +11,7 @@ import type {
   Mode,
   StyleEventDetail,
   TitleSelectedDatesFormatter,
-} from '../../interface';
+} from '../../internal-interface';
 import { startFocusVisible } from '../../utils/focus-visible';
 import { getElementRoot, raf, renderHiddenInput } from '../../utils/helpers';
 import { printIonError, printIonWarning } from '../../utils/logging';

@@ -1,6 +1,6 @@
 import type { EventEmitter } from '@stencil/core';
 
-import type { AnimationBuilder, HTMLStencilElement } from '../interface';
+import type { AnimationBuilder, HTMLStencilElement } from '../internal-interface';
 
 export interface OverlayEventDetail<T = any> {
   data?: T;

@@ -1,6 +1,6 @@
 import { getMode, setMode, setPlatformHelpers } from '@stencil/core';
 
-import type { IonicConfig, Mode } from '../interface';
+import type { IonicConfig, Mode } from '../internal-interface';
 import { isPlatform, setupPlatforms } from '../utils/platform';
 
 import { config, configFromSession, configFromURL, saveConfig } from './config';

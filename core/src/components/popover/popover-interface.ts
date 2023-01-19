@@ -5,7 +5,7 @@ import type {
   FrameworkDelegate,
   Mode,
   OverlayInterface,
-} from '../../interface';
+} from '../../internal-interface';
 
 export interface PopoverInterface extends OverlayInterface {
   present: (event?: MouseEvent | TouchEvent | PointerEvent) => Promise<void>;

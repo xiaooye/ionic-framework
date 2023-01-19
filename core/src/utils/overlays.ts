@@ -15,7 +15,7 @@ import type {
   PickerOptions,
   PopoverOptions,
   ToastOptions,
-} from '../interface';
+} from '../internal-interface';
 
 import { CoreDelegate } from './framework-delegate';
 import { OVERLAY_BACK_BUTTON_PRIORITY } from './hardware-back-button';

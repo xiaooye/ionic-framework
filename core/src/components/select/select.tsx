@@ -20,7 +20,7 @@ import type {
   SelectInterface,
   SelectPopoverOption,
   StyleEventDetail,
-} from '../../interface';
+} from '../../internal-interface';
 import { findItemLabel, focusElement, getAriaLabel, renderHiddenInput, inheritAttributes } from '../../utils/helpers';
 import type { Attributes } from '../../utils/helpers';
 import { actionSheetController, alertController, popoverController } from '../../utils/overlays';

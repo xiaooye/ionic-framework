@@ -3,7 +3,7 @@ import { Component, Element, Event, Host, Listen, Prop, State, Watch, h, writeTa
 
 import { config } from '../../global/config';
 import { getIonMode } from '../../global/ionic-global';
-import type { Color, SegmentChangeEventDetail, StyleEventDetail } from '../../interface';
+import type { Color, SegmentChangeEventDetail, StyleEventDetail } from '../../internal-interface';
 import type { Gesture, GestureDetail } from '../../utils/gesture';
 import { pointerCoord } from '../../utils/helpers';
 import { isRTL } from '../../utils/rtl';

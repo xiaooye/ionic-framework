@@ -13,7 +13,7 @@ import type {
   InputInputEventDetail,
   StyleEventDetail,
   TextFieldTypes,
-} from '../../interface';
+} from '../../internal-interface';
 import type { Attributes } from '../../utils/helpers';
 import { inheritAriaAttributes, debounceEvent, findItemLabel, inheritAttributes } from '../../utils/helpers';
 import { createColorClasses, hostContext } from '../../utils/theme';

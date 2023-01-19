@@ -4,7 +4,7 @@ import { printIonError, printIonWarning } from '@utils/logging';
 import { chevronForward } from 'ionicons/icons';
 
 import { getIonMode } from '../../global/ionic-global';
-import type { AnimationBuilder, Color, CssClassMap, RouterDirection, StyleEventDetail } from '../../interface';
+import type { AnimationBuilder, Color, CssClassMap, RouterDirection, StyleEventDetail } from '../../internal-interface';
 import type { AnchorInterface, ButtonInterface } from '../../utils/element-interface';
 import type { Attributes } from '../../utils/helpers';
 import { inheritAttributes, raf } from '../../utils/helpers';

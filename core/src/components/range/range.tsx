@@ -12,7 +12,7 @@ import type {
   RangeKnobMoveStartEventDetail,
   RangeValue,
   StyleEventDetail,
-} from '../../interface';
+} from '../../internal-interface';
 import { findClosestIonContent, disableContentScrollY, resetContentScrollY } from '../../utils/content';
 import type { LegacyFormController } from '../../utils/forms';
 import { createLegacyFormController } from '../../utils/forms';

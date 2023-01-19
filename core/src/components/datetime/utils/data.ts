@@ -1,4 +1,4 @@
-import type { Mode } from '../../../interface';
+import type { Mode } from '../../../internal-interface';
 import type { PickerColumnItem } from '../../picker-column-internal/picker-column-internal-interfaces';
 import type { DatetimeParts } from '../datetime-interface';
 

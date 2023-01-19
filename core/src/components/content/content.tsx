@@ -2,7 +2,7 @@ import type { ComponentInterface, EventEmitter } from '@stencil/core';
 import { Component, Element, Event, Host, Listen, Method, Prop, forceUpdate, h, readTask } from '@stencil/core';
 
 import { getIonMode } from '../../global/ionic-global';
-import type { Color, ScrollBaseDetail, ScrollDetail } from '../../interface';
+import type { Color, ScrollBaseDetail, ScrollDetail } from '../../internal-interface';
 import { componentOnReady } from '../../utils/helpers';
 import { isPlatform } from '../../utils/platform';
 import { isRTL } from '../../utils/rtl';

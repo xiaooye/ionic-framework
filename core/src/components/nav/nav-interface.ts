@@ -5,7 +5,7 @@ import type {
   ComponentRef,
   FrameworkDelegate,
   Mode,
-} from '../../interface';
+} from '../../internal-interface';
 
 import { ViewController } from './view-controller';
 

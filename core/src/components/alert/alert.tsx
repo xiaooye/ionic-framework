@@ -10,7 +10,7 @@ import type {
   OverlayEventDetail,
   OverlayInterface,
   FrameworkDelegate,
-} from '../../interface';
+} from '../../internal-interface';
 import type { Gesture } from '../../utils/gesture';
 import { createButtonActiveGesture } from '../../utils/gesture/button-active';
 import {

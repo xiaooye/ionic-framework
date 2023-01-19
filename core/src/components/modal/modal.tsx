@@ -14,7 +14,7 @@ import type {
   ModalHandleBehavior,
   OverlayEventDetail,
   OverlayInterface,
-} from '../../interface';
+} from '../../internal-interface';
 import { findIonContent, printIonContentErrorMsg } from '../../utils/content';
 import { CoreDelegate, attachComponent, detachComponent } from '../../utils/framework-delegate';
 import { raf, inheritAttributes, hasLazyBuild } from '../../utils/helpers';

@@ -1,4 +1,4 @@
-import type { GestureDetail } from '../../interface';
+import type { GestureDetail } from '../../internal-interface';
 
 export interface ScrollBaseDetail {
   isScrolling: boolean;

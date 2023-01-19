@@ -1,4 +1,4 @@
-import type { Animation, ModalAnimationOptions } from '../../../interface';
+import type { Animation, ModalAnimationOptions } from '../../../internal-interface';
 import { createAnimation } from '../../../utils/animation/animation';
 import { getElementRoot } from '../../../utils/helpers';
 

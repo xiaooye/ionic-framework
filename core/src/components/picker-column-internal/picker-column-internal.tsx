@@ -3,7 +3,7 @@ import { Component, Element, Event, Host, Method, Prop, State, Watch, h } from '
 import { isPlatform } from '@utils/platform';
 
 import { getIonMode } from '../../global/ionic-global';
-import type { Color } from '../../interface';
+import type { Color } from '../../internal-interface';
 import { getElementRoot, raf } from '../../utils/helpers';
 import { hapticSelectionChanged, hapticSelectionEnd, hapticSelectionStart } from '../../utils/native/haptic';
 import { createColorClasses } from '../../utils/theme';
