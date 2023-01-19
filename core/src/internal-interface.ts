@@ -148,8 +148,11 @@ export type Mode = 'ios' | 'md';
 export type ComponentTags = string;
 // eslint-disable-next-line
 export type ComponentRef = Function | HTMLElement | string | null;
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-ignore
 export type ComponentProps<T = null> = { [key: string]: any };
+/* eslint-enable @typescript-eslint/no-unused-vars */
 export type CssClassMap = { [className: string]: boolean };
 export type BackButtonEvent = CustomEvent<BackButtonEventDetail>;
 
