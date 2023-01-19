@@ -1,4 +1,10 @@
-import type { PopoverSize, PositionAlign, PositionReference, PositionSide, TriggerAction } from '../../internal-interface';
+import type {
+  PopoverSize,
+  PositionAlign,
+  PositionReference,
+  PositionSide,
+  TriggerAction,
+} from '../../internal-interface';
 import { getElementRoot, raf } from '../../utils/helpers';
 
 interface InteractionCallback {
