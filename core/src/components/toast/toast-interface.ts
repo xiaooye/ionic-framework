@@ -12,6 +12,7 @@ export interface ToastOptions {
   animated?: boolean;
   icon?: string;
   htmlAttributes?: { [key: string]: any };
+  layout: ToastLayout;
 
   color?: Color;
   mode?: Mode;
@@ -21,6 +22,9 @@ export interface ToastOptions {
   enterAnimation?: AnimationBuilder;
   leaveAnimation?: AnimationBuilder;
 }
+
+
+export type ToastLayout = 'inline' | 'stacked';
 
 export interface ToastButton {
   text?: string;

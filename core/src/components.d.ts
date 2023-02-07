@@ -32,6 +32,7 @@ import { PinFormatter, RangeChangeEventDetail, RangeKnobMoveEndEventDetail, Rang
 import { RefresherEventDetail } from "./components/refresher/refresher-interface";
 import { ItemReorderEventDetail } from "./components/reorder-group/reorder-group-interface";
 import { NavigationHookCallback } from "./components/route/route-interface";
+<<<<<<< HEAD
 import { SearchbarChangeEventDetail } from "./components/searchbar/searchbar-interface";
 import { SegmentChangeEventDetail } from "./components/segment/segment-interface";
 import { SegmentButtonLayout } from "./components/segment-button/segment-button-interface";
@@ -77,6 +78,10 @@ export { TabBarChangedEventDetail, TabButtonClickEventDetail, TabButtonLayout } 
 export { TextareaChangeEventDetail, TextareaInputEventDetail } from "./components/textarea/textarea-interface";
 export { ToastButton, ToastPosition } from "./components/toast/toast-interface";
 export { ToggleChangeEventDetail } from "./components/toggle/toggle-interface";
+=======
+import { SelectCompareFn } from "./components/select/select-interface";
+import { ToastAttributes, ToastLayout, ToastPosition } from "./components/toast/toast-interface";
+>>>>>>> e3260334b2 (feat(toast): add layout prop, add template test)
 export namespace Components {
     interface IonAccordion {
         /**
@@ -3105,6 +3110,10 @@ export namespace Components {
           * If `true`, the keyboard will be automatically dismissed when the overlay is presented.
          */
         "keyboardClose": boolean;
+        /**
+          * Defines how the message and buttons are laid out in the toast. 'inline': The message and the buttons will appear on the same line. Message text may wrap within the message container. 'stacked': The buttons containers and message will stack on top of each other. Use this if you have long text in your buttons.
+         */
+        "layout": ToastLayout;
         /**
           * Animation to use when the toast is dismissed.
          */
@@ -7193,6 +7202,10 @@ declare namespace LocalJSX {
           * If `true`, the keyboard will be automatically dismissed when the overlay is presented.
          */
         "keyboardClose"?: boolean;
+        /**
+          * Defines how the message and buttons are laid out in the toast. 'inline': The message and the buttons will appear on the same line. Message text may wrap within the message container. 'stacked': The buttons containers and message will stack on top of each other. Use this if you have long text in your buttons.
+         */
+        "layout"?: ToastLayout;
         /**
           * Animation to use when the toast is dismissed.
          */

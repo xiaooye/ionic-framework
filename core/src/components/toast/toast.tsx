@@ -23,7 +23,7 @@ import { iosEnterAnimation } from './animations/ios.enter';
 import { iosLeaveAnimation } from './animations/ios.leave';
 import { mdEnterAnimation } from './animations/md.enter';
 import { mdLeaveAnimation } from './animations/md.leave';
-import type { ToastButton, ToastPosition } from './toast-interface';
+import type { ToastButton, ToastPosition, ToastLayout } from './toast-interface';
 
 // TODO(FW-2832): types
 
@@ -98,6 +98,15 @@ export class Toast implements ComponentInterface, OverlayInterface {
    * Header to be shown in the toast.
    */
   @Prop() header?: string;
+
+  /**
+   * Defines how the message and buttons are laid out in the toast.
+   * 'inline': The message and the buttons will appear on the same line.
+   * Message text may wrap within the message container.
+   * 'stacked': The buttons containers and message will stack on top
+   * of each other. Use this if you have long text in your buttons.
+   */
+  @Prop() layout: ToastLayout = 'inline';
 
   /**
    * Message to be shown in the toast.
@@ -398,6 +407,7 @@ export class Toast implements ComponentInterface, OverlayInterface {
     const wrapperClass = {
       'toast-wrapper': true,
       [`toast-${this.position}`]: true,
+      [`toast-layout-${this.layout}`]: true,
     };
     const role = allButtons.length > 0 ? 'dialog' : 'status';
 
