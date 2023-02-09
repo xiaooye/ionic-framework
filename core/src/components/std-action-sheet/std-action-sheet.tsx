@@ -1,5 +1,5 @@
 import type { ComponentInterface, EventEmitter } from '@stencil/core';
-import { Watch, Component, Element, Event, Host, Method, Prop, h } from '@stencil/core';
+import { Watch, Component, Element, Event, Host, Listen, Method, Prop, h } from '@stencil/core';
 
 import type {
   ActionSheetButton,
@@ -244,6 +244,8 @@ export class StdActionSheet implements ComponentInterface, OverlayInterface {
     return eventMethod(this.el, 'ionActionSheetWillDismiss');
   }
 
+  @Listen('ionBackdropTap')
+
   connectedCallback() {
     prepareOverlay(this.el);
     this.triggerChanged();
@@ -253,7 +255,8 @@ export class StdActionSheet implements ComponentInterface, OverlayInterface {
     this.triggerController.removeClickListener();
   }
 
-  private onBackdropTap = () => {
+  @Listen('ionBackdropTap')
+  onBackdropTap() {
     this.dismiss(undefined, BACKDROP);
   };
 
@@ -271,9 +274,7 @@ export class StdActionSheet implements ComponentInterface, OverlayInterface {
         class={{
           'overlay-hidden': true,
         }}
-        onIonBackdropTap={this.onBackdropTap}
       >
-        <ion-backdrop tappable={this.backdropDismiss} />
         <slot></slot>
       </Host>
     );
