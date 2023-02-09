@@ -32,57 +32,43 @@
     <button id="open-sheet">Open Action Sheet</button>
 
     <std-action-sheet trigger="open-sheet">
-      <ion-backdrop class="bg-slate-900"></ion-backdrop>
-      <std-action-sheet-content class="w-full px-4 py-4 max-w-sm">
+      <ion-backdrop></ion-backdrop>
+      <std-action-sheet-content class="w-full px-4 py-4 max-w-sm h-80 bg-violet-800 rounded-t-3xl">
         <div class="overflow-hidden mb-4 text-base font-medium text-white">
+          <std-action-sheet-button role="cancel">
+            <button class="float-right mb-2">
+              <ion-icon name="close-circle-outline" class="text-2xl"></ion-icon>
+            </button>
+          </std-action-sheet-button>
           <std-action-sheet-button role="confirm" data="action-1-data">
-            <button class="h-12 px-2 w-full py-2 text-left flex items-center">
-              <ion-icon class="mr-2" name="heart-outline"></ion-icon>
+            <button class="mb-4 h-12 px-4 w-full py-2 text-left flex items-center bg-violet-700 rounded-xl">
+              <ion-icon class="mr-4" name="heart-outline"></ion-icon>
               Like
             </button>
           </std-action-sheet-button>
 
           <std-action-sheet-button role="confirm" data="action-1-data">
-            <button class="h-12 px-2 w-full py-2 text-left flex items-center">
-              <ion-icon class="mr-2" name="remove-circle-outline"></ion-icon>
+            <button class="mb-4 h-12 px-4 w-full py-2 text-left flex items-center bg-violet-700 rounded-xl">
+              <ion-icon class="mr-4" name="remove-circle-outline"></ion-icon>
               Remove from this playlist
             </button>
           </std-action-sheet-button>
 
           <std-action-sheet-button role="confirm" data="action-1-data">
-            <button class="h-12 px-2 w-full py-2 text-left flex items-center">
-              <ion-icon class="mr-2" name="musical-notes-outline"></ion-icon>
+            <button class="mb-4 h-12 px-4 w-full py-2 text-left flex items-center bg-violet-700 rounded-xl">
+              <ion-icon class="mr-4" name="musical-notes-outline"></ion-icon>
               Add to playlist
             </button>
           </std-action-sheet-button>
 
           <std-action-sheet-button role="confirm" data="action-1-data">
-            <button class="h-12 px-2 w-full py-2 text-left flex items-center">
-              <ion-icon class="mr-2" name="list-outline"></ion-icon>
+            <button class="mb-4 h-12 px-4 w-full py-2 text-left flex items-center bg-violet-700 rounded-xl">
+              <ion-icon class="mr-4" name="list-outline"></ion-icon>
               Add to queue
             </button>
           </std-action-sheet-button>
 
-          <std-action-sheet-button role="confirm" data="action-1-data">
-            <button class="h-12 px-2 w-full py-2 text-left flex items-center">
-              <ion-icon class="mr-2" name="share-outline"></ion-icon>
-              Share
-            </button>
-          </std-action-sheet-button>
 
-          <std-action-sheet-button role="confirm" data="action-1-data">
-            <button class="h-12 px-2 w-full py-2 text-left flex items-center">
-              <ion-icon class="mr-2" name="radio-outline"></ion-icon>
-              Go to radio
-            </button>
-          </std-action-sheet-button>
-
-          <std-action-sheet-button role="confirm" data="action-1-data">
-            <button class="h-12 px-2 w-full py-2 text-left flex items-center">
-              <ion-icon class="mr-2" name="disc-outline"></ion-icon>
-              Go to album
-            </button>
-          </std-action-sheet-button>
         </div>
       </std-action-sheet-content>
     </std-action-sheet>
