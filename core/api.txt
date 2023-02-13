@@ -1420,6 +1420,7 @@ ion-toast,prop,htmlAttributes,undefined | { [key: string]: any; },undefined,fals
 ion-toast,prop,icon,string | undefined,undefined,false,false
 ion-toast,prop,isOpen,boolean,false,false,false
 ion-toast,prop,keyboardClose,boolean,false,false,false
+ion-toast,prop,layout,"inline" | "stacked",'inline',false,false
 ion-toast,prop,leaveAnimation,((baseEl: any, opts?: any) => Animation) | undefined,undefined,false,false
 ion-toast,prop,message,IonicSafeString | string | undefined,undefined,false,false
 ion-toast,prop,mode,"ios" | "md",undefined,false,false
