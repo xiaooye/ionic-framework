@@ -4,6 +4,7 @@ import { Watch, Component, Element, Event, h, Host, Method, Prop } from '@stenci
 import { config } from '../../global/config';
 import { getIonMode } from '../../global/ionic-global';
 import type { AnimationBuilder, Color, CssClassMap, OverlayInterface, FrameworkDelegate } from '../../interface';
+import { printIonWarning } from '../../utils/logging';
 import {
   createDelegateController,
   createTriggerController,
@@ -24,7 +25,6 @@ import { iosLeaveAnimation } from './animations/ios.leave';
 import { mdEnterAnimation } from './animations/md.enter';
 import { mdLeaveAnimation } from './animations/md.leave';
 import type { ToastButton, ToastPosition, ToastLayout } from './toast-interface';
-import { printIonWarning } from '../../utils/logging';
 
 // TODO(FW-2832): types
 

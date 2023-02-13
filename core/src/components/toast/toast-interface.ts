@@ -23,7 +23,6 @@ export interface ToastOptions {
   leaveAnimation?: AnimationBuilder;
 }
 
-
 export type ToastLayout = 'inline' | 'stacked';
 
 export interface ToastButton {
