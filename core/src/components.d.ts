@@ -32,7 +32,6 @@ import { PinFormatter, RangeChangeEventDetail, RangeKnobMoveEndEventDetail, Rang
 import { RefresherEventDetail } from "./components/refresher/refresher-interface";
 import { ItemReorderEventDetail } from "./components/reorder-group/reorder-group-interface";
 import { NavigationHookCallback } from "./components/route/route-interface";
-<<<<<<< HEAD
 import { SearchbarChangeEventDetail } from "./components/searchbar/searchbar-interface";
 import { SegmentChangeEventDetail } from "./components/segment/segment-interface";
 import { SegmentButtonLayout } from "./components/segment-button/segment-button-interface";
@@ -40,48 +39,8 @@ import { SelectChangeEventDetail, SelectCompareFn, SelectInterface } from "./com
 import { SelectPopoverOption } from "./components/select-popover/select-popover-interface";
 import { TabBarChangedEventDetail, TabButtonClickEventDetail, TabButtonLayout } from "./components/tab-bar/tab-bar-interface";
 import { TextareaChangeEventDetail, TextareaInputEventDetail } from "./components/textarea/textarea-interface";
-import { ToastButton, ToastPosition } from "./components/toast/toast-interface";
+import { ToastButton, ToastLayout, ToastPosition } from "./components/toast/toast-interface";
 import { ToggleChangeEventDetail } from "./components/toggle/toggle-interface";
-export { AccordionGroupChangeEventDetail } from "./components/accordion-group/accordion-group-interface";
-export { AnimationBuilder, AutocompleteTypes, Color, ComponentProps, ComponentRef, FrameworkDelegate, StyleEventDetail, TextFieldTypes } from "./interface";
-export { ActionSheetButton } from "./components/action-sheet/action-sheet-interface";
-export { OverlayEventDetail } from "./utils/overlays-interface";
-export { IonicSafeString } from "./utils/sanitization";
-export { AlertButton, AlertInput } from "./components/alert/alert-interface";
-export { RouteID, RouterDirection, RouterEventDetail, RouteWrite } from "./components/router/utils/interface";
-export { BreadcrumbCollapsedClickEventDetail } from "./components/breadcrumb/breadcrumb-interface";
-export { CheckboxChangeEventDetail } from "./components/checkbox/checkbox-interface";
-export { ScrollBaseDetail, ScrollDetail } from "./components/content/content-interface";
-export { DatetimeChangeEventDetail, DatetimePresentation, TitleSelectedDatesFormatter } from "./components/datetime/datetime-interface";
-export { SpinnerTypes } from "./components/spinner/spinner-configs";
-export { InputChangeEventDetail, InputInputEventDetail } from "./components/input/input-interface";
-export { CounterFormatter } from "./components/item/item-interface";
-export { MenuChangeEventDetail, Side } from "./components/menu/menu-interface";
-export { ModalBreakpointChangeEventDetail, ModalHandleBehavior } from "./components/modal/modal-interface";
-export { NavComponent, NavComponentWithProps, NavOptions, RouterOutletOptions, SwipeGestureHandler, TransitionDoneFn, TransitionInstruction } from "./components/nav/nav-interface";
-export { ViewController } from "./components/nav/view-controller";
-export { PickerButton, PickerColumn } from "./components/picker/picker-interface";
-export { PickerColumnItem } from "./components/picker-column-internal/picker-column-internal-interfaces";
-export { PickerInternalChangeEventDetail } from "./components/picker-internal/picker-internal-interfaces";
-export { PopoverSize, PositionAlign, PositionReference, PositionSide, TriggerAction } from "./components/popover/popover-interface";
-export { RadioGroupChangeEventDetail } from "./components/radio-group/radio-group-interface";
-export { PinFormatter, RangeChangeEventDetail, RangeKnobMoveEndEventDetail, RangeKnobMoveStartEventDetail, RangeValue } from "./components/range/range-interface";
-export { RefresherEventDetail } from "./components/refresher/refresher-interface";
-export { ItemReorderEventDetail } from "./components/reorder-group/reorder-group-interface";
-export { NavigationHookCallback } from "./components/route/route-interface";
-export { SearchbarChangeEventDetail } from "./components/searchbar/searchbar-interface";
-export { SegmentChangeEventDetail } from "./components/segment/segment-interface";
-export { SegmentButtonLayout } from "./components/segment-button/segment-button-interface";
-export { SelectChangeEventDetail, SelectCompareFn, SelectInterface } from "./components/select/select-interface";
-export { SelectPopoverOption } from "./components/select-popover/select-popover-interface";
-export { TabBarChangedEventDetail, TabButtonClickEventDetail, TabButtonLayout } from "./components/tab-bar/tab-bar-interface";
-export { TextareaChangeEventDetail, TextareaInputEventDetail } from "./components/textarea/textarea-interface";
-export { ToastButton, ToastPosition } from "./components/toast/toast-interface";
-export { ToggleChangeEventDetail } from "./components/toggle/toggle-interface";
-=======
-import { SelectCompareFn } from "./components/select/select-interface";
-import { ToastAttributes, ToastLayout, ToastPosition } from "./components/toast/toast-interface";
->>>>>>> e3260334b2 (feat(toast): add layout prop, add template test)
 export namespace Components {
     interface IonAccordion {
         /**
