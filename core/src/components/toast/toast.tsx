@@ -23,7 +23,8 @@ import { iosEnterAnimation } from './animations/ios.enter';
 import { iosLeaveAnimation } from './animations/ios.leave';
 import { mdEnterAnimation } from './animations/md.enter';
 import { mdLeaveAnimation } from './animations/md.leave';
-import type { ToastButton, ToastPosition, ToastLayout, ToastLayout } from './toast-interface';
+import type { ToastButton, ToastPosition, ToastLayout } from './toast-interface';
+import { printIonWarning } from '../../utils/logging';
 
 // TODO(FW-2832): types
 
