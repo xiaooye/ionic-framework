@@ -418,7 +418,10 @@ export class Toast implements ComponentInterface, OverlayInterface {
      *  used with one type of button.
      */
     if (layout === 'stacked' && startButtons.length > 0 && endButtons.length > 0) {
-      printIonWarning('This toast is using start and end buttons with the stacked toast layout. We recommend following the best practice of using either start or end buttons with the stacked toast layout.', el);
+      printIonWarning(
+        'This toast is using start and end buttons with the stacked toast layout. We recommend following the best practice of using either start or end buttons with the stacked toast layout.',
+        el
+      );
     }
 
     return (
