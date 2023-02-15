@@ -19,6 +19,7 @@
       <ion-router>
         <ion-route url="/" component="page-tabs">
           <ion-route url="/" component="tab-one"></ion-route>
+          <ion-route url="/tab2" component="tab-two"></ion-route>
         </ion-route>
         <ion-route url="/page-one" component="page-one"></ion-route>
         <ion-route url="/page-two" component="page-two"></ion-route>
@@ -35,11 +36,14 @@
           connectedCallback() {
             this.innerHTML = `
               <ion-tabs>
-                <ion-nav></ion-nav>
                 <ion-tab tab="tab-one" component="tab-one"></ion-tab>
+                <ion-tab tab="tab-two" component="tab-two"></ion-tab>
                 <ion-tab-bar slot="bottom">
                   <ion-tab-button tab="tab-one" href="/">
                     <ion-label>Tab 1</ion-label>
+                  </ion-tab-button>
+                  <ion-tab-button tab="tab-two" href="/tab2">
+                    <ion-label>Tab 2</ion-label>
                   </ion-tab-button>
                 </ion-tab-bar>
               </ion-tabs>
@@ -81,7 +85,37 @@
                 </ion-router-link>
               </div>
             </ion-content>
+            `;
+          }
+        }
 
+        class TabTwo extends HTMLElement {
+          constructor() {
+            super();
+          }
+          connectedCallback() {
+            this.innerHTML = `
+            <ion-header>
+              <ion-toolbar>
+                <ion-buttons slot="start">
+                  <ion-back-button></ion-back-button>
+                </ion-buttons>
+                <ion-title>Tab 2</ion-title>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content>
+              <div class="ion-padding">
+                <ion-router-link href="/page-one">
+                  <ion-button>Page One</ion-button>
+                </ion-router-link>
+                <ion-router-link href="/page-two">
+                  <ion-button>Page Two</ion-button>
+                </ion-router-link>
+                <ion-router-link href="/page-three">
+                  <ion-button>Page Three</ion-button>
+                </ion-router-link>
+              </div>
+            </ion-content>
             `;
           }
         }
@@ -165,7 +199,7 @@
 
           connectedCallback() {
             this.innerHTML = `
-            <ion-header translucent="true">
+            <ion-header>
               <ion-toolbar>
                 <ion-buttons slot="start">
                   <ion-back-button></ion-back-button>
@@ -173,7 +207,7 @@
                 <ion-title>Page Three</ion-title>
               </ion-toolbar>
             </ion-header>
-            <ion-content fullscreen="true">
+            <ion-content>
               <div class="ion-padding">
                 <ion-router-link href="/page-one">
                   <ion-button>Page One</ion-button>
@@ -190,6 +224,7 @@
 
         customElements.define('page-tabs', PageTabs);
         customElements.define('tab-one', TabOne);
+        customElements.define('tab-two', TabTwo);
         customElements.define('page-one', PageOne);
         customElements.define('page-two', PageTwo);
         customElements.define('page-three', PageThree);
