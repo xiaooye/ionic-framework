@@ -176,6 +176,8 @@
 }
 
 .transition-effect {
+  @include position(calc(var(--offset-top) * -1), null, null, null);
+
   display: none;
   position: absolute;
 
