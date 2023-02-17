@@ -25,7 +25,7 @@ export const PlatformConfiguration = {
     },
     innerWidth: 800,
     innerHeight: 1200,
-    matchMedia: mockMatchMedia(['(any-pointer:coarse)']),
+    matchMedia: mockMatchMedia(['(pointer:coarse)']),
   },
   Capacitor: {
     Capacitor: {
@@ -56,7 +56,7 @@ export const PlatformConfiguration = {
     },
     innerWidth: 375,
     innerHeight: 812,
-    matchMedia: mockMatchMedia(['(any-pointer:coarse)']),
+    matchMedia: mockMatchMedia(['(pointer:coarse)']),
   },
   iPadPro: {
     navigator: {
@@ -65,7 +65,7 @@ export const PlatformConfiguration = {
     },
     innerWidth: 1024,
     innerHeight: 1366,
-    matchMedia: mockMatchMedia(['(any-pointer:coarse)']),
+    matchMedia: mockMatchMedia(['(pointer:coarse)']),
   },
   Pixel2XL: {
     navigator: {
@@ -74,7 +74,7 @@ export const PlatformConfiguration = {
     },
     innerWidth: 411,
     innerHeight: 823,
-    matchMedia: mockMatchMedia(['(any-pointer:coarse)']),
+    matchMedia: mockMatchMedia(['(pointer:coarse)']),
   },
   GalaxyView: {
     navigator: {
@@ -83,7 +83,7 @@ export const PlatformConfiguration = {
     },
     innerWidth: 1920,
     innerHeight: 1080,
-    matchMedia: mockMatchMedia(['(any-pointer:coarse)']),
+    matchMedia: mockMatchMedia(['(pointer:coarse)']),
   },
   GalaxyS9Plus: {
     navigator: {
@@ -92,7 +92,7 @@ export const PlatformConfiguration = {
     },
     innerWidth: 360,
     innerHeight: 740,
-    matchMedia: mockMatchMedia(['(any-pointer:coarse)']),
+    matchMedia: mockMatchMedia(['(pointer:coarse)']),
   },
   iPadOS: {
     navigator: {
@@ -101,6 +101,6 @@ export const PlatformConfiguration = {
     },
     innerWidth: 1024,
     innerHeight: 1292,
-    matchMedia: mockMatchMedia(['(any-pointer:coarse)']),
+    matchMedia: mockMatchMedia(['(pointer:coarse)']),
   },
 };
