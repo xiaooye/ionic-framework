@@ -303,7 +303,7 @@ const connectListeners = (doc: Document) => {
     doc.addEventListener(
       'focus',
       (ev: FocusEvent) => {
-        trapKeyboardFocus(ev, doc);
+        //trapKeyboardFocus(ev, doc);
       },
       true
     );
@@ -414,8 +414,8 @@ export const present = async <OverlayPresentOptions>(
   setRootAriaHidden(true);
 
   overlay.presented = true;
-  overlay.willPresent.emit();
-  overlay.willPresentShorthand?.emit();
+  //overlay.willPresent.emit();
+  //overlay.willPresentShorthand?.emit();
 
   const mode = getIonMode(overlay);
   // get the user's animation fn if one was provided
@@ -426,7 +426,7 @@ export const present = async <OverlayPresentOptions>(
   const completed = await overlayAnimation(overlay, animationBuilder, overlay.el, opts);
   if (completed) {
     overlay.didPresent.emit();
-    overlay.didPresentShorthand?.emit();
+    //overlay.didPresentShorthand?.emit();
   }
 
   /**
@@ -438,7 +438,7 @@ export const present = async <OverlayPresentOptions>(
    * from returning focus as a result.
    */
   if (overlay.el.tagName !== 'ION-TOAST') {
-    focusPreviousElementOnDismiss(overlay.el);
+    //focusPreviousElementOnDismiss(overlay.el);
   }
 
   /**
@@ -498,8 +498,8 @@ export const dismiss = async <OverlayDismissOptions>(
   try {
     // Overlay contents should not be clickable during dismiss
     overlay.el.style.setProperty('pointer-events', 'none');
-    overlay.willDismiss.emit({ data, role });
-    overlay.willDismissShorthand?.emit({ data, role });
+    //overlay.willDismiss.emit({ data, role });
+    //overlay.willDismissShorthand?.emit({ data, role });
 
     const mode = getIonMode(overlay);
     const animationBuilder = overlay.leaveAnimation
@@ -511,7 +511,7 @@ export const dismiss = async <OverlayDismissOptions>(
       await overlayAnimation(overlay, animationBuilder, overlay.el, opts);
     }
     overlay.didDismiss.emit({ data, role });
-    overlay.didDismissShorthand?.emit({ data, role });
+    //overlay.didDismissShorthand?.emit({ data, role });
 
     activeAnimations.delete(overlay);
 

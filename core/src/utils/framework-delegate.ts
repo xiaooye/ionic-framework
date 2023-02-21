@@ -127,6 +127,7 @@ export const CoreDelegate = () => {
   };
 
   const removeViewFromDom = () => {
+    console.log('hello',BaseComponent, Reference)
     /**
      * Return component to where it was previously in the DOM.
      */

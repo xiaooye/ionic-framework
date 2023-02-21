@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AccordionGroupChangeEventDetail, ActionSheetAttributes, ActionSheetButton, AlertButton, AlertInput, AnimationBuilder, AutocompleteTypes, BreadcrumbCollapsedClickEventDetail, CheckboxChangeEventDetail, Color, ComponentProps, ComponentRef, DatetimeChangeEventDetail, DatetimePresentation, DomRenderFn, FooterHeightFn, FrameworkDelegate, HeaderFn, HeaderHeightFn, InputChangeEventDetail, ItemHeightFn, ItemRenderFn, ItemReorderEventDetail, LoadingAttributes, MenuChangeEventDetail, ModalAttributes, ModalBreakpointChangeEventDetail, ModalHandleBehavior, NavComponent, NavComponentWithProps, NavOptions, OverlayEventDetail, PickerAttributes, PickerButton, PickerColumn, PopoverAttributes, PopoverSize, PositionAlign, PositionReference, PositionSide, RadioGroupChangeEventDetail, RangeChangeEventDetail, RangeKnobMoveEndEventDetail, RangeKnobMoveStartEventDetail, RangeValue, RefresherEventDetail, RouteID, RouterDirection, RouterEventDetail, RouterOutletOptions, RouteWrite, ScrollBaseDetail, ScrollDetail, SearchbarChangeEventDetail, SegmentButtonLayout, SegmentChangeEventDetail, SelectChangeEventDetail, SelectInterface, SelectPopoverOption, Side, SpinnerTypes, StyleEventDetail, SwipeGestureHandler, TabBarChangedEventDetail, TabButtonClickEventDetail, TabButtonLayout, TextareaChangeEventDetail, TextFieldTypes, TitleSelectedDatesFormatter, ToastButton, ToggleChangeEventDetail, TransitionDoneFn, TransitionInstruction, TriggerAction, ViewController } from "./interface";
+import { AccordionGroupChangeEventDetail, ActionSheetAttributes, ActionSheetButton, AlertButton, AlertInput, AnimationBuilder, AutocompleteTypes, BreadcrumbCollapsedClickEventDetail, CheckboxChangeEventDetail, Color, ComponentProps, ComponentRef, DatetimeChangeEventDetail, DatetimePresentation, DomRenderFn, FooterHeightFn, FrameworkDelegate, HeaderFn, HeaderHeightFn, InputChangeEventDetail, ItemHeightFn, ItemRenderFn, ItemReorderEventDetail, LoadingAttributes, MenuChangeEventDetail, ModalAttributes, ModalHandleBehavior, NavComponent, NavComponentWithProps, NavOptions, OverlayEventDetail, PickerAttributes, PickerButton, PickerColumn, PopoverAttributes, PopoverSize, PositionAlign, PositionReference, PositionSide, RadioGroupChangeEventDetail, RangeChangeEventDetail, RangeKnobMoveEndEventDetail, RangeKnobMoveStartEventDetail, RangeValue, RefresherEventDetail, RouteID, RouterDirection, RouterEventDetail, RouterOutletOptions, RouteWrite, ScrollBaseDetail, ScrollDetail, SearchbarChangeEventDetail, SegmentButtonLayout, SegmentChangeEventDetail, SelectChangeEventDetail, SelectInterface, SelectPopoverOption, Side, SpinnerTypes, StyleEventDetail, SwipeGestureHandler, TabBarChangedEventDetail, TabButtonClickEventDetail, TabButtonLayout, TextareaChangeEventDetail, TextFieldTypes, TitleSelectedDatesFormatter, ToastButton, ToggleChangeEventDetail, TransitionDoneFn, TransitionInstruction, TriggerAction, ViewController } from "./interface";
 import { IonicSafeString } from "./utils/sanitization";
 import { AlertAttributes } from "./components/alert/alert-interface";
 import { CounterFormatter } from "./components/item/item-interface";
@@ -1625,14 +1625,6 @@ export namespace Components {
           * The mode determines which platform styles to use.
          */
         "mode"?: "ios" | "md";
-        /**
-          * Returns a promise that resolves when the modal did dismiss.
-         */
-        "onDidDismiss": <T = any>() => Promise<OverlayEventDetail<T>>;
-        /**
-          * Returns a promise that resolves when the modal will dismiss.
-         */
-        "onWillDismiss": <T = any>() => Promise<OverlayEventDetail<T>>;
         "overlayIndex": number;
         /**
           * Present the modal overlay after it has been created.
@@ -5606,18 +5598,6 @@ declare namespace LocalJSX {
          */
         "mode"?: "ios" | "md";
         /**
-          * Emitted after the modal has dismissed. Shorthand for ionModalDidDismiss.
-         */
-        "onDidDismiss"?: (event: IonModalCustomEvent<OverlayEventDetail>) => void;
-        /**
-          * Emitted after the modal has presented. Shorthand for ionModalWillDismiss.
-         */
-        "onDidPresent"?: (event: IonModalCustomEvent<void>) => void;
-        /**
-          * Emitted after the modal breakpoint has changed.
-         */
-        "onIonBreakpointDidChange"?: (event: IonModalCustomEvent<ModalBreakpointChangeEventDetail>) => void;
-        /**
           * Emitted after the modal has dismissed.
          */
         "onIonModalDidDismiss"?: (event: IonModalCustomEvent<OverlayEventDetail>) => void;
@@ -5625,22 +5605,6 @@ declare namespace LocalJSX {
           * Emitted after the modal has presented.
          */
         "onIonModalDidPresent"?: (event: IonModalCustomEvent<void>) => void;
-        /**
-          * Emitted before the modal has dismissed.
-         */
-        "onIonModalWillDismiss"?: (event: IonModalCustomEvent<OverlayEventDetail>) => void;
-        /**
-          * Emitted before the modal has presented.
-         */
-        "onIonModalWillPresent"?: (event: IonModalCustomEvent<void>) => void;
-        /**
-          * Emitted before the modal has dismissed. Shorthand for ionModalWillDismiss.
-         */
-        "onWillDismiss"?: (event: IonModalCustomEvent<OverlayEventDetail>) => void;
-        /**
-          * Emitted before the modal has presented. Shorthand for ionModalWillPresent.
-         */
-        "onWillPresent"?: (event: IonModalCustomEvent<void>) => void;
         "overlayIndex": number;
         /**
           * The element that presented the modal. This is used for card presentation effects and for stacking multiple modals on top of each other. Only applies in iOS mode.
