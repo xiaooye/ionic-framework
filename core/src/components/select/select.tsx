@@ -677,15 +677,21 @@ export class Select implements ComponentInterface {
     this.ionBlur.emit();
   };
 
-  private renderLabel() {
-    const { label } = this;
-    if (label === undefined) {
-      return;
-    }
+  private get hasLabel() {
+    return this.el.querySelector('[slot="label"]') !== null;
+  }
 
+  private renderLabel() {
     return (
-      <div class="label-text-wrapper">
-        <div class="label-text">{this.label}</div>
+      <div
+        class={{
+          'label-text-wrapper': true,
+          'label-text-wrapper-hidden': !this.hasLabel
+        }}
+      >
+        <div class="label-text">
+          <slot name="label"></slot>
+        </div>
       </div>
     );
   }
@@ -697,6 +703,7 @@ export class Select implements ComponentInterface {
   private renderLabelContainer() {
     const mode = getIonMode(this);
     const hasOutlineFill = mode === 'md' && this.fill === 'outline';
+    const hasFloatingOrStackedLabel = this.labelPlacement === 'floating' || this.labelPlacement === 'stacked';
 
     if (hasOutlineFill) {
       /**
@@ -710,13 +717,13 @@ export class Select implements ComponentInterface {
         <div class="select-outline-container">
           <div class="select-outline-start"></div>
           <div class="select-outline-notch">
-            <div class="notch-spacer" aria-hidden="true">
-              {this.label}
+            <div class="notch-spacer">
+              {hasFloatingOrStackedLabel && this.renderLabel()}
             </div>
           </div>
           <div class="select-outline-end"></div>
         </div>,
-        this.renderLabel(),
+        !hasFloatingOrStackedLabel && this.renderLabel(),
       ];
     }
 
