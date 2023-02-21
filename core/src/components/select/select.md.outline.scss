@@ -75,17 +75,6 @@
   transform-origin: right top;
 }
 
-:host(.select-fill-outline.select-label-placement-stacked) .label-text-wrapper,
-:host(.select-fill-outline.select-label-placement-floating) .label-text-wrapper {
-  position: absolute;
-
-  /**
-   * Label text should not extend
-   * beyond the bounds of the select.
-   */
-  max-width: calc(100% - var(--padding-start) - var(--padding-end));
-}
-
 /**
  * The label should appear on top of an outline
  * container that overlaps it so it is always clickable.
@@ -95,6 +84,8 @@
   position: relative;
 
   z-index: 1;
+
+  font-size: calc(1em * #{$select-floating-label-scale});
 }
 
 /**
@@ -104,14 +95,10 @@
 :host(.ion-focused.select-fill-outline.select-label-placement-floating) .label-text-wrapper,
 :host(.has-value.select-fill-outline.select-label-placement-floating) .label-text-wrapper,
 :host(.select-fill-outline.select-label-placement-stacked) .label-text-wrapper {
-  @include transform(translateY(-32%), scale(#{$select-floating-label-scale}));
+  @include transform(translateY(-32%));
   @include margin(0);
 
-  /**
-   * Label text should not extend
-   * beyond the bounds of the select.
-   */
-  max-width: calc((100% - var(--padding-start) - var(--padding-end) - #{$select-md-floating-label-padding * 2}) / #{$select-floating-label-scale});
+  width: calc(100% / #{$select-floating-label-scale});
 }
 
 /**
@@ -188,11 +175,8 @@
    * to create space, so we need to take
    * that into consideration here.
    */
-  @include padding(null, #{$select-md-floating-label-padding * 2}, null, null);
+  @include padding(null, $select-md-floating-label-padding, null, $select-md-floating-label-padding);
 
-  font-size: calc(1em * #{$select-floating-label-scale});
-
-  opacity: 0;
   pointer-events: none;
 }
 
