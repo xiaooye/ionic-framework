@@ -6,9 +6,15 @@ test.describe('segment: basic', () => {
     test('should not have visual regressions when no value is selected', async ({ page }) => {
       await page.setContent(`
         <ion-segment>
-          <ion-segment-button value="a">First</ion-segment-button>
-          <ion-segment-button value="b">Second</ion-segment-button>
-          <ion-segment-button value="c">Third</ion-segment-button>
+          <ion-segment-button value="a">
+            <ion-label>First</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="b">
+            <ion-label>Second</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="c">
+            <ion-label>Third</ion-label>
+          </ion-segment-button>
         </ion-segment>
       `);
 
@@ -19,9 +25,15 @@ test.describe('segment: basic', () => {
     test('should not have visual regressions when a value is selected', async ({ page }) => {
       await page.setContent(`
         <ion-segment value="a">
-          <ion-segment-button value="a">First</ion-segment-button>
-          <ion-segment-button value="b">Second</ion-segment-button>
-          <ion-segment-button value="c">Third</ion-segment-button>
+          <ion-segment-button value="a">
+            <ion-label>First</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="b">
+            <ion-label>Second</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="c">
+            <ion-label>Third</ion-label>
+          </ion-segment-button>
         </ion-segment>
       `);
 
@@ -33,9 +45,15 @@ test.describe('segment: basic', () => {
     test('should not have visual regressions when an item is disabled', async ({ page }) => {
       await page.setContent(`
         <ion-segment value="b">
-          <ion-segment-button value="a">First</ion-segment-button>
-          <ion-segment-button value="b" disabled="true">Second</ion-segment-button>
-          <ion-segment-button value="c">Third</ion-segment-button>
+          <ion-segment-button value="a">
+            <ion-label>First</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="b" disabled="true">
+            <ion-label>Second</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="c">
+            <ion-label>Third</ion-label>
+          </ion-segment-button>
         </ion-segment>
       `);
 
@@ -47,9 +65,15 @@ test.describe('segment: basic', () => {
     test('should not have visual regressions with color', async ({ page }) => {
       await page.setContent(`
         <ion-segment value="b" color="danger">
-          <ion-segment-button value="a">First</ion-segment-button>
-          <ion-segment-button value="b">Second</ion-segment-button>
-          <ion-segment-button value="c">Third</ion-segment-button>
+          <ion-segment-button value="a">
+            <ion-label>First</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="b">
+            <ion-label>Second</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="c">
+            <ion-label>Third</ion-label>
+          </ion-segment-button>
         </ion-segment>
       `);
 
