@@ -138,12 +138,23 @@
   font-size: $segment-button-md-icon-size;
 }
 
+
 // Segment Button: Label
 // --------------------------------------------------
 
 ::slotted(ion-label) {
   @include margin(12px, null, 12px, null);
+
+  display: -webkit-box;
+
+  // Material Design segment buttons should
+  // show two lines of text before overflowing
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  white-space: normal;
 }
+
 
 // Segment Button: Layout
 // --------------------------------------------------

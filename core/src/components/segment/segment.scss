@@ -11,7 +11,12 @@
 
   @include font-smoothing();
 
-  display: flex;
+  // The segment needs to be an inline-grid in order to
+  // properly size the segment buttons so that they are
+  // all equal width, with the width of each being
+  // equal to that of the widest button
+  display: inline-grid;
+  grid-auto-columns: 1fr;
 
   position: relative;
 

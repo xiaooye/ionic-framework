@@ -30,7 +30,6 @@
 
   position: relative;
 
-  flex-basis: 0;
   flex-direction: row;
 
   min-width: #{$segment-button-ios-min-width};
@@ -84,6 +83,14 @@
 
 ::slotted(ion-icon) {
   font-size: $segment-button-ios-icon-size;
+}
+
+
+// Segment Button: Label
+// --------------------------------------------------
+
+::slotted(ion-label) {
+  white-space: nowrap;
 }
 
 
@@ -203,9 +210,9 @@
 
 // Toolbar with Color, Checked
 /**
- * Use the contrast color as background since
- * since the text color is the base color. Otherwise
- * we will have contrast issues when using light/medium/dark
+ * Use the contrast color as background since the
+ * text color is the base color. Otherwise we will
+ * have contrast issues when using light/medium/dark
  * palettes across light and dark mode.
  */
 :host(.in-toolbar-color) .segment-button-indicator-background {

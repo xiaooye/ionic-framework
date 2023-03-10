@@ -25,6 +25,11 @@
 
 // Segment: Default Toolbar
 // --------------------------------------------------
+// iOS segments in a toolbar should be as wide as the
+// contents of their buttons rather than take up the
+// full width of the toolbar. this requires the width
+// to be set to auto on the segment and the toolbar
+// to be set to inline-flex.
 
 :host(.in-toolbar) {
   @include margin(0, auto);

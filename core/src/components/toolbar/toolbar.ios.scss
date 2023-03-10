@@ -28,6 +28,10 @@
 
 // Toolbar: Segment
 // --------------------------------------------------
+// iOS toolbars containing segments should be
+// inline-flex, this allows the segment to resize
+// its width to the size of the buttons instead
+// of taking up the full width.
 
 :host(.toolbar-segment) .toolbar-content {
   display: inline-flex;
